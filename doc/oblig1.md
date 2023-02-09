@@ -1,7 +1,7 @@
 Oppgave A2: Konsept
 
-*Spillfigur som kan flyttes høyre, venstre, opp og ned.
-*Todimensjonalt spillbrett
+* Spillfigur som kan flyttes høyre, venstre, opp og ned.
+* Todimensjonalt spillbrett
     * Brett er et rutenett med størrelse satt på spillstart
     * Vegger/fliser som ikke kan ødelegges
     * Vegger som kan ødelegges
