@@ -7,7 +7,7 @@
 * Et plass hvor det sprenges og ødeleggelse av området ved hjelp av bomber. Målet er å være den eneste som står igjen på brettet. Du er ikke alene det er en annen spiller som også er her. Hvem kommer til å vinne?
 
 
-
+test
 
 
 # INF112 libGDX + Maven template 
