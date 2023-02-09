@@ -18,4 +18,5 @@
         * Større eksplosjonsradius (permanent)
         * Maks eksplosjonsradius (midlertidig)
         * Spillfigur kan kaste bombe hvis de står i ro når de legger den ned. (permanent)
+* En god illustrasjon for hvordan spillet fungerer vil komme fra Bomberman serien.
         
