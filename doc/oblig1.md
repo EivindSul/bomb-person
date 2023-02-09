@@ -1,4 +1,4 @@
-Oppgave A2: Konsept
+##Oppgave A2: Konsept
 * Spillfigur som kan flyttes høyre, venstre, opp og ned.
 * Todimensjonalt spillbrett
     * Brett er et rutenett med størrelse satt på spillstart
@@ -22,7 +22,7 @@ Oppgave A2: Konsept
 * En god illustrasjon for hvordan spillet fungerer vil komme fra Bomberman serien.
 
 
-## Prosess A3
+## Oppgave A3: Prosess
 * I den første perioden av prosjektet har teamet planlagt å møtes en gang i uken, torsdag kl 10:15 og ellers  holde kontakten via discord serveren. Vi skal følge en kanban strategi via trello hvor vi har en plan på hva vi gjør, har gjort og skal gjøre i fremtiden. Dette er en metode for at alle skal ha en oversikt over hva som blir gjort og hva som kreves for å komme i mål.
 
 * Vi har fordelt litt på arbeided hvor vi har en leder, en nestleder, en kundekontakt og resten utviklere. Lederen har ansvaret for å merge branches. 
