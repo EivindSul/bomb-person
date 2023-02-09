@@ -1,3 +1,15 @@
+# INF112 Project – *Bomberman*
+
+* Team: *Blasters* (Gruppe 8): *Brian Jensvoll-Jorgensen, Dorcas Mihio, Eivind Sulen, Jackie Zhang, Kjell Grytting, Sebastian Matthews*
+* Lenke til GitLab/Trello/etc.
+
+## Om spillet
+* Et plass hvor det sprenges og ødeleggelse av området ved hjelp av bomber. Målet er å være den eneste som står igjen på brettet. Du er ikke alene det er en annen spiller som også er her. Hvem kommer til å vinne?
+
+
+
+
+
 # INF112 libGDX + Maven template 
 Simple skeleton with [libGDX](https://libgdx.com/). 
 
