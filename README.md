@@ -8,8 +8,6 @@
 
 
 
-
-
 # INF112 libGDX + Maven template 
 Simple skeleton with [libGDX](https://libgdx.com/). 
 
