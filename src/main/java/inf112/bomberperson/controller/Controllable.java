@@ -1,4 +1,4 @@
-package main.java.inf112.bomberperson.controller;
+package inf112.bomberperson.controller;
 
 
 // Based on the solution to INF101 tetris
