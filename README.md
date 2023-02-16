@@ -17,7 +17,7 @@
 * Kompileres med `mvn package`.
 <!--* Kjøres med java `-cp target/my-app-1.0-SNAPSHOT.jar com mycompany.app.App`-->
 * Krever Java 15 eller senere
-* Mer info kommer...
+* Mer info kommer..
 
 ## Graphics
 * libGDX graphics
