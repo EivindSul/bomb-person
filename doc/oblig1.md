@@ -130,3 +130,12 @@ Arbeidsoppgave: Legg til funksjonalitet får å bytte til et nytt spillbrett nå
 Brukehistorie: Som spiller vil jeg at spillet skal ha en start-skjerm ved oppstart og en game over-skjerm når spillet er ferdig, slik at jeg kan starte eller avslutte spillet.
 Akseptansekriterie: Spillet skal vise en start-skjerm når det starter opp, og en game over-skjerm når spillet er ferdig. Start-skjerm skal ha en "start spill"-knapp, og game over-skjermen skal ha en "spill igjen"-knapp og en "avslutt"-knapp.
 Arbeidsoppgave: Legg til grafikk fog legg funksjonalitet for start-skjermen og game over-skjermen, og legg til funksjonalitet for knappene på begge skjermene.
+
+## Oppgave A5: Oppsummering
+
+Vi mener første omgang av prosjektet har fungert godt. Vi har blitt kjent med det nye teamet, fordelt arbeid, og laget et oppsett for hvordan videre arbeid skal fungere. For at alle på teamet skal ha god oversikt over hva vi holder på med og hva planen er videre har vi satt opp trello. Discord blir brukt for å kunne kommunisere når vi ikke er med hverandre, stille spørsmål og hjelpe hverandre, og vi bruker git for at alle har tilgang til koden.
+
+Noe som ikke fungerte helt som forventet var da vi satte opp git repositoriet. Da laget vi en main branch og en develop branch. Planen var at vi skulle først pushe inn i develop for så å gi team leader ansvar for å merge inn i main. Her møtte vi på startvansker hvor main lå foran developer som ikke var planen. Men vi har ikke gitt opp denne ideen og skal fortsette med denne metoden for det er en tryggere og mer oversiktlig form for koding.
+
+Alle oppgaver har blitt besvart og vi har som smått kommet i gang med planlegging og skriving av kode. I første omgang er planen å få satt opp et grid og laget en figur, for så å implementere spilldetaljene.
+
