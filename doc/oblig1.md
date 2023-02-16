@@ -131,6 +131,14 @@ Brukehistorie: Som spiller vil jeg at spillet skal ha en start-skjerm ved oppsta
 Akseptansekriterie: Spillet skal vise en start-skjerm når det starter opp, og en game over-skjerm når spillet er ferdig. Start-skjerm skal ha en "start spill"-knapp, og game over-skjermen skal ha en "spill igjen"-knapp og en "avslutt"-knapp.
 Arbeidsoppgave: Legg til grafikk fog legg funksjonalitet for start-skjermen og game over-skjermen, og legg til funksjonalitet for knappene på begge skjermene.
 
+#### Prioriteringsliste:
+En liste over brukerhistorie:
+* Sørge for at vi kan skille mellom hva som er en spiller, vegg og murer. Hensyn på unngå misforståelser og feil. (Grafikken)
+
+#### Prioriteringsliste til senere:
+* Utvikleren i vårt team skal kunne skille mellom hva som er bombe, vegg, murer, spillfigur. Hensyn til å implementere riktig funksjoner og egenskaper til de ulike objektene i spillet. (Koden)
+* Gi riktig lyd til de ulike delene i programmet. Effekten til å droppe en bomb og en bombe skal sprenges skal ha forskjellige lyder slik at det blir lettere å vite hva som blir gjort på spillet.
+
 ## Oppgave A5: Oppsummering
 
 Vi mener første omgang av prosjektet har fungert godt. Vi har blitt kjent med det nye teamet, fordelt arbeid, og laget et oppsett for hvordan videre arbeid skal fungere. For at alle på teamet skal ha god oversikt over hva vi holder på med og hva planen er videre har vi satt opp trello. Discord blir brukt for å kunne kommunisere når vi ikke er med hverandre, stille spørsmål og hjelpe hverandre, og vi bruker git for at alle har tilgang til koden.
