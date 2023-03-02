@@ -147,3 +147,6 @@ Noe som ikke fungerte helt som forventet var da vi satte opp git repositoriet. D
 
 Alle oppgaver har blitt besvart og vi har som smått kommet i gang med planlegging og skriving av kode. I første omgang er planen å få satt opp et grid og laget en figur, for så å implementere spilldetaljene.
 
+
+###### Tok utsgangspunkt til Grid Package fra Inf101, men skal endre på det senere.
+
