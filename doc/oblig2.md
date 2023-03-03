@@ -36,7 +36,10 @@
     <p> Diskuterte forståelse av tilemap samt libGDX. </p>
     <p> Så på forskjellige .TMX maps, dette er maps som kan lages i et eget program "tiled" https://www.mapeditor.org/</p>
     <p> Diskuterte gruppe struktur</p>
-    <p> Diskuterte UML diagram for MVP</p>
+    <p> 
+        Diskuterte UML diagram for MVP link finnes her :
+        <a href= "https://lucid.app/lucidchart/f14609ae-0436-4114-be3e-44bea107c7d8/edit?viewport_loc=-459%2C-342%2C2368%2C1366%2C0_0&invitationId=inv_e2e85f81-6baa-4527-95c4-17773a7c75f0"> UML Diagram</a>
+    </p> 
     <img src="assets/BasicUML.png" width="500" title="hover text">
     <p> Diskuterte plan for implimentering av MVP </p>
 <h2>Hvilke avgjørelser dere tok </h2>
