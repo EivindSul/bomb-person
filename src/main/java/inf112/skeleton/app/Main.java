@@ -8,7 +8,7 @@ public class Main {
         Lwjgl3ApplicationConfiguration cfg = new Lwjgl3ApplicationConfiguration();
         cfg.setTitle("hello-world");
         cfg.setWindowedMode(BombermanGame.WIDTH, BombermanGame.HEIGHT);
-        cfg.setResizable(false);
+        cfg.setResizable(true);
 
         new Lwjgl3Application(new BombermanGame(), cfg);
     }

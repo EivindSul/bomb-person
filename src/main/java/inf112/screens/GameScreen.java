@@ -6,7 +6,10 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import inf112.bomberperson.model.Map;
 import inf112.skeleton.app.BombermanGame;
 
 public class GameScreen implements Screen {
@@ -16,7 +19,7 @@ public class GameScreen implements Screen {
 
     private OrthographicCamera camera;
 
-
+    private Map bombermanMap;
     BombermanGame game;
     Texture bomb;
 
@@ -30,6 +33,8 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
+        bombermanMap = new Map();
+        bombermanMap.create();
 
     }
 
@@ -39,26 +44,9 @@ public class GameScreen implements Screen {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
 
+        // Render the BombermanGame
+        bombermanMap.render();
 
-        if(Gdx.input.isKeyPressed(Input.Keys.UP)){
-            y += SPEED * Gdx.graphics.getDeltaTime();
-
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
-            y -= SPEED * Gdx.graphics.getDeltaTime();
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
-            x -= SPEED * Gdx.graphics.getDeltaTime();
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
-            x += SPEED * Gdx.graphics.getDeltaTime();
-
-
-        }
-
-        game.batch.begin();
-        game.batch.draw(bomb, x, y);
-        game.batch.end();
 
     }
 
@@ -88,4 +76,5 @@ public class GameScreen implements Screen {
         game.dispose();
 
     }
+
 }

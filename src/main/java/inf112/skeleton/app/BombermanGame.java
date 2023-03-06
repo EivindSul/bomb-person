@@ -30,6 +30,7 @@ public class BombermanGame extends Game {
 
     @Override
     public void resize(int width, int height) {
+
     }
 
     @Override
