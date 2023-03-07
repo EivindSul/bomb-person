@@ -20,7 +20,7 @@ public class Map extends ApplicationAdapter {
     static final int MAP_WIDTH = 27;
     static final int MAP_HEIGHT = 27;
     static final float WALL_DENSITY = 0.3f;
-    private static final Random random = new Random();
+    static final Random random = new Random();
     static final int GRASS_TILE_ID=  483;
     static final int WALL_TILE_ID=  385;
     static final int BRICK_TILE_ID=  105;
@@ -38,8 +38,8 @@ public class Map extends ApplicationAdapter {
     private TiledMap map;
     private OrthogonalTiledMapRenderer mapRenderer;
     TiledMapTileLayer groundLayer;
-    TiledMapTileLayer wallLayer;
-    TiledMapTileLayer explodableWallLayer;
+    static TiledMapTileLayer wallLayer;
+    static TiledMapTileLayer explodableWallLayer;
     TiledMapTile[] wallTiles;
     private TiledMapTile[] brickTiles;
     private Viewport viewport;
@@ -135,6 +135,7 @@ public class Map extends ApplicationAdapter {
         explodableWallLayer.setCell(MAP_WIDTH - 2, MAP_HEIGHT - 1, grassCell);
         explodableWallLayer.setCell(MAP_WIDTH - 1, MAP_HEIGHT - 2, grassCell);
 
+
         // Randomly place bricks on the remaining cells
         for (int x = 2; x < MAP_WIDTH - 2; x++) {
             for (int y = 2; y < MAP_HEIGHT - 2; y++) {
@@ -156,11 +157,61 @@ public class Map extends ApplicationAdapter {
             }
         }
     }
+    public TileType getTileTypeByCoordinate(int layer, int col, int row) {
+        TiledMapTileLayer.Cell cell = null;
+        if (layer == 0) {
+            cell = groundLayer.getCell(col, row);
+        } else if (layer == 1) {
+            cell = wallLayer.getCell(col, row);
+        } else if (layer == 2) {
+            cell = explodableWallLayer.getCell(col, row);
+        }
+        if (cell != null) {
+            int id = cell.getTile().getId();
+            if (id == GRASS_TILE_ID) {
+                return TileType.GRASS;
+            } else if (id == WALL_TILE_ID) {
+                return TileType.WALL;
+            } else if (id == BRICK_TILE_ID) {
+                return TileType.BRICK;
+            }
+        }
+        return TileType.GRASS;
+    }
 
+    public boolean isCellBlocked(float x, float y) {
+        int col = (int) (x / TILE_SIZE);
+        int row = (int) (y / TILE_SIZE);
 
+        if (col < 0 || col >= MAP_WIDTH || row < 0 || row >= MAP_HEIGHT) {
+            // Treat out of bounds as blocked
+            return true;
+        }
 
+        TileType type = getTileTypeByCoordinate(1, col, row);
+        return type == TileType.WALL || type == TileType.BRICK;
+    }
 
+    public void destroyTile(int col, int row) {
+        TiledMapTileSet tileset = map.getTileSets().getTileSet("tiles");
+        explodableWallLayer.setCell(col, row, null);
+        TiledMapTileLayer.Cell cell = new TiledMapTileLayer.Cell();
+        cell.setTile(tileset.getTile(GRASS_TILE_ID));
+        groundLayer.setCell(col, row, cell);
+    }
 
+    public void destroyTilesAround(int col, int row, int radius) {
+        for (int r = row - radius; r <= row + radius; r++) {
+            for (int c = col - radius; c <= col + radius; c++) {
+                if (r >= 0 && r < MAP_HEIGHT && c >= 0 && c < MAP_WIDTH && (Math.abs(row - r) + Math.abs(col - c) <= radius)) {
+                    TileType type = getTileTypeByCoordinate(2, c, r);
+                    if (type == TileType.BRICK) {
+                        destroyTile(c, r);
+                    }
+                }
+            }
+        }
+    }
 
 
 
