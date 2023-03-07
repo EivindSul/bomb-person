@@ -19,7 +19,7 @@ public class Map extends ApplicationAdapter {
     private static final int TILE_SIZE = 32;
     static final int MAP_WIDTH = 27;
     static final int MAP_HEIGHT = 27;
-    static final float WALL_DENSITY = 0.2f;
+    static final float WALL_DENSITY = 0.3f;
     private static final Random random = new Random();
     static final int GRASS_TILE_ID=  483;
     static final int WALL_TILE_ID=  385;
@@ -116,8 +116,28 @@ public class Map extends ApplicationAdapter {
         TiledMapTile brickTile = tileset.getTile(BRICK_TILE_ID);
         TiledMapTile grassTile = tileset.getTile(GRASS_TILE_ID);
 
-        for (int x = 0; x < MAP_WIDTH; x++) {
-            for (int y = 0; y < MAP_HEIGHT; y++) {
+        // Set the corner cells and their immediate neighbors to grass
+        TiledMapTileLayer.Cell grassCell = new TiledMapTileLayer.Cell();
+        grassCell.setTile(grassTile);
+        explodableWallLayer.setCell(0, 0, grassCell);
+        explodableWallLayer.setCell(1, 0, grassCell);
+        explodableWallLayer.setCell(0, 1, grassCell);
+
+        explodableWallLayer.setCell(MAP_WIDTH - 1, 0, grassCell);
+        explodableWallLayer.setCell(MAP_WIDTH - 2, 0, grassCell);
+        explodableWallLayer.setCell(MAP_WIDTH - 1, 1, grassCell);
+
+        explodableWallLayer.setCell(0, MAP_HEIGHT - 1, grassCell);
+        explodableWallLayer.setCell(1, MAP_HEIGHT - 1, grassCell);
+        explodableWallLayer.setCell(0, MAP_HEIGHT - 2, grassCell);
+
+        explodableWallLayer.setCell(MAP_WIDTH - 1, MAP_HEIGHT - 1, grassCell);
+        explodableWallLayer.setCell(MAP_WIDTH - 2, MAP_HEIGHT - 1, grassCell);
+        explodableWallLayer.setCell(MAP_WIDTH - 1, MAP_HEIGHT - 2, grassCell);
+
+        // Randomly place bricks on the remaining cells
+        for (int x = 2; x < MAP_WIDTH - 2; x++) {
+            for (int y = 2; y < MAP_HEIGHT - 2; y++) {
                 TiledMapTileLayer.Cell cell = groundLayer.getCell(x, y);
                 if (cell == null) {
                     continue;
@@ -126,17 +146,6 @@ public class Map extends ApplicationAdapter {
                 if (tile == null) {
                     continue;
                 }
-
-                // Randomly place GRASS on BRICK
-                if (tile.getId() == BRICK_TILE_ID) {
-                    if (Math.random() < (1 - WALL_DENSITY)) {
-                        TiledMapTileLayer.Cell grassCell = new TiledMapTileLayer.Cell();
-                        grassCell.setTile(grassTile);
-                        explodableWallLayer.setCell(x, y, grassCell);
-                    }
-                }
-
-                // Randomly place BRICK on GRASS
                 if (tile.getId() == GRASS_TILE_ID) {
                     if (Math.random() < WALL_DENSITY) {
                         TiledMapTileLayer.Cell brickCell = new TiledMapTileLayer.Cell();
@@ -147,10 +156,6 @@ public class Map extends ApplicationAdapter {
             }
         }
     }
-
-
-
-
 
 
 
