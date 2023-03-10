@@ -5,10 +5,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -19,12 +20,32 @@ public class Map extends ApplicationAdapter {
     private static final int TILE_SIZE = 32;
     static final int MAP_WIDTH = 27;
     static final int MAP_HEIGHT = 27;
+<<<<<<< HEAD
     static final float WALL_DENSITY = 0.3f;
-    private static final Random random = new Random();
+    static final Random random = new Random();
     static final int GRASS_TILE_ID=  483;
     static final int WALL_TILE_ID=  385;
     static final int BRICK_TILE_ID=  105;
+=======
+    static final float WALL_DENSITY = 0.2f;
+    private static final Random random = new Random();
+    static final int GRASS_TILE_ID=  484;
+    static final int WALL_TILE_ID=  386;
+    static final int BRICK_TILE_ID=  106;
+>>>>>>> merger
 
+
+
+    public float getWidth() {
+        return MAP_WIDTH;
+    }
+    public float getHeight() {
+        return MAP_HEIGHT;
+    }
+
+    public OrthogonalTiledMapRenderer getMapRenderer() {
+        return mapRenderer;
+    }
 
 
     enum TileType {
@@ -38,8 +59,8 @@ public class Map extends ApplicationAdapter {
     private TiledMap map;
     private OrthogonalTiledMapRenderer mapRenderer;
     TiledMapTileLayer groundLayer;
-    TiledMapTileLayer wallLayer;
-    TiledMapTileLayer explodableWallLayer;
+    static TiledMapTileLayer wallLayer;
+    static TiledMapTileLayer explodableWallLayer;
     TiledMapTile[] wallTiles;
     private TiledMapTile[] brickTiles;
     private Viewport viewport;
@@ -54,6 +75,7 @@ public class Map extends ApplicationAdapter {
         viewport = new FitViewport(mapWidth, mapHeight, camera);
         viewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
+
         camera.zoom = .74f; // or any other value
         camera.position.set(mapWidth / 3.33f, mapHeight / 3.33f, 0);
         viewport.update(mapWidth, mapHeight);
@@ -63,7 +85,7 @@ public class Map extends ApplicationAdapter {
         batch = new SpriteBatch();
 
         // Load the map from Tiled
-        map = new TmxMapLoader().load("doc/assets/tiles.tmx");
+        map = new TmxMapLoader().load("doc/assets/tiles2.tmx");
 
         // Create the map renderer
         mapRenderer = new OrthogonalTiledMapRenderer(map);
@@ -82,6 +104,8 @@ public class Map extends ApplicationAdapter {
         // Get the brick tiles from the tileset
         TiledMapTile brickTile1 = tileset.getTile(BRICK_TILE_ID);
         brickTiles = new TiledMapTile[]{brickTile1};
+
+
 
         // Randomly generate the map
         generateMap();
@@ -109,6 +133,7 @@ public class Map extends ApplicationAdapter {
     public void dispose() {
         batch.dispose();
         map.dispose();
+        mapRenderer.dispose();
     }
 
     public void generateMap() {
@@ -119,6 +144,7 @@ public class Map extends ApplicationAdapter {
         // Set the corner cells and their immediate neighbors to grass
         TiledMapTileLayer.Cell grassCell = new TiledMapTileLayer.Cell();
         grassCell.setTile(grassTile);
+<<<<<<< HEAD
         explodableWallLayer.setCell(0, 0, grassCell);
         explodableWallLayer.setCell(1, 0, grassCell);
         explodableWallLayer.setCell(0, 1, grassCell);
@@ -135,10 +161,19 @@ public class Map extends ApplicationAdapter {
         explodableWallLayer.setCell(MAP_WIDTH - 2, MAP_HEIGHT - 1, grassCell);
         explodableWallLayer.setCell(MAP_WIDTH - 1, MAP_HEIGHT - 2, grassCell);
 
+
         // Randomly place bricks on the remaining cells
         for (int x = 2; x < MAP_WIDTH - 2; x++) {
             for (int y = 2; y < MAP_HEIGHT - 2; y++) {
                 TiledMapTileLayer.Cell cell = groundLayer.getCell(x, y);
+=======
+
+        // Randomly place grass on the brick cells
+        for (int x = 0; x < MAP_WIDTH -2; x++) {
+            for (int y = 0; y < MAP_HEIGHT -2; y++) {
+                TiledMapTileLayer.Cell cell = explodableWallLayer.getCell(x, y);
+
+>>>>>>> merger
                 if (cell == null) {
                     continue;
                 }
@@ -146,21 +181,120 @@ public class Map extends ApplicationAdapter {
                 if (tile == null) {
                     continue;
                 }
+<<<<<<< HEAD
                 if (tile.getId() == GRASS_TILE_ID) {
+=======
+                if (tile.getId() == BRICK_TILE_ID) {
+>>>>>>> merger
+                    if (Math.random() < WALL_DENSITY) {
+                        explodableWallLayer.setCell(x, y, null);
+                    }
+                }
+            }
+
+        }
+
+
+        // Randomly place bricks on the remaining cells
+        for (int x = 0; x < MAP_WIDTH -2; x++) {
+            for (int y = 0; y < MAP_HEIGHT -2; y++) {
+                TiledMapTileLayer.Cell cell = groundLayer.getCell(x, y);
+
+                if (cell == null) {
+                    continue;
+                }
+                TiledMapTile tile = cell.getTile();
+                if (tile == null) {
+                    continue;
+                }
+                if (tile.getId() == GRASS_TILE_ID && wallLayer.getCell(x,y)==null) {
                     if (Math.random() < WALL_DENSITY) {
                         TiledMapTileLayer.Cell brickCell = new TiledMapTileLayer.Cell();
                         brickCell.setTile(brickTile);
-                        groundLayer.setCell(x, y, brickCell);
+                        explodableWallLayer.setCell(x, y, brickCell);
+                    }
+                }
+            }
+
+        }
+
+
+
+
+
+
+        explodableWallLayer.setCell(1, 1, null);
+        explodableWallLayer.setCell(2, 1, null);
+        explodableWallLayer.setCell(1, 2, null);
+
+        explodableWallLayer.setCell(24, 1, null);
+        explodableWallLayer.setCell(25, 1, null);
+        explodableWallLayer.setCell(25, 2, null);
+
+        explodableWallLayer.setCell(24, 25, null);
+        explodableWallLayer.setCell(25, 24,null);
+        explodableWallLayer.setCell(25, 25, null);
+
+        explodableWallLayer.setCell(1, 25, null);
+        explodableWallLayer.setCell(2, 25, null);
+        explodableWallLayer.setCell(1, 24, null);
+    }
+    public TileType getTileTypeByCoordinate(int layer, int col, int row) {
+        TiledMapTileLayer.Cell cell = null;
+        if (layer == 0) {
+            cell = groundLayer.getCell(col, row);
+        } else if (layer == 1) {
+            cell = wallLayer.getCell(col, row);
+        } else if (layer == 2) {
+            cell = explodableWallLayer.getCell(col, row);
+        }
+        if (cell != null) {
+            int id = cell.getTile().getId();
+            if (id == GRASS_TILE_ID) {
+                return TileType.GRASS;
+            } else if (id == WALL_TILE_ID) {
+                return TileType.WALL;
+            } else if (id == BRICK_TILE_ID) {
+                return TileType.BRICK;
+            }
+        }
+        return TileType.GRASS;
+    }
+
+<<<<<<< HEAD
+    public boolean isCellBlocked(float x, float y) {
+        int col = (int) (x / TILE_SIZE);
+        int row = (int) (y / TILE_SIZE);
+
+        if (col < 0 || col >= MAP_WIDTH || row < 0 || row >= MAP_HEIGHT) {
+            // Treat out of bounds as blocked
+            return true;
+        }
+
+        TileType type = getTileTypeByCoordinate(1, col, row);
+        return type == TileType.WALL || type == TileType.BRICK;
+    }
+
+    public void destroyTile(int col, int row) {
+        TiledMapTileSet tileset = map.getTileSets().getTileSet("tiles");
+        explodableWallLayer.setCell(col, row, null);
+        TiledMapTileLayer.Cell cell = new TiledMapTileLayer.Cell();
+        cell.setTile(tileset.getTile(GRASS_TILE_ID));
+        groundLayer.setCell(col, row, cell);
+    }
+
+    public void destroyTilesAround(int col, int row, int radius) {
+        for (int r = row - radius; r <= row + radius; r++) {
+            for (int c = col - radius; c <= col + radius; c++) {
+                if (r >= 0 && r < MAP_HEIGHT && c >= 0 && c < MAP_WIDTH && (Math.abs(row - r) + Math.abs(col - c) <= radius)) {
+                    TileType type = getTileTypeByCoordinate(2, c, r);
+                    if (type == TileType.BRICK) {
+                        destroyTile(c, r);
                     }
                 }
             }
         }
     }
-
-
-
-
-
 
 
 
@@ -233,3 +367,6 @@ public class Map extends ApplicationAdapter {
 
 }
 
+=======
+}
+>>>>>>> merger
