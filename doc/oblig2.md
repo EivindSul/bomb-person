@@ -99,7 +99,7 @@ Det er nå flere forskjellige branches som ikke fungerer sammen, men med forskje
     <p>Contoller må bli flyttet for kjapp implementasjon av collision, dette fører også til at controller er nødt til å endres til en InputProsessor</p>
     <p>Eivind sin implementasjon av player og bombe og hvordan denne skal implementeres med resten av koden</p>
     <p>Dorcas og Jackie : collison hadde et problem der visst player beveger seg oppover samtidig til siden vil den stå fast når den treffer en vegg. Det var også et problem med mappet, player sin sprite kan clippe in i en solid tile dette var fordi vi ikke klarte å hente ut rikgige layers når det kom til kollisjon, vi løste dette med å minke player til 14 x 14px og collisionet med null istedet for layer</p>
-    <p> Diskuterte UML diagram og dens oppdatering</p>
+    <p> Diskuterte UML diagram og dens oppdatering, kan sees i readme eller ved link : <a href= "https://lucid.app/lucidchart/f14609ae-0436-4114-be3e-44bea107c7d8/edit?viewport_loc=-459%2C-342%2C2368%2C1366%2C0_0&invitationId=inv_e2e85f81-6baa-4527-95c4-17773a7c75f0"> UML Diagram</a> </p>
     <p> Diskutert alle branchesene som har blitt laget for test implementering. Vi bruker branchesene for å stage merging in i hverandres   branches.
     Følgene merges/viktige push har skjedd:
     Dorcas sin fungerende løsning på collision -> merger

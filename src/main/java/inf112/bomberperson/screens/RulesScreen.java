@@ -44,7 +44,7 @@ public class RulesScreen implements Screen{
         table.add(title).colspan(2).center();
 
         table.row();
-        Label text = new Label("Player 1 Controls:\nUp: W\nLeft: A\nDown: S\nRight: D\nDrop bomb: Spacebar", font);
+        Label text = new Label("Player 1 Controls:\nUp: W\nLeft: A\nDown: S\nRight: D\nDrop bomb: Spacebar\nQuit current Game : Q", font);
         text.setFontScale(1.5f);
         table.add(text).pad(20);
 
