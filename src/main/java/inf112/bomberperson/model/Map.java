@@ -20,19 +20,11 @@ public class Map extends ApplicationAdapter {
     private static final int TILE_SIZE = 32;
     static final int MAP_WIDTH = 27;
     static final int MAP_HEIGHT = 27;
-<<<<<<< HEAD
-    static final float WALL_DENSITY = 0.3f;
-    static final Random random = new Random();
-    static final int GRASS_TILE_ID=  483;
-    static final int WALL_TILE_ID=  385;
-    static final int BRICK_TILE_ID=  105;
-=======
     static final float WALL_DENSITY = 0.2f;
     private static final Random random = new Random();
     static final int GRASS_TILE_ID=  484;
     static final int WALL_TILE_ID=  386;
     static final int BRICK_TILE_ID=  106;
->>>>>>> merger
 
 
 
@@ -144,36 +136,12 @@ public class Map extends ApplicationAdapter {
         // Set the corner cells and their immediate neighbors to grass
         TiledMapTileLayer.Cell grassCell = new TiledMapTileLayer.Cell();
         grassCell.setTile(grassTile);
-<<<<<<< HEAD
-        explodableWallLayer.setCell(0, 0, grassCell);
-        explodableWallLayer.setCell(1, 0, grassCell);
-        explodableWallLayer.setCell(0, 1, grassCell);
 
-        explodableWallLayer.setCell(MAP_WIDTH - 1, 0, grassCell);
-        explodableWallLayer.setCell(MAP_WIDTH - 2, 0, grassCell);
-        explodableWallLayer.setCell(MAP_WIDTH - 1, 1, grassCell);
-
-        explodableWallLayer.setCell(0, MAP_HEIGHT - 1, grassCell);
-        explodableWallLayer.setCell(1, MAP_HEIGHT - 1, grassCell);
-        explodableWallLayer.setCell(0, MAP_HEIGHT - 2, grassCell);
-
-        explodableWallLayer.setCell(MAP_WIDTH - 1, MAP_HEIGHT - 1, grassCell);
-        explodableWallLayer.setCell(MAP_WIDTH - 2, MAP_HEIGHT - 1, grassCell);
-        explodableWallLayer.setCell(MAP_WIDTH - 1, MAP_HEIGHT - 2, grassCell);
-
-
-        // Randomly place bricks on the remaining cells
-        for (int x = 2; x < MAP_WIDTH - 2; x++) {
-            for (int y = 2; y < MAP_HEIGHT - 2; y++) {
-                TiledMapTileLayer.Cell cell = groundLayer.getCell(x, y);
-=======
 
         // Randomly place grass on the brick cells
         for (int x = 0; x < MAP_WIDTH -2; x++) {
             for (int y = 0; y < MAP_HEIGHT -2; y++) {
                 TiledMapTileLayer.Cell cell = explodableWallLayer.getCell(x, y);
-
->>>>>>> merger
                 if (cell == null) {
                     continue;
                 }
@@ -181,11 +149,8 @@ public class Map extends ApplicationAdapter {
                 if (tile == null) {
                     continue;
                 }
-<<<<<<< HEAD
-                if (tile.getId() == GRASS_TILE_ID) {
-=======
+
                 if (tile.getId() == BRICK_TILE_ID) {
->>>>>>> merger
                     if (Math.random() < WALL_DENSITY) {
                         explodableWallLayer.setCell(x, y, null);
                     }
@@ -261,112 +226,6 @@ public class Map extends ApplicationAdapter {
         return TileType.GRASS;
     }
 
-<<<<<<< HEAD
-    public boolean isCellBlocked(float x, float y) {
-        int col = (int) (x / TILE_SIZE);
-        int row = (int) (y / TILE_SIZE);
-
-        if (col < 0 || col >= MAP_WIDTH || row < 0 || row >= MAP_HEIGHT) {
-            // Treat out of bounds as blocked
-            return true;
-        }
-
-        TileType type = getTileTypeByCoordinate(1, col, row);
-        return type == TileType.WALL || type == TileType.BRICK;
-    }
-
-    public void destroyTile(int col, int row) {
-        TiledMapTileSet tileset = map.getTileSets().getTileSet("tiles");
-        explodableWallLayer.setCell(col, row, null);
-        TiledMapTileLayer.Cell cell = new TiledMapTileLayer.Cell();
-        cell.setTile(tileset.getTile(GRASS_TILE_ID));
-        groundLayer.setCell(col, row, cell);
-    }
-
-    public void destroyTilesAround(int col, int row, int radius) {
-        for (int r = row - radius; r <= row + radius; r++) {
-            for (int c = col - radius; c <= col + radius; c++) {
-                if (r >= 0 && r < MAP_HEIGHT && c >= 0 && c < MAP_WIDTH && (Math.abs(row - r) + Math.abs(col - c) <= radius)) {
-                    TileType type = getTileTypeByCoordinate(2, c, r);
-                    if (type == TileType.BRICK) {
-                        destroyTile(c, r);
-                    }
-                }
-            }
-        }
-    }
-
-
-
-
-    private void setTile(int x, int y, TileType type) {
-        TiledMapTileLayer layer;
-        switch (type) {
-            case GRASS:
-                layer = groundLayer;
-                break;
-            case WALL:
-                layer = wallLayer;
-                break;
-            case BRICK:
-                layer = explodableWallLayer;
-                break;
-            default:
-                return;
-        }
-
-        // Get the tile properties
-        MapProperties properties = layer.getProperties();
-
-        // Check if the tile is a collidable tile
-        if (properties.containsKey("collidable") && (Boolean)properties.get("collidable")) {
-            return;
-        }
-
-        // Create the cell
-        TiledMapTileLayer.Cell cell = new TiledMapTileLayer.Cell();
-
-        // Set the tile based on the type
-        TiledMapTile tile;
-        TiledMapTileSet tileset = map.getTileSets().getTileSet("tiles");
-        switch (type) {
-            case GRASS:
-                tile = tileset.getTile(GRASS_TILE_ID);
-                break;
-            case WALL:
-                tile = wallTiles[random.nextInt(wallTiles.length)];
-                break;
-            case BRICK:
-                tile = brickTiles[random.nextInt(brickTiles.length)];
-                break;
-            default:
-                return;
-        }
-        cell.setTile(tile);
-
-        // Set the cell on the layer
-        layer.setCell(x, y, cell);
-    }
-
-
-    private TileType getTile(int x, int y) {
-        TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(0);
-        TiledMapTileLayer.Cell cell = layer.getCell(x, y);
-        if (cell == null) {
-            return TileType.GRASS;
-        }
-        TiledMapTile tile = cell.getTile();
-        if (tile == wallTiles[0]) {
-            return TileType.WALL;
-        } else if (Arrays.asList(brickTiles).contains(tile)) {
-            return TileType.BRICK;
-        } else {
-            return TileType.GRASS;
-        }
-    }
 
 }
 
-=======
-}
->>>>>>> merger
