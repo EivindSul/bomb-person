@@ -2,9 +2,17 @@
 
 * Team: *Blasters* (Gruppe 8): *Brian Jensvoll-Jorgensen, Dorcas Mihio, Eivind Sulen, Jackie Zhang, Kjell Grytting, Sebastian Matthews*
 * Lenke til Trello: [Trello lenke](https://trello.com/w/blasters8).
+## Roller:
+* **Eivind Sulen**: Gruppeleder, Utvikler
+* **Dorkas Mihio**: Nestleder, Utvikler
+* **Sebastian Matthews**: Kundekontakt, Utvikler
+* **Jackie Zhang**: Utvikler
+* **Kjell Grytting**: Utvikler
+* **Brian Jensvoll-Jorgensen**: Utvikler
  
 ## Om spillet
 * Et plass hvor det sprenges og ødeleggelse av området ved hjelp av bomber. Målet er å være den eneste som står igjen på brettet. Du er ikke alene det er en annen spiller som også er her. Hvem kommer til å vinne?
+<a href="doc\assets\BomberPerson.png">Klasse diagram for spill</a>
 
 ## Kjøring
 * Kompileres med `mvn package`.
@@ -13,7 +21,7 @@
 * Mer info kommer..
 
 ## Graphics
-* libGDX graphics
+<a href="https://poloviiinkin.itch.io/textures?download">lenke for tileset</a>
 ## Sound
 <!--Maybe ai generated music-->
 

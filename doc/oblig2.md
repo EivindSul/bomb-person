@@ -41,7 +41,7 @@ Diskuterte UML diagram for MVP link finnes her :
 <a href= "https://lucid.app/lucidchart/f14609ae-0436-4114-be3e-44bea107c7d8/edit?viewport_loc=-459%2C-342%2C2368%2C1366%2C0_0&invitationId=inv_e2e85f81-6baa-4527-95c4-17773a7c75f0"> UML Diagram</a>
 </p>
 <img src="assets/BasicUML.png" width="500" title="hover text">
-<p> Diskuterte plan for implimentering av MVP </p>
+<p> Diskuterte plan for implementering  av MVP </p>
 <h2>Hvilke avgjørelser dere tok </h2>
 <p> Vi droppet gruppeleder struktur, beholdt kundeveileder </p>
 <p> Vi ble enig om å begynne med implementasjon av klasser rundt model, så binder vi alt sammen ved neste møte. </p>
@@ -58,7 +58,7 @@ Diskuterte UML diagram for MVP link finnes her :
 <p>Sebastian,Dorcas,Kjell,Brian,Jackie,Eivind</p>
 <h2>Hva dere diskuterte</h2>
 <p>
-Det er nå flere forskjellige branches som ikke fungerer sammen, men med forskjellig funksjonalitet som er ønskelig å implimentere. Hvordan skal vi sette dette sammen?
+Det er nå flere forskjellige branches som ikke fungerer sammen, men med forskjellig funksjonalitet som er ønskelig å implementere. Hvordan skal vi sette dette sammen?
 </p>
 <p><b>Hvordan skal vi sette alt sammen</b></p>
 <p>Sletter grid</p>
@@ -78,7 +78,7 @@ Det er nå flere forskjellige branches som ikke fungerer sammen, men med forskje
 
 <h1> Referat 5 (09.03.2023)</h1>
 
-<h2> Hvem som var til stedet: </h2>
+<h2> Hvem som var tilstede: </h2>
     <p> Alle var tilstede, noen kom litt før, mens andre kom litt senere.</p>
 <h2>Hva dere diskuterte </h2>
     <p> Vi har diskutert om collision og hva som mangler fra collision. </p>
@@ -95,9 +95,9 @@ Det er nå flere forskjellige branches som ikke fungerer sammen, men med forskje
     <p>Alle var tilstede<p>
 <h2>Hva dere diskuterte </h2>
     <p>MVP kanskje for stort</p>
-    <p>Implimentering av Dorcas sin brilliante løsning på collision<p>
+    <p>implementering  av Dorcas sin brilliante løsning på collision<p>
     <p>Contoller må bli flyttet for kjapp implementasjon av collision, dette fører også til at controller er nødt til å endres til en InputProsessor</p>
-    <p>Eivind sin implementasjon av player og bombe og hvordan denne skal implimenteres med resten av koden</p>
+    <p>Eivind sin implementasjon av player og bombe og hvordan denne skal implementeres med resten av koden</p>
     <p>Dorcas og Jackie : collison hadde et problem der visst player beveger seg oppover samtidig til siden vil den stå fast når den treffer en vegg. Det var også et problem med mappet, player sin sprite kan clippe in i en solid tile dette var fordi vi ikke klarte å hente ut rikgige layers når det kom til kollisjon, vi løste dette med å minke player til 14 x 14px og collisionet med null istedet for layer</p>
     <p> Diskuterte UML diagram og dens oppdatering</p>
     <p> Diskutert alle branchesene som har blitt laget for test implementering. Vi bruker branchesene for å stage merging in i hverandres   branches.
