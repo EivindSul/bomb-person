@@ -24,6 +24,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import inf112.bomberperson.controller.MyInputProcessor;
 import inf112.bomberperson.game.BombermanGame;
 import inf112.bomberperson.model.Map.TileType;
+import inf112.bomberperson.screens.GameOverScreen;
 
 
 public class Model implements ApplicationListener {
@@ -33,7 +34,7 @@ public class Model implements ApplicationListener {
     public Player player;
     public MyInputProcessor controller;
     // Maybe edit to an enum since we will have more than two screens.
-    private Boolean gameState; // GAME OVER == FALSE
+    public Boolean gameState; // GAME OVER == FALSE
 
     public float time = 0;
     public LinkedList<Explosion> explosionList = new LinkedList<Explosion>();
@@ -157,20 +158,10 @@ public class Model implements ApplicationListener {
     private void gameStateDetection(){
         // Pause screen?
         if (!(gameState)) {
-            game.setScreen(null); //TODO: game over screen
+            game.setScreen(new GameOverScreen(game)); //TODO: game over screen
         }
     }
-    /*
-     * detects if vector "toVector" is within the TileType GRASS
-     * returns false if not within a TileType.GRASS
-     */
-    public Boolean checkCollision(Vector2 toVector) {
-        return true;
-    }
-
-
-
-        /**
+    /**
      * Checks if any bombs explode. if a bomb explodes, it removes this bomb from the respective player's bomb list.
      * @return bombsToExplode
     */
@@ -303,7 +294,7 @@ public class Model implements ApplicationListener {
         return 0;
     }
 
-    void breakWall(float x, float y){
+    private void breakWall(float x, float y){
         if(map.explodableWallLayer.getCell((int) (x / map.explodableWallLayer.getTileWidth()), (int) (y/ map.explodableWallLayer.getTileHeight())) != null){
             map.explodableWallLayer.setCell((int) (x / map.explodableWallLayer.getTileWidth()), (int) (y/ map.explodableWallLayer.getTileHeight()), null);
         }

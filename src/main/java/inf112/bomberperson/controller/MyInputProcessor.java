@@ -8,8 +8,8 @@ import inf112.bomberperson.model.Player;
 import inf112.bomberperson.screens.GameScreen;
 
 public class MyInputProcessor implements InputProcessor{
-    GameScreen gScreen;
-    Model model;
+    private GameScreen gScreen;
+    private Model model;
     public MyInputProcessor(Model model){
         this.model = model;
     }  
@@ -43,12 +43,13 @@ public class MyInputProcessor implements InputProcessor{
             case Input.Keys.D:
                 model.player.setVelocity(new Vector2(model.player.getVelocity().x += model.player.getSpeed(), model.player.getVelocity().y));
                 break;
-            case Input.Keys.R:
+            case Input.Keys.SPACE:
                 System.out.println("Dropping bomb");
                 model.player.dropBomb();
                 model.addBombToQueue(model.player);
-
                 break;
+            case Input.Keys.Q:
+                model.gameState = false;
         }
         return true;
     }
