@@ -1,3 +1,11 @@
+## Roller:
+* **Eivind Sulen**: Gruppeleder, Utvikler
+* **Dorkas Mihio**: Nestleder, Utvikler
+* **Sebastian Matthews**: Kundekontakt, Utvikler
+* **Jackie Zhang**: Utvikler
+* **Kjell Grytting**: Utvikler
+* **Brian Jensvoll-Jorgensen**: Utvikler
+
 ## Oppgave A2: Konsept
 * Spillfigur som kan flyttes høyre, venstre, opp og ned.
 * Todimensjonalt spillbrett
