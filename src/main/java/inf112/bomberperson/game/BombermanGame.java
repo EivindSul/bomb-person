@@ -1,15 +1,12 @@
-package inf112.skeleton.app;
+package inf112.bomberperson.game;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import inf112.screens.GameScreen;
-import inf112.screens.MenuScreen;
+import inf112.bomberperson.screens.*;
 
 public class BombermanGame extends Game {
     public static final int WIDTH = 720;
-    public static  final int HEIGHT = 720;
+    public static final int HEIGHT = 720;
     public SpriteBatch batch;
 
     @Override
@@ -29,15 +26,15 @@ public class BombermanGame extends Game {
     }
 
     @Override
-    public void resize(int width, int height) {
+    public void resize(int width, int height) {super.resize(width,height);
 
     }
 
     @Override
-    public void pause() {
+    public void pause() {super.pause();
     }
 
     @Override
-    public void resume() {
+    public void resume() {super.resume();
     }
 }

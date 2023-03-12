@@ -12,6 +12,8 @@
  
 ## Om spillet
 * Et plass hvor det sprenges og ødeleggelse av området ved hjelp av bomber. Målet er å være den eneste som står igjen på brettet. Du er ikke alene det er en annen spiller som også er her. Hvem kommer til å vinne?
+<a href="doc\assets\ClassDiagram2.png">Klasse diagram for spill</a>
+<a href="https://lucid.app/lucidchart/f14609ae-0436-4114-be3e-44bea107c7d8/edit?viewport_loc=-2601%2C-103%2C3982%2C2227%2C0_0&invitationId=inv_e2e85f81-6baa-4527-95c4-17773a7c75f0">link til å redigere klassediagram</a>
 
 ## Kjøring
 * Kompileres med `mvn package`.
@@ -20,7 +22,7 @@
 * Mer info kommer..
 
 ## Graphics
-* libGDX graphics
+<a href="https://poloviiinkin.itch.io/textures?download">lenke for tileset</a>
 ## Sound
 <!--Maybe ai generated music-->
 
