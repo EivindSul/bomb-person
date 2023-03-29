@@ -8,10 +8,11 @@ public class TimedEntityTest {
 
     private String testEntity = "hallaien test 1 2 3";
     private float testTime = 15;
+    private int testOwner;
     private TimedEntity<String> timedEntity;
 
     public TimedEntityTest(){
-        this.timedEntity = new TimedEntity<String>(testEntity, testTime);
+        this.timedEntity = new TimedEntity<String>(testEntity, testTime, 2);
     }
 
     @Test
@@ -23,4 +24,10 @@ public class TimedEntityTest {
     public void getTimeTest() {
         assertEquals(testTime, this.timedEntity.getTime());
     }
+    
+    @Test
+    public void getOwnerTest() {
+        assertEquals(testOwner, this.timedEntity.getOwner());
+    }
+
 }    
