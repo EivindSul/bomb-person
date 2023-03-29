@@ -8,7 +8,7 @@ public class TimedEntityTest {
 
     private String testEntity = "hallaien test 1 2 3";
     private float testTime = 15;
-    private int testOwner;
+    private int testOwner = 2;
     private TimedEntity<String> timedEntity;
 
     public TimedEntityTest(){

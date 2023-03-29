@@ -37,13 +37,13 @@ public class Model implements ApplicationListener {
     public Boolean gameState; // GAME OVER == FALSE
 
     public float time = 0;
-    public LinkedList<Explosion> explosionList = new LinkedList<Explosion>();
+    // public LinkedList<Explosion> explosionList = new LinkedList<Explosion>();
     private LinkedList<Float> explodeTimeQueuePlayer1 = new LinkedList<Float>();
     private LinkedList<Float> explodeTimeQueuePlayer2 = new LinkedList<Float>();
     private LinkedList<Float> explosionDecayQueue = new LinkedList<Float>();
 
     private ArrayList<TimedEntity<Bomb>> explodeTimeList = new ArrayList<TimedEntity<Bomb>>();
-    private ArrayList<TimedEntity<Explosion>> explosionDecayList = new ArrayList<TimedEntity<Explosion>>();
+    private ArrayList<TimedEntity<Explosion>> explosionList = new ArrayList<TimedEntity<Explosion>>();
 
     private Collision collision = new Collision(player);
 
@@ -89,11 +89,11 @@ public class Model implements ApplicationListener {
         /*------------------- Game Logic -------------------*/
 
         time += Gdx.graphics.getDeltaTime();
-        //TODO: implement proper game logic for bomb
         gameStateDetection(); // checks if game is over
         ArrayList<Bomb> bombsToExplode = explosionDetection(); // checks if bomb should explode now
         explosionAlgorithm(bombsToExplode); // runs an algorithm for exploding bomb. 
         explosionDecay();
+
         /*------------------- Game Logic -------------------*/
 
         /*------------------- Update Map -------------------*/
@@ -124,7 +124,8 @@ public class Model implements ApplicationListener {
             bomb.draw(map.getMapRenderer().getBatch());
         }
 
-        for (Explosion explosion : explosionList) {
+        for (TimedEntity<Explosion> timedExplosion : explosionList) {
+            Explosion explosion = timedExplosion.getEntity();
             for (ExplosionTile tile : explosion.getExplosion()) {
                 if(collision.isCellBlocked(tile.getPositionX(), tile.getPositionY(), map.wallLayer)){
                     continue;
@@ -179,44 +180,9 @@ public class Model implements ApplicationListener {
 
             if (time >= explosionTime){
                 bombsToExplode.add(bomb);
-                bombsToExplode.remove(bomb);
+                explodeTimeList.remove(timedBomb);
             }
         }
-        
-    // private ArrayList<Bomb> explosionDetection() {
-    //     ArrayList<Bomb> bombsToExplode = new ArrayList<Bomb>();
-
-    //     while (true){
-    //         if (player.noBombs()){
-    //             break;
-    //         }
-    //         if (explodeTimeQueuePlayer1.isEmpty()){
-    //             break;
-    //         }
-    //         if (explodeTimeQueuePlayer1.getFirst() > time){
-    //             break;
-    //         }
-
-    //         // TODO: Make unique for player 1
-    //         bombsToExplode.add(player.popBombList());
-    //         explodeTimeQueuePlayer1.pop();
-    //     }
-
-        // QUEUE FOR PLAYER 2
-        // while (true){
-        //     if (player.noBombs()){
-        //         break;
-        //     }
-        //     if (explodeTimeQueuePlayer2.isEmpty()){
-        //         break;
-        //     }
-        //     if (explodeTimeQueuePlayer2.getFirst() > time){
-        //         break;
-        //     }
-        //     // TODO: Make unique for player 2
-        //     bombsToExplode.add(player.popBombList());
-        // }
-
         return bombsToExplode;
     }
 
@@ -225,27 +191,23 @@ public class Model implements ApplicationListener {
      */
     private void explosionDecay(){
 
-        while (true){
-            if (explosionDecayQueue.isEmpty()){
-                break;
-            }
-            if (explosionList.isEmpty()){
-                break;
-            }
-            if (time < explosionDecayQueue.getFirst()){
-                break;
-            }
+        for (TimedEntity<Explosion> timedExplosion : explosionList) {
+            float decayTime = timedExplosion.getTime();
 
-            this.explosionList.pop();
-            this.explosionDecayQueue.pop();
-            System.out.print("detonating: ");
-            System.out.println(time);
+            if (time >= decayTime){
+                explosionList.remove(timedExplosion);
+            }
         }
     }
 
+
     // TODO: make work for each player individually
     public void addBombToQueue(Player player){
+        // TODO: SANNSYNLIGVIS BUGS
+        // getLast BØR hente siste element, alså nyeste bomben. 
         explodeTimeQueuePlayer1.add(time + 2);
+        TimedEntity<Bomb> newBomb= new TimedEntity<Bomb>(player.getBombList().getLast(), time + 2, 1);
+        explodeTimeList.add(newBomb);
     }
 
 
@@ -288,8 +250,7 @@ public class Model implements ApplicationListener {
                 }
                 explosion.setBorder(newBorder);
             }
-            explosionList.add(explosion);
-            explosionDecayQueue.add(time + 1);
+            explosionList.add(new TimedEntity<Explosion>(explosion, time + 1, 1));
             
         }
     }
@@ -320,6 +281,6 @@ public class Model implements ApplicationListener {
     }
 
 
-    /*------------------- Moden Functionallity -------------------*/
+    /*------------------- Model Functionallity -------------------*/
 }
 
