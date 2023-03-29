@@ -166,6 +166,7 @@ public class Player extends Sprite implements InputProcessor {
             bombList.add(bomb);
         }
     }
+    
     public boolean noBombs(){
         return bombList.isEmpty();
     }

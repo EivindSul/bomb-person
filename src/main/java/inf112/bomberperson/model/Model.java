@@ -41,6 +41,10 @@ public class Model implements ApplicationListener {
     private LinkedList<Float> explodeTimeQueuePlayer1 = new LinkedList<Float>();
     private LinkedList<Float> explodeTimeQueuePlayer2 = new LinkedList<Float>();
     private LinkedList<Float> explosionDecayQueue = new LinkedList<Float>();
+
+    private ArrayList<TimedEntity<Bomb>> explodeTimeList = new ArrayList<TimedEntity<Bomb>>();
+    private ArrayList<TimedEntity<Explosion>> explosionDecayList = new ArrayList<TimedEntity<Explosion>>();
+
     private Collision collision = new Collision(player);
 
     public Model(BombermanGame game, OrthographicCamera camera){
@@ -169,22 +173,36 @@ public class Model implements ApplicationListener {
     private ArrayList<Bomb> explosionDetection() {
         ArrayList<Bomb> bombsToExplode = new ArrayList<Bomb>();
 
-        while (true){
-            if (player.noBombs()){
-                break;
-            }
-            if (explodeTimeQueuePlayer1.isEmpty()){
-                break;
-            }
-            if (explodeTimeQueuePlayer1.getFirst() > time){
-                break;
-            }
+        for (TimedEntity<Bomb> timedBomb : explodeTimeList) {
+            Bomb bomb = timedBomb.getEntity();
+            float explosionTime = timedBomb.getTime();
 
-            // TODO: Make unique for player 1
-            bombsToExplode.add(player.popBombList());
-            explodeTimeQueuePlayer1.pop();
+            if (time >= explosionTime){
+                bombsToExplode.add(bomb);
+                bombsToExplode.remove(bomb);
+            }
         }
+        
+    // private ArrayList<Bomb> explosionDetection() {
+    //     ArrayList<Bomb> bombsToExplode = new ArrayList<Bomb>();
 
+    //     while (true){
+    //         if (player.noBombs()){
+    //             break;
+    //         }
+    //         if (explodeTimeQueuePlayer1.isEmpty()){
+    //             break;
+    //         }
+    //         if (explodeTimeQueuePlayer1.getFirst() > time){
+    //             break;
+    //         }
+
+    //         // TODO: Make unique for player 1
+    //         bombsToExplode.add(player.popBombList());
+    //         explodeTimeQueuePlayer1.pop();
+    //     }
+
+        // QUEUE FOR PLAYER 2
         // while (true){
         //     if (player.noBombs()){
         //         break;
