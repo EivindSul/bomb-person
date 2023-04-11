@@ -155,16 +155,18 @@ public class Player extends Sprite implements InputProcessor {
 
 
 
-    public void dropBomb(){
-        addBomb();
+    public boolean dropBomb(){
+        return addBomb();
     }
 
-    private void addBomb() {
+    private boolean addBomb() {
         // TODO: make bomb go to tile and not just position, to avoid bombs being off-grid. Players move gradually, but bombs need to snap to grid.
         if (bombList.size() <= getNumberOfBombs()){
             Bomb bomb = new Bomb(this.getPosition(), this.getBombRange(), this.getBombPower());
             bombList.add(bomb);
+            return true;
         }
+        return false;
     }
     
     public boolean noBombs(){
