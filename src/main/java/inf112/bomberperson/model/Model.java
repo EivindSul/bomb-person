@@ -182,8 +182,7 @@ public class Model implements ApplicationListener {
 
             if (time >= explosionTime){
                 bombsToExplode.add(timedBomb);
-                player.popBombList(); // TODO: crashes if you press space again before it explodes, because it tries to pop twice for just one bomb.
-                // Probably that a list somewhere in the model gets the bomb added multiple times when you press space.
+                player.popBombList(); 
             }
         }
         return bombsToExplode;
