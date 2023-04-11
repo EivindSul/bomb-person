@@ -44,13 +44,19 @@ public class RulesScreen implements Screen{
         table.add(title).colspan(2).center();
 
         table.row();
-        Label text = new Label("Player 1 Controls:\nUp: W\nLeft: A\nDown: S\nRight: D\nDrop bomb: Spacebar\nQuit current Game : Q", font);
+        Label text = new Label("Player 1 Controls:\nUp: W\nLeft: A\nDown: S\nRight: D\nDrop bomb: Spacebar\nStarts bottom left", font);
         text.setFontScale(1.5f);
         table.add(text).pad(20);
 
-        text = new Label("Player 2 Controls:\nUp: ↑\nLeft: ←\nDown: ↓\nRight: →\nDrop bomb: Enter", font);      // Work in progress, arrows dont work, can work as placeholder until player 2 is implemented.
+        text = new Label("Player 2 Controls:\nUp: Arrow Up\nLeft: Arrow Left\nDown: Arrow Down\nRight: Arrow Right\nDrop bomb: Enter\nStarts top right", font);      // Work in progress, arrows dont work, can work as placeholder until player 2 is implemented.
         text.setFontScale(1.5f);
         table.add(text).pad(20);
+
+        table.row();
+        table.setFillParent(true);
+        title = new Label("Quit current Game : Q", font);
+        title.setFontScale(1.5f);
+        table.add(title).colspan(2).center();
 
         table.row();
         table.setFillParent(true);
