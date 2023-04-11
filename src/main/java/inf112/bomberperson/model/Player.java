@@ -151,10 +151,6 @@ public class Player extends Sprite implements InputProcessor {
     }
 
 
-
-
-
-
     public boolean dropBomb(){
         return addBomb();
     }

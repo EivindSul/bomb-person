@@ -7,14 +7,10 @@ import com.badlogic.gdx.math.Vector2;
 
 public abstract class Powerup extends Sprite{
     private SpriteBatch batch;
-    private int width = 16;
-    private int height = 16;
-    private Texture texture = new Texture("doc/assets/bomb.png"); 
-    private int range;
-    private int power;
+    private Texture texture = new Texture("doc/assets/bomb.png");
 
-    public Powerup(Vector2 position){
-        super(new Sprite(new Texture("doc/assets/bomb.png")));
+    public Powerup(Vector2 position, String texture){
+        super(new Sprite(new Texture(texture)));
 
         this.setX(position.x);
         this.setY(position.y);
@@ -29,6 +25,10 @@ public abstract class Powerup extends Sprite{
     }
     public SpriteBatch getBatch(){
         return this.batch;
+    }
+
+    public void pickup(Player player){
+        
     }
 
 
