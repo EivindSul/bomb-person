@@ -15,7 +15,7 @@ public class ExplosionTile extends Sprite {
     private Texture texture; 
     
     public ExplosionTile(Vector2 position){
-        super(new Sprite(new Texture("doc/assets/bomb.png")));
+        super(new Sprite(new Texture("doc/assets/explosion-middle.png")));
         this.setX(position.x);
         this.setY(position.y);
         batch = new SpriteBatch();
