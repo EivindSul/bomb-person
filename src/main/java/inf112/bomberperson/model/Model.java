@@ -1,29 +1,17 @@
 package inf112.bomberperson.model;
 
-import java.lang.reflect.UndeclaredThrowableException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.maps.MapProperties;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
-import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import inf112.bomberperson.controller.MyInputProcessor;
 import inf112.bomberperson.game.BombermanGame;
-import inf112.bomberperson.model.Map.TileType;
 import inf112.bomberperson.screens.GameOverScreen;
 
 
@@ -31,7 +19,8 @@ public class Model implements ApplicationListener {
     OrthographicCamera camera;
     private BombermanGame game;
     Map map;
-    public Player player;
+    public Player player1;
+    public Player player2;
     public MyInputProcessor controller;
     // Maybe edit to an enum since we will have more than two screens.
     public Boolean gameState; // GAME OVER == FALSE
@@ -41,7 +30,7 @@ public class Model implements ApplicationListener {
     private ArrayList<TimedEntity<Bomb>> timedBombList = new ArrayList<TimedEntity<Bomb>>();
     private ArrayList<TimedEntity<Explosion>> explosionList = new ArrayList<TimedEntity<Explosion>>();
 
-    private Collision collision = new Collision(player);
+    private Collision collision = new Collision(player1);
 
     public Model(BombermanGame game, OrthographicCamera camera){
         this.game = game;
@@ -52,9 +41,11 @@ public class Model implements ApplicationListener {
         this.map = new Map();
         map.create();
 
-        this.player = new Player(new Sprite(new Texture("doc/assets/player.png")), map.wallLayer, map.explodableWallLayer);
+        this.player1 = new Player(new Sprite(new Texture("doc/assets/player.png")), map.wallLayer, map.explodableWallLayer);
+        this.player2 = new Player(new Sprite(new Texture("doc/assets/player.png")), map.wallLayer, map.explodableWallLayer);
         //Map unit translation AKA the magic number
-        player.setPosition(1 * player.getWallLayer().getTileWidth(), (player.getWallLayer().getHeight() - 26) *player.getWallLayer().getTileHeight());
+        player1.setPosition(1 * player1.getWallLayer().getTileWidth(), (player1.getWallLayer().getHeight() - 26) *player1.getWallLayer().getTileHeight());
+        player2.setPosition(25 * player2.getWallLayer().getTileWidth(), (player2.getWallLayer().getHeight() - 2) *player2.getWallLayer().getTileHeight());
         controller = new MyInputProcessor(this);
         this.create();
     }
@@ -114,16 +105,22 @@ public class Model implements ApplicationListener {
 
         /*------------------- Render Player -------------------*/
 
-        player.draw(map.getMapRenderer().getBatch());
+        player1.draw(map.getMapRenderer().getBatch());
+        player2.draw(map.getMapRenderer().getBatch());
 
         /*------------------- Render Player -------------------*/
         
         /*------------------- Render Bomb -------------------*/
 
-        LinkedList<Bomb> bombsToDraw = player.getBombList();
+        LinkedList<Bomb> bombsToDraw1 = player1.getBombList();
+        LinkedList<Bomb> bombsToDraw2 = player2.getBombList();
         
         
-        for (Bomb bomb : bombsToDraw) {
+        for (Bomb bomb : bombsToDraw1) {
+            bomb.draw(map.getMapRenderer().getBatch());
+        }
+
+        for (Bomb bomb : bombsToDraw2) {
             bomb.draw(map.getMapRenderer().getBatch());
         }
 
@@ -154,7 +151,8 @@ public class Model implements ApplicationListener {
 
     @Override
     public void dispose() {
-        player.getTexture().dispose();
+        player1.getTexture().dispose();
+        player2.getTexture().dispose();
 
     }
 
@@ -182,7 +180,12 @@ public class Model implements ApplicationListener {
 
             if (time >= explosionTime){
                 bombsToExplode.add(timedBomb);
-                player.popBombList(); 
+                if (timedBomb.getOwner() == 1) {
+                    player1.popBombList();
+                }
+                else {
+                    player2.popBombList();
+                }
             }
         }
         return bombsToExplode;
@@ -204,9 +207,8 @@ public class Model implements ApplicationListener {
      */
     private void cleanBombList(ArrayList<TimedEntity<Explosion>> decayedExplosions){
         for (TimedEntity<Explosion> timedExplosion : decayedExplosions) {
-                explosionList.remove(timedExplosion);
-            }
-    
+            explosionList.remove(timedExplosion);
+        }
     }
 
     /**
@@ -228,8 +230,14 @@ public class Model implements ApplicationListener {
 
     public void addBomb(Player player){
         if (player.dropBomb()){
-            TimedEntity<Bomb> newBomb= new TimedEntity<Bomb>(player.getBombList().getLast(), time + 2, 1);
-            timedBombList.add(newBomb);
+            if (player == player1) {
+                TimedEntity<Bomb> newBomb = new TimedEntity<Bomb>(player.getBombList().getLast(), time + 2, 1);
+                timedBombList.add(newBomb);
+            }
+            if (player == player2) {
+                TimedEntity<Bomb> newBomb = new TimedEntity<Bomb>(player.getBombList().getLast(), time + 2, 2);
+                timedBombList.add(newBomb);
+            }
         }
     }
 
