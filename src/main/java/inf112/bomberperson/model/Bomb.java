@@ -4,7 +4,6 @@ import com.badlogic.gdx.math.Vector2;
 
 
 public class Bomb {
-    // private SpriteBatch batch;
     private float x;
     private float y;
     private int range;

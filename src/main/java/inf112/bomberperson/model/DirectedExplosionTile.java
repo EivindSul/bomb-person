@@ -3,6 +3,8 @@ package inf112.bomberperson.model;
 import com.badlogic.gdx.math.Vector2;
 
 // An explosiontile with a direction and power.
+// TODO: make this into the default explosionTile class, which is useless in its current state. 
+// It just contains coordinates, which this class does just fine. 
 public class DirectedExplosionTile {
     private int direction;
     private int power;

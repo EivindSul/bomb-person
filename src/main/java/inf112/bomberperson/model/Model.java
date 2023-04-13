@@ -297,7 +297,6 @@ public class Model implements ApplicationListener {
                         nextNode.hitBreakable();
                         map.breakWall(nextNode.getPosition());
                     case 0:
-                        
                 }
     
                 explosion.addExplosionTile(nextNode.getTile());

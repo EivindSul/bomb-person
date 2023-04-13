@@ -7,10 +7,15 @@
 
 - change explosion detection method to remove tilemap object of bomb *DONE*
 - change explosion decay method to remove tilemap object of explosion *DONE*
-- check collision between player and tilemap objects *TODO
+- check collision between player and explosion *DONE*
+- ExplosionAlgorithm in model was bad. Rewriting it, and renamed it to explodeBombs. *DONE*
 
-- write javadoc *DOING
 
 **CURRENT ISSUES**
 
-- ExplosionAlgorithm in model was bad. Rewriting it, and renamed it to explodeBombs. *DONE*
+- Make players unable to just paint the map with bomb sprites. *DOING
+- Make powerups die from getting hit by an explosion *DOING
+- Make tileobjects an enum, make an abstract class for them that has default texture and getter setters. *TODO*
+
+- check collision between player and powerups *TODO
+- write javadoc *DOING
