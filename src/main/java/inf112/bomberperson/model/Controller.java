@@ -40,8 +40,8 @@ public class Controller {
             System.out.println("D");
         }
         if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
-            model.player.dropBomb(); // bomb is a TileType and has collision
-            model.player.dropBomb();
+            model.player1.dropBomb(); // bomb is a TileType and has collision
+            model.player1.dropBomb();
         }
 
 
