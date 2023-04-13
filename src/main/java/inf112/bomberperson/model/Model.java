@@ -3,6 +3,7 @@ package inf112.bomberperson.model;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.stream.IntStream;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
@@ -90,7 +91,8 @@ public class Model implements ApplicationListener {
 
         ArrayList<TimedEntity<Bomb>> bombsToExplode = explosionDetection(); // checks if bomb should explode now
 
-        explosionAlgorithm(bombsToExplode); // runs an algorithm for exploding bomb. 
+        explodeBombs(bombsToExplode); // runs an algorithm for exploding bomb. 
+        // explosionAlgorithm(bombsToExplode);
 
         ArrayList<TimedEntity<Explosion>> decayedExplosions = explosionDecay();
         
@@ -214,6 +216,13 @@ public class Model implements ApplicationListener {
     }
 
 
+    /**
+     * Player drops a bomb at their current location. 
+     * Checks that the player is allowed to drop a bomb (i.e they dont have too many bombs dropped at once)
+     * Adds timer to the bomb. (It explodes in 2 seconds)
+     * Adds this bomb to timedBombList, which is the list of current bombs on the map.
+     * @param player The player that drops the bomb
+     */
     public void addBomb(Player player){
         map.addBombToMap(player.getPosition());
         if (player.dropBomb()){
@@ -223,92 +232,72 @@ public class Model implements ApplicationListener {
     }
 
     /**
-     * Calculates how far explosions go before they hit an obstacle. 
-     * Makes the explosions that big, and stops expanding a node if it hits an obstacle.
-     * Adds the explosions to explosionList
-     * @param bombsToExplode list of bombs to explode. May be just one
+     * Explodes bombs, and turns them into explosions.
+     * Draws the explosions on the map in the explosionLayer.
+     * Adds the explosions to explosionList, which is the list of currently active explosions. 
+     * @param bombsToExplode list of bombs to explode in current game loop.
      */
-    private void explosionAlgorithm(ArrayList<TimedEntity<Bomb>> bombsToExplode) {
+    private void explodeBombs(ArrayList<TimedEntity<Bomb>> bombsToExplode) {
         // The bombs in bombsToExplode should already be removed in the explosionDetection method.
-        int counter = 0;
         for (TimedEntity<Bomb> timedBomb : bombsToExplode) {
-            System.out.println("bombstoExplode SIZE: ");
-            System.out.println(bombsToExplode.size());
-            counter += 1;
             Bomb bomb = timedBomb.getEntity();
             Explosion explosion = bomb.explodeBomb();
-            System.out.println("explosion SIZE: ");
-            System.out.println(explosion.getExplosion().size());
-
             
-            ArrayList<DirectedExplosionTile> border = explosion.getBorder();
-            System.out.println("BORDER SIZE: ");
-            System.out.println(border.size());
+            explosion = explosionAlgorithm(explosion);
             
-            for (DirectedExplosionTile dTile : border) {
-                System.out.println(dTile.getPosition());
-            }
-            
-            for (int i = 0; i < explosion.getRange(); i++) {
-                
-                if(border.isEmpty()){
-                    break;
-                }
-            }
-            
-            for (int i = 0; i < explosion.getRange(); i++) {
-                System.out.println("ITERATION: ");
-                System.out.println(i);
-                
-                if(border.isEmpty()){
-                    break;
-                }
-                
-                // ArrayList<DirectedExplosionTile> border = explosion.getBorder();
-                
-                
-                
-                for (DirectedExplosionTile tile : border) {
-                    ArrayList<DirectedExplosionTile> newBorder = new ArrayList<DirectedExplosionTile>();
-                    DirectedExplosionTile nextTile = explosion.expandNode(tile);
-                    switch(checkIfSolid(nextTile.getPosition())){
-                        case 2:  // case 2, wall is solid and stops the explosion
-                            System.out.println("CASE 2, POSITION: ");
-                            System.out.println(nextTile.getPosition().x);
-                            System.out.println(nextTile.getPosition().y);
-                            nextTile.hitSolid();
-                            
-                            case 1:  // case 1, soft obstruction. Explosion keeps going for one tile.
-                            System.out.println("CASE 1, POSITION: ");
-                            System.out.println(nextTile.getPosition().x);
-                            System.out.println(nextTile.getPosition().y);
-                            nextTile.hitBreakable();
-                            explosion.addExplosionTile(tile.getTile());
-                            newBorder.add(nextTile);
-                            breakWall(nextTile.getPosition().x,nextTile.getPosition().y);
-                            case 0:  // case 0, no obstruction. Explosion keeps going
-                            System.out.println("CASE 0, POSITION: ");
-                            System.out.println(nextTile.getPosition().x);
-                            System.out.println(nextTile.getPosition().y);
-                            explosion.addExplosionTile(nextTile.getTile());
-                            newBorder.add(nextTile);
-                    }
-                    System.out.println("BORDER SIZE: ");
-                    System.out.println(border.size());
-                    System.out.println("newBORDER SIZE: ");
-                    System.out.println(newBorder.size());
-                    explosion.setBorder(newBorder);
-                    border = newBorder;
-                }
-                    
-            }
-
-
-            System.out.println("EXPLOSION SIZE: ");
-            System.out.println(explosion.getExplosion().size());
             explosionList.add(new TimedEntity<Explosion>(explosion, time + 1, 1));
             map.addExplosionToMap(explosion);
         }
+    }
+    
+    
+    /**
+     * Calculates how an explosion is shaped.
+     * Takes a fresh explosion as argument, expands this as far as it should go. Checks if it hits walls, and reacts correspondingly.
+     * @param explosion Newly initialized explosion.
+     * @return Fully expanded explosion. The explosion variable within contains explosiontiles.
+     */
+    private Explosion explosionAlgorithm(Explosion explosion){
+
+        ArrayList<DirectedExplosionTile> border = explosion.getBorder();
+
+        ArrayList<Integer> nodeIndexes = new ArrayList<Integer>();
+        nodeIndexes.add(0);
+        nodeIndexes.add(1);
+        nodeIndexes.add(2);
+        nodeIndexes.add(3);
+        
+        // Expands nodes, one node at a time.
+        for (Integer i : nodeIndexes) {
+            DirectedExplosionTile node = border.get(i);
+            int range = explosion.getRange();
+
+            while (range > 0){
+                if (node.getDirection() == 0){ // Direction 0 means node has stopped.
+                    range = 0;
+                    continue;
+                }
+    
+                DirectedExplosionTile nextNode = explosion.expandNode(node);
+
+                switch(checkIfSolid(nextNode.getPosition())){
+                    case 2:
+                        nextNode.hitSolid();
+    
+                        range = 0;
+                        continue;
+                    case 1:
+                        nextNode.hitBreakable();
+                        map.breakWall(nextNode.getPosition());
+                    case 0:
+                        
+                }
+    
+                explosion.addExplosionTile(nextNode.getTile());
+                range -= 1;
+            }
+        }
+        return explosion;
     }
     
     
@@ -321,65 +310,17 @@ public class Model implements ApplicationListener {
      */
     private int checkIfSolid(Vector2 position) {
         
-        int col = (Math.round(position.x / 16));
-        int row = (Math.round(position.y / 16));
-        
-        if(map.getTileTypeByCoordinate(1, col, row) == Map.TileType.WALL){
+        if(map.containsSolidWall(position)){
             return 2;
         }
-        if(map.getTileTypeByCoordinate(2, col, row) == Map.TileType.BRICK){
+        if(map.containsBreakableWall(position)){
             return 1;
         }
-        
         return 0;
     }
     
-    private void breakWall(float x, float y){
-        if(map.explodableWallLayer.getCell((int) (x / map.explodableWallLayer.getTileWidth()), (int) (y/ map.explodableWallLayer.getTileHeight())) != null){
-            map.explodableWallLayer.setCell((int) (x / map.explodableWallLayer.getTileWidth()), (int) (y/ map.explodableWallLayer.getTileHeight()), null);
-        }
-        
-    }
     
     
     /*------------------- Model Functionallity -------------------*/
-    private void explosionAlgorithmOLD(ArrayList<TimedEntity<Bomb>> bombsToExplode) {
-        // The bombs in bombsToExplode should already be removed in the explosionDetection method.
-        for (TimedEntity<Bomb> timedBomb : bombsToExplode) {
-            Bomb bomb = timedBomb.getEntity();
-            Explosion explosion = bomb.explodeBomb();
-    
-            for (int i = 0; i < explosion.getRange(); i++) {
-                ArrayList<DirectedExplosionTile> border = explosion.getBorder();
-    
-                if(border.isEmpty()){
-                    break;
-                }
-    
-                ArrayList<DirectedExplosionTile> newBorder = new ArrayList<DirectedExplosionTile>();
-                
-                for (DirectedExplosionTile tile : border) {
-                    DirectedExplosionTile nextTile = explosion.expandNode(tile);
-                    switch(checkIfSolid(nextTile.getPosition())){
-                        case 2:  // case 2, wall is solid and stops the explosion
-                            nextTile.hitSolid();
-    
-                            //explosion.addExplosionTile(tile.getTile());
-                        case 1:  // case 1, soft obstruction. Explosion keeps going for one tile.
-                            nextTile.hitBreakable();
-                            explosion.addExplosionTile(tile.getTile());
-                            newBorder.add(nextTile);
-                            breakWall(nextTile.getPosition().x,nextTile.getPosition().y);
-                        case 0:  // case 0, no obstruction. Explosion keeps going
-                            explosion.addExplosionTile(nextTile.getTile());
-                            newBorder.add(nextTile);
-                    }
-                }
-                explosion.setBorder(newBorder);
-            }
-            explosionList.add(new TimedEntity<Explosion>(explosion, time + 1, 1));
-            map.addExplosionToMap(explosion);
-        }
-    }
 }
 

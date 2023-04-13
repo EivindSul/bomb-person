@@ -15,7 +15,7 @@ public class Explosion {
     private ArrayList<DirectedExplosionTile> explosionBorder = new ArrayList<DirectedExplosionTile>();
 
     // TODO: make TileOffset into a system that actually aligns the tiles to grid, instead of using Vector2.
-    private float tileOffset = (float) 15.0;
+    private float tileOffset = (float) Map.TILE_SIZE;
     
     public Explosion(Vector2 position, int bombRange, int bombPower){
         this.center = position;
