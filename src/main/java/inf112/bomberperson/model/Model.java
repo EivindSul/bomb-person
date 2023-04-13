@@ -161,7 +161,7 @@ public class Model implements ApplicationListener {
     private void gameStateDetection(){
         // Pause screen?
         if (!(gameState)) {
-            game.setScreen(new GameOverScreen(game)); //TODO: game over screen
+            game.setScreen(new GameOverScreen(game));
         }
     }
 
@@ -332,7 +332,7 @@ public class Model implements ApplicationListener {
 
     private boolean checkIfPlayerExplodes(Player player){
         if (map.containsExplosion(player.getPosition())){
-            return  true;
+            return true;
         }
         return false;
     }

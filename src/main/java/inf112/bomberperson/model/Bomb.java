@@ -1,25 +1,16 @@
 package inf112.bomberperson.model;
 
-import java.util.ArrayList;
-
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
 
-public class Bomb extends Sprite {
-    private SpriteBatch batch;
-    private int width = 16;
-    private int height = 16;
-    private Texture texture = new Texture("doc/assets/bomb.png"); 
+public class Bomb {
+    // private SpriteBatch batch;
+    private float x;
+    private float y;
     private int range;
     private int power;
     
     public Bomb(Vector2 position, int bombRange, int bombPower){
-        super(new Sprite(new Texture("doc/assets/bomb.png")));
 
         this.setX(position.x);
         this.setY(position.y);
@@ -28,24 +19,23 @@ public class Bomb extends Sprite {
 
         this.range = bombRange;
         this.power = bombPower;
-        batch = new SpriteBatch();
-    }
-    public void draw(SpriteBatch spriteBatch){
-        // update(Gdx.graphics.getDeltaTime());
-        super.draw(spriteBatch);
-    }
-    public SpriteBatch getBatch(){
-        return this.batch;
     }
 
-    // TODO: Temporary, copied from player
-    public void update(float delta){
-        //save old position
-        float oldX = getX();
-        float oldY = getY();
-
+    public float getX(){
+        return this.x;
     }
 
+    public float getY(){
+        return this.y;
+    }
+
+    public void setX(float x){
+        this.x = x;
+    }
+
+    public void setY(float y){
+        this.y = y;
+    }
 
     public Vector2 getPosition(){
         return new Vector2(getX(), getY());

@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Cursor.SystemCursor;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.tiles.AnimatedTiledMapTile;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector2;
@@ -29,9 +30,8 @@ public class Map extends ApplicationAdapter {
     static final int GRASS_TILE_ID=  484;
     static final int WALL_TILE_ID=  386;
     static final int BRICK_TILE_ID=  106;
-    static final int BOMB_TILE_ID=  747;
-    static final int EXPLOSION_TILE_ID=  300;
-
+    static final int BOMB_TILE_ID=  174;
+    static final int EXPLOSION_TILE_ID=  176;
 
     public float getWidth() {
         return MAP_WIDTH;

@@ -92,24 +92,24 @@ public class Explosion {
     
 
     private ExplosionTile getAboveNeighbor(ExplosionTile tile){
-        Vector2 neighborPosition = new Vector2 (tile.getPositionX() + tileOffset, tile.getPositionY());
+        Vector2 neighborPosition = new Vector2 (tile.getX() + tileOffset, tile.getY());
         ExplosionTile neighbor = new ExplosionTile(neighborPosition);
         return neighbor;
     }
     private ExplosionTile getRightNeighbor(ExplosionTile tile){
-        Vector2 neighborPosition = new Vector2 (tile.getPositionX(), tile.getPositionY() + tileOffset);
+        Vector2 neighborPosition = new Vector2 (tile.getX(), tile.getY() + tileOffset);
         ExplosionTile neighbor = new ExplosionTile(neighborPosition);
         return neighbor;
 
     }
     private ExplosionTile getBelowNeighbor(ExplosionTile tile){
-        Vector2 neighborPosition = new Vector2 (tile.getPositionX() - tileOffset, tile.getPositionY());
+        Vector2 neighborPosition = new Vector2 (tile.getX() - tileOffset, tile.getY());
         ExplosionTile neighbor = new ExplosionTile(neighborPosition);
         return neighbor;
     }
 
     private ExplosionTile getLeftNeighbor(ExplosionTile tile){
-        Vector2 neighborPosition = new Vector2 (tile.getPositionX(), tile.getPositionY() - tileOffset);
+        Vector2 neighborPosition = new Vector2 (tile.getX(), tile.getY() - tileOffset);
         ExplosionTile neighbor = new ExplosionTile(neighborPosition);
         return neighbor;
     }
