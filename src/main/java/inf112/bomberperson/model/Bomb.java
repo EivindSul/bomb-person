@@ -14,8 +14,6 @@ public class Bomb {
         this.setX(position.x);
         this.setY(position.y);
 
-        position = (new Vector2(this.getX(), this.getY()));
-
         this.range = bombRange;
         this.power = bombPower;
     }

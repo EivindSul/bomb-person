@@ -231,10 +231,10 @@ public class Model implements ApplicationListener {
      * @param player The player that drops the bomb
      */
     public void addBomb(Player player){
-        map.addBombToMap(player.getPosition());
         if (player.dropBomb()){
             TimedEntity<Bomb> newBomb= new TimedEntity<Bomb>(player.getBombList().getLast(), time + 2, 1);
             timedBombList.add(newBomb);
+            map.addBombToMap(player.getPosition());
         }
     }
 
@@ -252,7 +252,7 @@ public class Model implements ApplicationListener {
             
             explosion = explosionAlgorithm(explosion);
             
-            explosionList.add(new TimedEntity<Explosion>(explosion, time + 1, 1));
+            explosionList.add(new TimedEntity<Explosion>(explosion, time + (float)0.5, 1));
             map.addExplosionToMap(explosion);
         }
     }
