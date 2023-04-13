@@ -318,6 +318,14 @@ public class Model implements ApplicationListener {
         }
         return 0;
     }
+    boolean checkIfPlayerExplodes(Player player){
+        if (map.containsExplosion(player.getPosition())){
+            return  true;
+        }
+        return false;
+    }
+
+
     
     
     
