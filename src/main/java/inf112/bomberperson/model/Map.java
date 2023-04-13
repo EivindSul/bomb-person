@@ -47,7 +47,8 @@ public class Map extends ApplicationAdapter {
     enum TileType {
         GRASS,
         BRICK,
-        WALL
+        WALL,
+        EXPLOSION
     }
 
     private OrthographicCamera camera;

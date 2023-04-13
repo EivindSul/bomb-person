@@ -122,20 +122,6 @@ public class Model implements ApplicationListener {
 
         LinkedList<Bomb> bombsToDraw = player.getBombList();
         
-        
-        for (Bomb bomb : bombsToDraw) {
-            bomb.draw(map.getMapRenderer().getBatch());
-        }
-
-        for (TimedEntity<Explosion> timedExplosion : explosionList) {
-            Explosion explosion = timedExplosion.getEntity();
-            for (ExplosionTile tile : explosion.getExplosion()) {
-                if(collision.isCellBlocked(tile.getPositionX(), tile.getPositionY(), map.wallLayer)){
-                    continue;
-                }
-                tile.draw(map.getMapRenderer().getBatch());
-            }
-        }
 
         map.getMapRenderer().getBatch().end(); // End drawing
 
@@ -244,17 +230,132 @@ public class Model implements ApplicationListener {
      */
     private void explosionAlgorithm(ArrayList<TimedEntity<Bomb>> bombsToExplode) {
         // The bombs in bombsToExplode should already be removed in the explosionDetection method.
+        int counter = 0;
         for (TimedEntity<Bomb> timedBomb : bombsToExplode) {
+            System.out.println("bombstoExplode SIZE: ");
+            System.out.println(bombsToExplode.size());
+            counter += 1;
             Bomb bomb = timedBomb.getEntity();
             Explosion explosion = bomb.explodeBomb();
+            System.out.println("explosion SIZE: ");
+            System.out.println(explosion.getExplosion().size());
 
+            
+            ArrayList<DirectedExplosionTile> border = explosion.getBorder();
+            System.out.println("BORDER SIZE: ");
+            System.out.println(border.size());
+            
+            for (DirectedExplosionTile dTile : border) {
+                System.out.println(dTile.getPosition());
+            }
+            
             for (int i = 0; i < explosion.getRange(); i++) {
-                ArrayList<DirectedExplosionTile> border = explosion.getBorder();
-
+                
                 if(border.isEmpty()){
                     break;
                 }
+            }
+            
+            for (int i = 0; i < explosion.getRange(); i++) {
+                System.out.println("ITERATION: ");
+                System.out.println(i);
+                
+                if(border.isEmpty()){
+                    break;
+                }
+                
+                // ArrayList<DirectedExplosionTile> border = explosion.getBorder();
+                
+                
+                
+                for (DirectedExplosionTile tile : border) {
+                    ArrayList<DirectedExplosionTile> newBorder = new ArrayList<DirectedExplosionTile>();
+                    DirectedExplosionTile nextTile = explosion.expandNode(tile);
+                    switch(checkIfSolid(nextTile.getPosition())){
+                        case 2:  // case 2, wall is solid and stops the explosion
+                            System.out.println("CASE 2, POSITION: ");
+                            System.out.println(nextTile.getPosition().x);
+                            System.out.println(nextTile.getPosition().y);
+                            nextTile.hitSolid();
+                            
+                            case 1:  // case 1, soft obstruction. Explosion keeps going for one tile.
+                            System.out.println("CASE 1, POSITION: ");
+                            System.out.println(nextTile.getPosition().x);
+                            System.out.println(nextTile.getPosition().y);
+                            nextTile.hitBreakable();
+                            explosion.addExplosionTile(tile.getTile());
+                            newBorder.add(nextTile);
+                            breakWall(nextTile.getPosition().x,nextTile.getPosition().y);
+                            case 0:  // case 0, no obstruction. Explosion keeps going
+                            System.out.println("CASE 0, POSITION: ");
+                            System.out.println(nextTile.getPosition().x);
+                            System.out.println(nextTile.getPosition().y);
+                            explosion.addExplosionTile(nextTile.getTile());
+                            newBorder.add(nextTile);
+                    }
+                    System.out.println("BORDER SIZE: ");
+                    System.out.println(border.size());
+                    System.out.println("newBORDER SIZE: ");
+                    System.out.println(newBorder.size());
+                    explosion.setBorder(newBorder);
+                    border = newBorder;
+                }
+                    
+            }
 
+
+            System.out.println("EXPLOSION SIZE: ");
+            System.out.println(explosion.getExplosion().size());
+            explosionList.add(new TimedEntity<Explosion>(explosion, time + 1, 1));
+            map.addExplosionToMap(explosion);
+        }
+    }
+    
+    
+    
+    /**
+     * check if this tile contains a wall, and if the wall is breakable
+     *
+     * @param position the position that gets checked
+     * @return 0 if clear, 1 if wall breaks, 2 if wall is solid
+     */
+    private int checkIfSolid(Vector2 position) {
+        
+        int col = (Math.round(position.x / 16));
+        int row = (Math.round(position.y / 16));
+        
+        if(map.getTileTypeByCoordinate(1, col, row) == Map.TileType.WALL){
+            return 2;
+        }
+        if(map.getTileTypeByCoordinate(2, col, row) == Map.TileType.BRICK){
+            return 1;
+        }
+        
+        return 0;
+    }
+    
+    private void breakWall(float x, float y){
+        if(map.explodableWallLayer.getCell((int) (x / map.explodableWallLayer.getTileWidth()), (int) (y/ map.explodableWallLayer.getTileHeight())) != null){
+            map.explodableWallLayer.setCell((int) (x / map.explodableWallLayer.getTileWidth()), (int) (y/ map.explodableWallLayer.getTileHeight()), null);
+        }
+        
+    }
+    
+    
+    /*------------------- Model Functionallity -------------------*/
+    private void explosionAlgorithmOLD(ArrayList<TimedEntity<Bomb>> bombsToExplode) {
+        // The bombs in bombsToExplode should already be removed in the explosionDetection method.
+        for (TimedEntity<Bomb> timedBomb : bombsToExplode) {
+            Bomb bomb = timedBomb.getEntity();
+            Explosion explosion = bomb.explodeBomb();
+    
+            for (int i = 0; i < explosion.getRange(); i++) {
+                ArrayList<DirectedExplosionTile> border = explosion.getBorder();
+    
+                if(border.isEmpty()){
+                    break;
+                }
+    
                 ArrayList<DirectedExplosionTile> newBorder = new ArrayList<DirectedExplosionTile>();
                 
                 for (DirectedExplosionTile tile : border) {
@@ -262,7 +363,7 @@ public class Model implements ApplicationListener {
                     switch(checkIfSolid(nextTile.getPosition())){
                         case 2:  // case 2, wall is solid and stops the explosion
                             nextTile.hitSolid();
-
+    
                             //explosion.addExplosionTile(tile.getTile());
                         case 1:  // case 1, soft obstruction. Explosion keeps going for one tile.
                             nextTile.hitBreakable();
@@ -280,33 +381,5 @@ public class Model implements ApplicationListener {
             map.addExplosionToMap(explosion);
         }
     }
-
-    /**
-     * check if this tile contains a wall, and if the wall is breakable
-     *
-     * @param position the position that gets checked
-     * @return 0 if clear, 1 if wall breaks, 2 if wall is solid
-     */
-    private int checkIfSolid(Vector2 position) {
-
-        if(collision.isCellBlocked(position.x, position.y, map.explodableWallLayer)){
-            return 1;
-        }
-        if(collision.isCellBlocked(position.x, position.y, map.wallLayer)){
-            return 2;
-        }
-
-        return 0;
-    }
-
-    private void breakWall(float x, float y){
-        if(map.explodableWallLayer.getCell((int) (x / map.explodableWallLayer.getTileWidth()), (int) (y/ map.explodableWallLayer.getTileHeight())) != null){
-            map.explodableWallLayer.setCell((int) (x / map.explodableWallLayer.getTileWidth()), (int) (y/ map.explodableWallLayer.getTileHeight()), null);
-        }
-
-    }
-
-
-    /*------------------- Model Functionallity -------------------*/
 }
 
