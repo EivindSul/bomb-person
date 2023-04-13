@@ -99,6 +99,11 @@ public class Model implements ApplicationListener {
         cleanExplodeTimeList(bombsToExplode);
         cleanBombList(decayedExplosions);
 
+
+        if(checkIfPlayerExplodes(player)){
+            killPlayer();
+        }
+
         /*------------------- Game Logic -------------------*/
 
         /*------------------- Update Map -------------------*/
@@ -317,6 +322,10 @@ public class Model implements ApplicationListener {
             return 1;
         }
         return 0;
+    }
+
+    void killPlayer(){
+        player.killPlayer();
     }
     boolean checkIfPlayerExplodes(Player player){
         if (map.containsExplosion(player.getPosition())){

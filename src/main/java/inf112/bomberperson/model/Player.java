@@ -34,6 +34,7 @@ public class Player extends Sprite implements Animated {
     private TiledMapTileLayer wallLayer;
     private  TiledMapTileLayer explodableWallLayer;
     private String blockedKey = "blocked";
+    private boolean alive = true;
     
 
     public Player(Sprite sprite, TiledMapTileLayer wallLayer, TiledMapTileLayer explodableWallLayer){
@@ -51,7 +52,9 @@ public class Player extends Sprite implements Animated {
     public void draw(Batch spriteBatch){
         update(Gdx.graphics.getDeltaTime());
         time += Gdx.graphics.getDeltaTime();
-        spriteBatch.draw(animations.getActiveAnimation().getKeyFrame(time,true), getX(), getY());
+        if(alive) {
+            spriteBatch.draw(animations.getActiveAnimation().getKeyFrame(time, true), getX(), getY());
+        }
     }
     public Direction getCurrentDirection() {
         updateDirectionAndState();
@@ -119,6 +122,10 @@ public class Player extends Sprite implements Animated {
             setY(oldY);
             velocity.y = 0;
         }
+    }
+
+    void killPlayer(){
+        alive = false;
     }
 
     private boolean isCellBlocked(float x, float y, TiledMapTileLayer layer){
