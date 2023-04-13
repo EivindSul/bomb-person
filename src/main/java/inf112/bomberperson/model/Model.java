@@ -326,10 +326,11 @@ public class Model implements ApplicationListener {
         return 0;
     }
 
-    void killPlayer(){
+    private void killPlayer(){
         player.killPlayer();
     }
-    boolean checkIfPlayerExplodes(Player player){
+
+    private boolean checkIfPlayerExplodes(Player player){
         if (map.containsExplosion(player.getPosition())){
             return  true;
         }

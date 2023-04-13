@@ -254,9 +254,7 @@ public class Map extends ApplicationAdapter {
             TiledMapTileLayer.Cell cell = new TiledMapTileLayer.Cell();
             cell.setTile(tileset.getTile(EXPLOSION_TILE_ID));
             explosionLayer.setCell(col, row, cell);
-        }
-
-        
+        }        
     }
 
     /*
