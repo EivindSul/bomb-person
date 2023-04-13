@@ -68,6 +68,7 @@ public class Map extends ApplicationAdapter {
         viewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
 
+
         camera.zoom = .74f; // or any other value
         camera.position.set(mapWidth / 3.33f, mapHeight / 3.33f, 0);
         viewport.update(mapWidth, mapHeight);
