@@ -183,6 +183,7 @@ public class Model implements ApplicationListener {
             if (time >= explosionTime){
                 bombsToExplode.add(timedBomb);
                 player.popBombList(); 
+                map.removeBombFromMap(timedBomb.getEntity().getPosition());
             }
         }
         return bombsToExplode;
@@ -220,6 +221,7 @@ public class Model implements ApplicationListener {
 
             if (time >= decayTime){
                 decayedExplosions.add(timedExplosion);
+                map.removeExplosionFromMap(timedExplosion.getEntity());;
             }
         }
         return decayedExplosions;
@@ -227,6 +229,7 @@ public class Model implements ApplicationListener {
 
 
     public void addBomb(Player player){
+        map.addBombToMap(player.getPosition());
         if (player.dropBomb()){
             TimedEntity<Bomb> newBomb= new TimedEntity<Bomb>(player.getBombList().getLast(), time + 2, 1);
             timedBombList.add(newBomb);
@@ -274,7 +277,7 @@ public class Model implements ApplicationListener {
                 explosion.setBorder(newBorder);
             }
             explosionList.add(new TimedEntity<Explosion>(explosion, time + 1, 1));
-            
+            map.addExplosionToMap(explosion);
         }
     }
 

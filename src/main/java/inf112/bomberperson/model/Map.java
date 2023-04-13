@@ -4,6 +4,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Cursor.SystemCursor;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -25,6 +26,9 @@ public class Map extends ApplicationAdapter {
     static final int GRASS_TILE_ID=  484;
     static final int WALL_TILE_ID=  386;
     static final int BRICK_TILE_ID=  106;
+    static final int BOMB_TILE_ID=  746;
+    static final int EXPLOSION_TILE_ID=  299;
+    
 
 
 
@@ -50,9 +54,13 @@ public class Map extends ApplicationAdapter {
     private SpriteBatch batch;
     private TiledMap map;
     private OrthogonalTiledMapRenderer mapRenderer;
+
     TiledMapTileLayer groundLayer;
     static TiledMapTileLayer wallLayer;
     static TiledMapTileLayer explodableWallLayer;
+    static TiledMapTileLayer explosionLayer;
+    static TiledMapTileLayer bombLayer;
+    
     TiledMapTile[] wallTiles;
     private TiledMapTile[] brickTiles;
     private Viewport viewport;
@@ -87,6 +95,8 @@ public class Map extends ApplicationAdapter {
         groundLayer = (TiledMapTileLayer)map.getLayers().get("Ground");
         wallLayer = (TiledMapTileLayer)map.getLayers().get("Wall");
         explodableWallLayer = (TiledMapTileLayer)map.getLayers().get("ExplodableWall");
+        explosionLayer = (TiledMapTileLayer)map.getLayers().get("Explosions");
+        bombLayer = (TiledMapTileLayer)map.getLayers().get("Bombs");
 
         // Get the wall tiles from the tileset
         TiledMapTileSet tileset = map.getTileSets().getTileSet("tiles");
@@ -184,26 +194,84 @@ public class Map extends ApplicationAdapter {
         }
 
 
-
-
-
-
+        
         explodableWallLayer.setCell(1, 1, null);
         explodableWallLayer.setCell(2, 1, null);
         explodableWallLayer.setCell(1, 2, null);
-
+        
         explodableWallLayer.setCell(24, 1, null);
         explodableWallLayer.setCell(25, 1, null);
         explodableWallLayer.setCell(25, 2, null);
-
+        
         explodableWallLayer.setCell(24, 25, null);
         explodableWallLayer.setCell(25, 24,null);
         explodableWallLayer.setCell(25, 25, null);
-
+        
         explodableWallLayer.setCell(1, 25, null);
         explodableWallLayer.setCell(2, 25, null);
         explodableWallLayer.setCell(1, 24, null);
     }
+
+
+    /*
+    * 
+    */
+    public void addBombToMap(Vector2 position){
+
+        int col = (Math.round(position.x / 16));
+        int row = (Math.round(position.y / 16));
+        
+        TiledMapTileSet tileset = map.getTileSets().getTileSet("tiles");
+        TiledMapTileLayer.Cell bombCell = new TiledMapTileLayer.Cell();
+        bombCell.setTile(tileset.getTile(BOMB_TILE_ID));
+        bombLayer.setCell(col, row, bombCell);
+        
+    }
+
+    /*
+    * 
+    */
+    public void removeBombFromMap(Vector2 position){
+
+        int col = (Math.round(position.x / 16));
+        int row = (Math.round(position.y / 16));
+        
+        bombLayer.setCell(col, row, null);
+    }
+    public void addExplosionToMap(Explosion explosion){
+
+        for (ExplosionTile tile : explosion.getExplosion()) {
+            Vector2 position = tile.getPosition();
+            
+            int col = (Math.round(position.x / 16));
+            int row = (Math.round(position.y / 16));
+            
+            TiledMapTileSet tileset = map.getTileSets().getTileSet("tiles");
+            TiledMapTileLayer.Cell cell = new TiledMapTileLayer.Cell();
+            cell.setTile(tileset.getTile(EXPLOSION_TILE_ID));
+            explosionLayer.setCell(col, row, cell);
+        }
+
+        
+    }
+
+    /*
+    * 
+    */
+    public void removeExplosionFromMap(Explosion explosion){
+
+        for (ExplosionTile tile : explosion.getExplosion()) {
+            Vector2 position = tile.getPosition();
+
+            int col = (Math.round(position.x / 16));
+            int row = (Math.round(position.y / 16));
+        
+            explosionLayer.setCell(col, row, null);
+        }
+    }
+
+
+
     public TileType getTileTypeByCoordinate(int layer, int col, int row) {
         TiledMapTileLayer.Cell cell = null;
         if (layer == 0) {
