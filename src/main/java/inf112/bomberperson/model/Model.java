@@ -43,11 +43,11 @@ public class Model implements ApplicationListener {
         this.map = new Map();
         map.create();
 
-        this.player1 = new Player(new Sprite(new Texture("doc/assets/player.png")), map.wallLayer, map.explodableWallLayer);
-        this.player2 = new Player(new Sprite(new Texture("doc/assets/player.png")), map.wallLayer, map.explodableWallLayer);
+        this.player1 = new Player(new Sprite(new Texture("doc/assets/player.png")));
+        this.player2 = new Player(new Sprite(new Texture("doc/assets/player.png")));
 
-        player1.setPosition(1 * player1.getWallLayer().getTileWidth(), (player1.getWallLayer().getHeight() - 26) *player1.getWallLayer().getTileHeight());
-        player2.setPosition(25 * player2.getWallLayer().getTileWidth(), (player2.getWallLayer().getHeight() - 2) *player2.getWallLayer().getTileHeight());
+        player1.setPosition(1 * 16, (map.getHeight() - 26) *16);
+        player2.setPosition(25 * 16, (map.getHeight() - 2) *16);
         controller = new MyInputProcessor(this);
 
         ArrayList<TiledMapTileLayer> collisionList = new ArrayList<TiledMapTileLayer>();
