@@ -13,7 +13,7 @@ public class Collision {
         try {
 
             TiledMapTileLayer.Cell cell = layer.getCell((int) (x / layer.getTileWidth()), (int) (y / layer.getTileHeight()));
-            System.out.println(cell.getTile().getId());
+            // System.out.println(cell.getTile().getId());
             return cell != null && cell.getTile() != null && cell.getTile().getProperties().containsKey(blockedKey);
         }
         catch (Exception e){
