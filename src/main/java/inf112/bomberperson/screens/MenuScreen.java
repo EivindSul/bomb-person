@@ -26,27 +26,32 @@ public class MenuScreen implements Screen {
 
     public MenuScreen(BombermanGame game){
         this.game = game;
-        this.skin = new Skin(Gdx.files.internal("doc/assets/UI/uiskin.json"));
+        this.skin = new Skin(Gdx.files.internal("doc/assets/UI/uiskin.json")); // Skin used for buttons
         this.stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
     }
 
     @Override
     public void show() {
+        // Screen font
         Label.LabelStyle font = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
 
+        // Table to draw on
         Table table = new Table();
         stage.addActor(table);
 
+        // Screen title
         table.setFillParent(true);
         Label title = new Label("Bomber Man", font);
         title.setFontScale(6f);
         table.add(title);
 
+        // Buttons for starting a game, the rules and closing the game
         TextButton newGame = new TextButton("New game", skin);
         TextButton rules = new TextButton("Settings", skin);
         TextButton exitGame = new TextButton("Exit game", skin);
 
+        // Adding buttons
         table.row();
         table.add(newGame).padTop(20).minWidth(250).minHeight(50);
         table.row();
@@ -54,6 +59,7 @@ public class MenuScreen implements Screen {
         table.row();
         table.add(exitGame).padTop(20).minWidth(250).minHeight(50);
 
+        // Listeners for buttons, activated when the button is clicked
         newGame.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
@@ -83,8 +89,11 @@ public class MenuScreen implements Screen {
 
     @Override
     public void render(float v) {
+        // Set background colour
         Gdx.gl.glClearColor(0.1f, 0.14f, 0.1f, 1);
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
+
+        // Draw the stage
         stage.draw();
     }
 

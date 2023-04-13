@@ -33,11 +33,14 @@ public class GameOverScreen implements Screen {
 
     @Override
     public void show() {
+        // Screen font
         Label.LabelStyle font = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
 
+        // Table to draw on, add to the stage
         Table table = new Table();
         stage.addActor(table);
 
+        // Game over screen title,
         table.setFillParent(true);
         Label title = new Label("Game Over", font);
         title.setFontScale(6f);
@@ -48,10 +51,12 @@ public class GameOverScreen implements Screen {
         title.setFontScale(3f);
         table.add(title);
 
-        TextButton newGame = new TextButton("New game", skin);
-        TextButton menu = new TextButton("Main Menu", skin);
-        TextButton exitGame = new TextButton("Exit game", skin);
+        // Buttons for choosing what to do next
+        TextButton newGame = new TextButton("New game", skin);      // Start a new game
+        TextButton menu = new TextButton("Main Menu", skin);        // Go to main menu
+        TextButton exitGame = new TextButton("Exit game", skin);    // Exit game
 
+        // Adding buttons
         table.row();
         table.add(newGame).padTop(20).minWidth(250).minHeight(50);
         table.row();
@@ -59,6 +64,7 @@ public class GameOverScreen implements Screen {
         table.row();
         table.add(exitGame).padTop(20).minWidth(250).minHeight(50);
 
+        // Listeners for buttons
         newGame.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
