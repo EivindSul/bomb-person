@@ -12,7 +12,7 @@ import com.badlogic.gdx.math.Vector2;
 import inf112.bomberperson.model.animations.Animated;
 import inf112.bomberperson.model.animations.PlayerAnimations;
 
-public class Player extends Sprite implements Animated {
+public class Player extends Sprite implements Animated, Collidable {
     public enum Direction{
         UP,
         DOWN,
@@ -83,42 +83,12 @@ public class Player extends Sprite implements Animated {
     }
     public void update(float delta){
         //save old position
-        float oldX = getX();
-        float oldY = getY();
-        boolean wallCollisionX = false, wallCollisionY = false;
-        boolean brickCollisionX = false, brickCollisionY = false;
         //move on x
         setX(getX() + velocity.x * delta);
-        if(velocity.x < 0){ //going left
-            wallCollisionX = collidesLeft(wallLayer);
-            brickCollisionX = collidesLeft(explodableWallLayer);
-        }
-        else if(velocity.x > 0){//going right
-            wallCollisionX = collidesRight(wallLayer);
-            brickCollisionX = collidesRight(explodableWallLayer);
-        }
         //react to x collision
-        if(wallCollisionX || brickCollisionX){
-            setX(oldX);
-            velocity.x = 0;
-        }
-
-
         //move on y
         setY(getY() + velocity.y *delta);
-        if(velocity.y <0){ //going down
-            wallCollisionY = collidesBottom(wallLayer);
-            brickCollisionY = collidesBottom(explodableWallLayer);
-        }
-        else if(velocity.y > 0){ //going up
-            wallCollisionY = collidesTop(wallLayer);
-            brickCollisionY = collidesTop(explodableWallLayer);
-        }
         //react to y collision
-        if(wallCollisionY || brickCollisionY){
-            setY(oldY);
-            velocity.y = 0;
-        }
     }
 
     private boolean isCellBlocked(float x, float y, TiledMapTileLayer layer){
