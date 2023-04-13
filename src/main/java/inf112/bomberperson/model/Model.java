@@ -81,6 +81,9 @@ public class Model implements ApplicationListener {
         /*-------------------Player Input-------------------*/
 
         /*------------------- Game Logic -------------------*/
+        checkPlayerCollision(player1);
+        checkPlayerCollision(player2);
+
         time += Gdx.graphics.getDeltaTime();
         gameStateDetection(); // checks if game is over
 
@@ -103,7 +106,6 @@ public class Model implements ApplicationListener {
      * Renderer updates the model and then renders objects
      */
     public void render(){
-        checkPlayersCollision();
         /*------------------- Render Map -------------------*/
         map.render();
         /*------------------- Render Map -------------------*/
@@ -144,16 +146,14 @@ public class Model implements ApplicationListener {
 
         /*------------------- Render Bomb -------------------*/
     }
-    public void checkPlayersCollision(){
-        checkPlayerCollision(player1);
-        checkPlayerCollision(player2);
-    }
     public void checkPlayerCollision(Player player) {
         float oldX = player.getX();
         float oldY = player.getY();
+        player.update(Gdx.graphics.getDeltaTime());
         if (collision.checkCollisionOfCollidable(player)) {
+            player.setVelocity(new Vector2(0f,0f));
             player.setX(oldX);
-            player.setX(oldY);
+            player.setY(oldY);
         }
     }
     @Override

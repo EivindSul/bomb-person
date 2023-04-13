@@ -41,7 +41,7 @@ public class Player extends Sprite implements Animated, Collidable {
         animations = new PlayerAnimations(this);
         this.wallLayer = wallLayer;
         this.explodableWallLayer = explodableWallLayer;
-        setSize(1,1);
+        setSize(14,14);
         this.time = 0;
         
         //initializing player direction and state
@@ -49,7 +49,6 @@ public class Player extends Sprite implements Animated, Collidable {
         this.currentState = State.WALKING;
     }
     public void draw(Batch spriteBatch){
-        update(Gdx.graphics.getDeltaTime());
         time += Gdx.graphics.getDeltaTime();
         spriteBatch.draw(animations.getActiveAnimation().getKeyFrame(time,true), getX(), getY());
     }
@@ -82,13 +81,8 @@ public class Player extends Sprite implements Animated, Collidable {
         */
     }
     public void update(float delta){
-        //save old position
-        //move on x
         setX(getX() + velocity.x * delta);
-        //react to x collision
-        //move on y
-        setY(getY() + velocity.y *delta);
-        //react to y collision
+        setY(getY() + velocity.y * delta);
     }
 
     private boolean isCellBlocked(float x, float y, TiledMapTileLayer layer){
