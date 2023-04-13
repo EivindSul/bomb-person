@@ -102,6 +102,8 @@ public class Model implements ApplicationListener {
 
         if(checkIfPlayerExplodes(player)){
             killPlayer();
+
+            gameState = false;
         }
 
         /*------------------- Game Logic -------------------*/
