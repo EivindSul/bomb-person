@@ -1,6 +1,5 @@
 package inf112.bomberperson.model;
 import java.util.LinkedList;
-import java.util.concurrent.locks.ReadWriteLock;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -21,18 +20,26 @@ public class Player extends Sprite implements Collidable {
     }
     private Direction currentDirection;
     private State currentState;
+
     //animations
     PlayerAnimations animations;
     float time;
+
     //the movement velocity
     public Vector2 velocity = new Vector2();
-    private float speed = 50 * 2, gravity = 60 *1.8f;
+
     private boolean alive = true;
+    private LinkedList<Bomb> bombList = new LinkedList<Bomb>();
+    private int bombLimit = 1;
+    private int bombRange = 1;
+    private int bombPower = 1;
+
+    private int speed = 100;
     
     public Player(Sprite sprite){
         super(sprite);
         animations = new PlayerAnimations(this);
-        setSize(14,14);
+        setSize(10,10);
         this.time = 0;
         
         //initializing player direction and state
@@ -85,92 +92,109 @@ public class Player extends Sprite implements Collidable {
         return this.alive;
     }
 
-    public boolean dropBomb(){
-        return addBomb();
+    
+    public Vector2 getVelocity() {
+        return velocity;
     }
+    
+    public void setVelocity(Vector2 velocity) {
+        float velX = velocity.x; // * speed;
+        float velY = velocity.y; // * speed;
+        
+        this.velocity = new Vector2(velX, velY);
+    }
+    
+    
+    /*------------------- POSITION -------------------*/
+    
+    public Vector2 getPosition(){
+        return new Vector2(getX(), getY());
+    }
+    public int getSpeed(){
+        return this.speed;
+    }
+    
+    /*------------------- DROP BOMBS -------------------*/
+    
+    public boolean dropBomb() {
 
-    private boolean addBomb() {
-        // TODO: make bomb go to tile and not just position, to avoid bombs being off-grid. Players move gradually, but bombs need to snap to grid.
-        if (bombList.size() <= getNumberOfBombs()){
-            Bomb bomb = new Bomb(this.getPosition(), this.getBombRange(), this.getBombPower());
-            bombList.add(bomb);
-            return true;
+        if (bombList.size() >= getBombLimit()){
+            return false;
         }
-        return false;
+        Bomb bomb = new Bomb(this.getPosition(), this.getBombRange(), this.getBombPower());
+        bombList.add(bomb);
+        return true;
+        
     }
     
     public boolean noBombs(){
         return bombList.isEmpty();
     }
+    
+    /*------------------- GET BOMB LIST -------------------*/
+    
+    public LinkedList<Bomb> getBombList(){
+        return this.bombList;
+    }
+    
+    public Bomb popBombList(){
+        return this.bombList.pop();
+    }
+    
+    /*------------------- NUMBER OF BOMBS -------------------*/
+    
+    public int getBombLimit() {
+        return bombLimit;
+    }
+    
+    public void incrementBombLimit() {
+        this.bombLimit += 1;
+    }
+    public void allowInfiniteBombs() {
+        this.bombLimit += 1000;
+    }
+    public void disallowInfiniteBombs() {
+        this.bombLimit -= 1000;
+    }
+    
+    /*------------------- POWER OF BOMBS -------------------*/
+    
+    public int getBombPower(){
+        return this.bombPower;
+    }
 
+    public void setBombPower(int bombPower){
+        this.bombPower = bombPower;
+    }
+
+    public void incrementBombPower(){
+        this.bombPower += 1;
+    }
+    
     private int getBombRange() {
         return this.bombRange;
     }
 
-    public Vector2 getVelocity() {
-        return velocity;
+    public void incrementBombRange() {
+        this.bombRange += 1;
     }
 
-    public void setVelocity(Vector2 velocity) {
-        this.velocity = velocity;
+    public void increaseSpeed() {
+        this.speed += 20;
     }
-
-    public float getSpeed() {
-        return speed;
+    
+    public void applyPowerup(String powerup){
+        if (powerup.equals("speedboost")){
+            increaseSpeed();
+        }
+        if (powerup.equals("morebombs")){
+            incrementBombLimit();
+        }
+        if (powerup.equals("morerange")){
+            incrementBombRange();
+        }
+        if (powerup.equals("morepower")){
+            incrementBombPower();
+        }
     }
-    public void setSpeed(float speed) {
-        this.speed = speed;
-    }
-    public float getGravity() {
-        return gravity;
-    }
-    public void setGravity(float gravity) {
-        this.gravity = gravity;
-    }
-    public Vector2 getPosition(){
-        return new Vector2(getX(), getY());
-    }
-    public int getNumberOfBombs() {
-        return 0;
-    }
-    // ---------------EIVIND KODE-----------------
-        private LinkedList<Bomb> bombList = new LinkedList<Bomb>();
-        private int numberOfBombs = 1;
-        private int bombRange = 3;
-        private int bombPower = 2;
-
-        private int movementSpeed = 3;
-        /*------------------- DROP BOMBS -------------------*/
-        /*------------------- GET BOMB LIST -------------------*/
-
-        public LinkedList<Bomb> getBombList(){
-            return this.bombList;
-        }
-        public Bomb popBombList(){
-            return this.bombList.pop();
-        }
-
-        /*------------------- NUMBER OF BOMBS -------------------*/
-        public void incrementNumberOfBombs() {
-            this.numberOfBombs += 1;
-        }
-        public void allowInfiniteBombs() {
-            this.numberOfBombs += 1000;
-        }
-        public void disallowInfiniteBombs() {
-            this.numberOfBombs -= 1000;
-        }
-
-
-        /*------------------- POWER OF BOMBS -------------------*/
-
-        public int getBombPower(){
-            return this.bombPower;
-        }
-        public void setBombPower(int bombPower){
-            this.bombPower = bombPower;
-        }
-        public void incrementBombPower(){
-            this.bombPower += 1;
-        }
 }

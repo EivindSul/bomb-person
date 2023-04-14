@@ -1,8 +1,6 @@
 package inf112.bomberperson.model;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.stream.IntStream;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
@@ -11,7 +9,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
 
 import inf112.bomberperson.controller.MyInputProcessor;
 import inf112.bomberperson.game.BombermanGame;
@@ -52,10 +49,12 @@ public class Model implements ApplicationListener {
         controller = new MyInputProcessor(this);
 
         ArrayList<TiledMapTileLayer> collisionList = new ArrayList<TiledMapTileLayer>();
+        TiledMapTileLayer powerupLayer = map.powerupLayer;
         collisionList.add(map.wallLayer);
         collisionList.add(map.explodableWallLayer);
+        collisionList.add(map.bombLayer);
         this.collision = new Collision(collisionList);
-        
+        this.collision.setPowerupLayer(powerupLayer);
         this.create();
     }
     /*
@@ -92,7 +91,6 @@ public class Model implements ApplicationListener {
         ArrayList<TimedEntity<Bomb>> bombsToExplode = explosionDetection(); // checks if bomb should explode now
 
         explodeBombs(bombsToExplode); // runs an algorithm for exploding bomb. 
-        // explosionAlgorithm(bombsToExplode);
 
         ArrayList<TimedEntity<Explosion>> decayedExplosions = explosionDecay();
         
@@ -134,20 +132,6 @@ public class Model implements ApplicationListener {
         
         /*------------------- Render Bomb -------------------*/
 
-        // LinkedList<Bomb> bombsToDraw1 = player1.getBombList();
-        // LinkedList<Bomb> bombsToDraw2 = player2.getBombList();
-        
-
-        // for (TimedEntity<Explosion> timedExplosion : explosionList) {
-        //     Explosion explosion = timedExplosion.getEntity();
-        //     for (ExplosionTile tile : explosion.getExplosion()) {
-        //         if(collision.isCellBlocked(tile.getPositionX(), tile.getPositionY(), map.wallLayer)){
-        //             continue;
-        //         }
-        //         tile.draw(map.getMapRenderer().getBatch());
-        //    }
-        // }
-
         map.getMapRenderer().getBatch().end(); // End drawing
 
         /*------------------- Render Bomb -------------------*/
@@ -160,6 +144,12 @@ public class Model implements ApplicationListener {
             player.setVelocity(new Vector2(0f,0f));
             player.setX(oldX);
             player.setY(oldY);
+        }
+
+        String powerup = collision.containsPowerup(player.getPosition());
+        if (!powerup.equals("none")){
+            map.removePowerupFromMap(player.getPosition());
+            player.applyPowerup(powerup);
         }
     }
     @Override
@@ -191,7 +181,7 @@ public class Model implements ApplicationListener {
         }
     }
 
-    /**
+    /*
      * Checks if any bombs explode. if a bomb explodes, it removes this bomb from the respective player's bomb list.
      * @return bombsToExplode
     */

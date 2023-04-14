@@ -210,10 +210,26 @@
  <tile id="202"/>
  <tile id="203"/>
  <tile id="204"/>
- <tile id="205"/>
- <tile id="206"/>
- <tile id="207"/>
- <tile id="208"/>
+ <tile id="205">
+  <properties>
+   <property name="powerup" value="speedboost"/>
+  </properties>
+ </tile>
+ <tile id="206">
+  <properties>
+   <property name="powerup" value="morebombs"/>
+  </properties>
+ </tile>
+ <tile id="207">
+  <properties>
+   <property name="powerup" value="morerange"/>
+  </properties>
+ </tile>
+ <tile id="208">
+  <properties>
+   <property name="powerup" value="morepower"/>
+  </properties>
+ </tile>
  <tile id="209"/>
  <tile id="210"/>
  <tile id="211"/>
@@ -360,7 +376,11 @@
  <tile id="352"/>
  <tile id="353"/>
  <tile id="354"/>
- <tile id="355"/>
+ <tile id="355">
+  <properties>
+   <property name="powerup" value="speedboost"/>
+  </properties>
+ </tile>
  <tile id="356"/>
  <tile id="357"/>
  <tile id="358"/>
