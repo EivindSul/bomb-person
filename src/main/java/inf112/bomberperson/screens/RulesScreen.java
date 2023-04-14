@@ -33,24 +33,33 @@ public class RulesScreen implements Screen{
 
     @Override
     public void show() {
-        Label.LabelStyle font = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
+        // Font for the screen
+        Label.LabelStyle font = new Label.LabelStyle(new BitmapFont(), Color.WHITE); 
 
+        // Setting up table to stage
         Table table = new Table();
         stage.addActor(table);
 
+        // Adding contents, go down a row, then continue
         table.setFillParent(true);
         Label title = new Label("Controls", font);
         title.setFontScale(3f);
         table.add(title).colspan(2).center();
 
         table.row();
-        Label text = new Label("Player 1 Controls:\nUp: W\nLeft: A\nDown: S\nRight: D\nDrop bomb: Spacebar\nQuit current Game : Q", font);
+        Label text = new Label("Player 1 Controls:\nUp: W\nLeft: A\nDown: S\nRight: D\nDrop bomb: Spacebar\nStarts bottom left", font);
         text.setFontScale(1.5f);
         table.add(text).pad(20);
 
-        text = new Label("Player 2 Controls:\nUp: ↑\nLeft: ←\nDown: ↓\nRight: →\nDrop bomb: Enter", font);      // Work in progress, arrows dont work, can work as placeholder until player 2 is implemented.
+        text = new Label("Player 2 Controls:\nUp: Arrow Up\nLeft: Arrow Left\nDown: Arrow Down\nRight: Arrow Right\nDrop bomb: Enter\nStarts top right", font);      // Work in progress, arrows dont work, can work as placeholder until player 2 is implemented.
         text.setFontScale(1.5f);
         table.add(text).pad(20);
+
+        table.row();
+        table.setFillParent(true);
+        title = new Label("Quit current Game : Q", font);
+        title.setFontScale(1.5f);
+        table.add(title).colspan(2).center();
 
         table.row();
         table.setFillParent(true);
@@ -76,11 +85,14 @@ public class RulesScreen implements Screen{
         text.setFontScale(1.25f);
         table.add(text).pad(20);
 
+        // Button for going back to menu
         TextButton newGame = new TextButton("Back to menu", skin);
 
+        // Adding in button
         table.row();
         table.add(newGame).padTop(20).minWidth(250).minHeight(50).colspan(2).center();
 
+        // Setting listener on button to respond to being clicked
         newGame.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
@@ -93,8 +105,11 @@ public class RulesScreen implements Screen{
 
     @Override
     public void render(float v) {
+        // Setting up backgroun colour
         Gdx.gl.glClearColor(0.1f, 0.14f, 0.1f, 1);
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
+
+        //renders the stage with the table from show
         stage.draw();
     }
 

@@ -1,29 +1,20 @@
 package inf112.bomberperson.model;
 
-import java.lang.reflect.UndeclaredThrowableException;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.stream.IntStream;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
-import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.Array;
 
 import inf112.bomberperson.controller.MyInputProcessor;
 import inf112.bomberperson.game.BombermanGame;
-import inf112.bomberperson.model.Map.TileType;
 import inf112.bomberperson.screens.GameOverScreen;
 
 
@@ -31,7 +22,8 @@ public class Model implements ApplicationListener {
     OrthographicCamera camera;
     private BombermanGame game;
     Map map;
-    public Player player;
+    public Player player1;
+    public Player player2;
     public MyInputProcessor controller;
     // Maybe edit to an enum since we will have more than two screens.
     public Boolean gameState; // GAME OVER == FALSE
@@ -41,7 +33,7 @@ public class Model implements ApplicationListener {
     private ArrayList<TimedEntity<Bomb>> timedBombList = new ArrayList<TimedEntity<Bomb>>();
     private ArrayList<TimedEntity<Explosion>> explosionList = new ArrayList<TimedEntity<Explosion>>();
 
-    private Collision collision = new Collision(player);
+    private Collision collision;
 
     public Model(BombermanGame game, OrthographicCamera camera){
         this.game = game;
@@ -52,10 +44,18 @@ public class Model implements ApplicationListener {
         this.map = new Map();
         map.create();
 
-        this.player = new Player(new Sprite(new Texture("doc/assets/player.png")), map.wallLayer, map.explodableWallLayer);
-        //Map unit translation AKA the magic number
-        player.setPosition(1 * player.getWallLayer().getTileWidth(), (player.getWallLayer().getHeight() - 26) *player.getWallLayer().getTileHeight());
+        this.player1 = new Player(new Sprite(new Texture("doc/assets/player.png")));
+        this.player2 = new Player(new Sprite(new Texture("doc/assets/player.png")));
+
+        player1.setPosition(1 * 16, (map.getHeight() - 26) *16);
+        player2.setPosition(25 * 16, (map.getHeight() - 2) *16);
         controller = new MyInputProcessor(this);
+
+        ArrayList<TiledMapTileLayer> collisionList = new ArrayList<TiledMapTileLayer>();
+        collisionList.add(map.wallLayer);
+        collisionList.add(map.explodableWallLayer);
+        this.collision = new Collision(collisionList);
+        
         this.create();
     }
     /*
@@ -78,11 +78,12 @@ public class Model implements ApplicationListener {
      * updates the model without rendering it
      */
     public void update(){
-
         /*-------------------Player Input-------------------*/
         /*-------------------Player Input-------------------*/
 
         /*------------------- Game Logic -------------------*/
+        checkPlayerCollision(player1);
+        checkPlayerCollision(player2);
 
         time += Gdx.graphics.getDeltaTime();
         gameStateDetection(); // checks if game is over
@@ -90,12 +91,25 @@ public class Model implements ApplicationListener {
 
         ArrayList<TimedEntity<Bomb>> bombsToExplode = explosionDetection(); // checks if bomb should explode now
 
-        explosionAlgorithm(bombsToExplode); // runs an algorithm for exploding bomb. 
+        explodeBombs(bombsToExplode); // runs an algorithm for exploding bomb. 
+        // explosionAlgorithm(bombsToExplode);
 
         ArrayList<TimedEntity<Explosion>> decayedExplosions = explosionDecay();
         
         cleanExplodeTimeList(bombsToExplode);
         cleanBombList(decayedExplosions);
+
+
+        if(checkIfPlayerExplodes(player1)){
+            killPlayer(player1);
+
+            gameState = false;
+        }
+        if(checkIfPlayerExplodes(player2)){
+            killPlayer(player2);
+
+            gameState = false;
+        }
 
         /*------------------- Game Logic -------------------*/
 
@@ -113,35 +127,41 @@ public class Model implements ApplicationListener {
         map.getMapRenderer().getBatch().begin(); // Begin drawing
 
         /*------------------- Render Player -------------------*/
-
-        player.draw(map.getMapRenderer().getBatch());
+        player1.draw(map.getMapRenderer().getBatch());
+        player2.draw(map.getMapRenderer().getBatch());
 
         /*------------------- Render Player -------------------*/
         
         /*------------------- Render Bomb -------------------*/
 
-        LinkedList<Bomb> bombsToDraw = player.getBombList();
+        // LinkedList<Bomb> bombsToDraw1 = player1.getBombList();
+        // LinkedList<Bomb> bombsToDraw2 = player2.getBombList();
         
-        
-        for (Bomb bomb : bombsToDraw) {
-            bomb.draw(map.getMapRenderer().getBatch());
-        }
 
-        for (TimedEntity<Explosion> timedExplosion : explosionList) {
-            Explosion explosion = timedExplosion.getEntity();
-            for (ExplosionTile tile : explosion.getExplosion()) {
-                if(collision.isCellBlocked(tile.getPositionX(), tile.getPositionY(), map.wallLayer)){
-                    continue;
-                }
-                tile.draw(map.getMapRenderer().getBatch());
-            }
-        }
+        // for (TimedEntity<Explosion> timedExplosion : explosionList) {
+        //     Explosion explosion = timedExplosion.getEntity();
+        //     for (ExplosionTile tile : explosion.getExplosion()) {
+        //         if(collision.isCellBlocked(tile.getPositionX(), tile.getPositionY(), map.wallLayer)){
+        //             continue;
+        //         }
+        //         tile.draw(map.getMapRenderer().getBatch());
+        //    }
+        // }
 
         map.getMapRenderer().getBatch().end(); // End drawing
 
         /*------------------- Render Bomb -------------------*/
     }
-
+    public void checkPlayerCollision(Player player) {
+        float oldX = player.getX();
+        float oldY = player.getY();
+        player.update(Gdx.graphics.getDeltaTime());
+        if (collision.checkCollisionOfCollidable(player)) {
+            player.setVelocity(new Vector2(0f,0f));
+            player.setX(oldX);
+            player.setY(oldY);
+        }
+    }
     @Override
     public void pause() {
 
@@ -154,7 +174,8 @@ public class Model implements ApplicationListener {
 
     @Override
     public void dispose() {
-        player.getTexture().dispose();
+        player1.getTexture().dispose();
+        player2.getTexture().dispose();
 
     }
 
@@ -166,7 +187,7 @@ public class Model implements ApplicationListener {
     private void gameStateDetection(){
         // Pause screen?
         if (!(gameState)) {
-            game.setScreen(new GameOverScreen(game)); //TODO: game over screen
+            game.setScreen(new GameOverScreen(game));
         }
     }
 
@@ -182,7 +203,13 @@ public class Model implements ApplicationListener {
 
             if (time >= explosionTime){
                 bombsToExplode.add(timedBomb);
-                player.popBombList(); 
+                map.removeBombFromMap(timedBomb.getEntity().getPosition());
+                if (timedBomb.getOwner() == 1) {
+                    player1.popBombList();
+                }
+                else {
+                    player2.popBombList();
+                }
             }
         }
         return bombsToExplode;
@@ -204,9 +231,8 @@ public class Model implements ApplicationListener {
      */
     private void cleanBombList(ArrayList<TimedEntity<Explosion>> decayedExplosions){
         for (TimedEntity<Explosion> timedExplosion : decayedExplosions) {
-                explosionList.remove(timedExplosion);
-            }
-    
+            explosionList.remove(timedExplosion);
+        }
     }
 
     /**
@@ -220,64 +246,107 @@ public class Model implements ApplicationListener {
 
             if (time >= decayTime){
                 decayedExplosions.add(timedExplosion);
+                map.removeExplosionFromMap(timedExplosion.getEntity());;
             }
         }
         return decayedExplosions;
     }
 
 
+    /**
+     * Player drops a bomb at their current location. 
+     * Checks that the player is allowed to drop a bomb (i.e they dont have too many bombs dropped at once)
+     * Adds timer to the bomb. (It explodes in 2 seconds)
+     * Adds this bomb to timedBombList, which is the list of current bombs on the map.
+     * @param player The player that drops the bomb
+     */
     public void addBomb(Player player){
         if (player.dropBomb()){
-            TimedEntity<Bomb> newBomb= new TimedEntity<Bomb>(player.getBombList().getLast(), time + 2, 1);
-            timedBombList.add(newBomb);
+            if (player == player1) {
+                TimedEntity<Bomb> newBomb = new TimedEntity<Bomb>(player.getBombList().getLast(), time + 2, 1);
+                timedBombList.add(newBomb);
+            }
+            if (player == player2) {
+                TimedEntity<Bomb> newBomb = new TimedEntity<Bomb>(player.getBombList().getLast(), time + 2, 2);
+                timedBombList.add(newBomb);
+            }
+            map.addBombToMap(player.getPosition());
         }
     }
 
     /**
-     * Calculates how far explosions go before they hit an obstacle. 
-     * Makes the explosions that big, and stops expanding a node if it hits an obstacle.
-     * Adds the explosions to explosionList
-     * @param bombsToExplode list of bombs to explode. May be just one
+     * Explodes bombs, and turns them into explosions.
+     * Draws the explosions on the map in the explosionLayer.
+     * Adds the explosions to explosionList, which is the list of currently active explosions. 
+     * @param bombsToExplode list of bombs to explode in current game loop.
      */
-    private void explosionAlgorithm(ArrayList<TimedEntity<Bomb>> bombsToExplode) {
+    private void explodeBombs(ArrayList<TimedEntity<Bomb>> bombsToExplode) {
         // The bombs in bombsToExplode should already be removed in the explosionDetection method.
         for (TimedEntity<Bomb> timedBomb : bombsToExplode) {
             Bomb bomb = timedBomb.getEntity();
             Explosion explosion = bomb.explodeBomb();
+            
+            explosion = explosionAlgorithm(explosion);
+            
+            explosionList.add(new TimedEntity<Explosion>(explosion, time + (float)0.5, 1));
+            map.addExplosionToMap(explosion);
+        }
+    }
+    
+    
+    /**
+     * Calculates how an explosion is shaped.
+     * Takes a fresh explosion as argument, expands this as far as it should go. Checks if it hits walls, and reacts correspondingly.
+     * @param explosion Newly initialized explosion.
+     * @return Fully expanded explosion. The explosion variable within contains explosiontiles.
+     */
+    private Explosion explosionAlgorithm(Explosion explosion){
 
-            for (int i = 0; i < explosion.getRange(); i++) {
-                ArrayList<DirectedExplosionTile> border = explosion.getBorder();
-
-                if(border.isEmpty()){
+        ArrayList<Integer> nodeIndexes = new ArrayList<Integer>();
+        nodeIndexes.add(0);
+        nodeIndexes.add(1);
+        nodeIndexes.add(2);
+        nodeIndexes.add(3);
+        
+        // Expands nodes, one node at a time.
+        for (Integer i : nodeIndexes) {
+            int range = explosion.getRange();
+            
+            while (range > 0){
+                ExplosionTile node = explosion.getBorder().get(i);
+                
+                if (node.getDirection() == 0){ // Direction 0 means node has stopped.
+                    range = 0;
                     break;
                 }
 
-                ArrayList<DirectedExplosionTile> newBorder = new ArrayList<DirectedExplosionTile>();
+                ExplosionTile nextNode = explosion.expandNode(node);
+
                 
-                for (DirectedExplosionTile tile : border) {
-                    DirectedExplosionTile nextTile = explosion.expandNode(tile);
-                    switch(checkIfSolid(nextTile.getPosition())){
-                        case 2:  // case 2, wall is solid and stops the explosion
-                            nextTile.hitSolid();
+                int solid = checkIfSolid(nextNode.getPosition());
 
-                            //explosion.addExplosionTile(tile.getTile());
-                        case 1:  // case 1, soft obstruction. Explosion keeps going for one tile.
-                            nextTile.hitBreakable();
-                            explosion.addExplosionTile(tile.getTile());
-                            newBorder.add(nextTile);
-                            breakWall(nextTile.getPosition().x,nextTile.getPosition().y);
-                        case 0:  // case 0, no obstruction. Explosion keeps going
-                            explosion.addExplosionTile(nextTile.getTile());
-                            newBorder.add(nextTile);
-                    }
+                if (solid == 2){
+                    nextNode.hitSolid();
+                    range = 0;
+                    break;
                 }
-                explosion.setBorder(newBorder);
-            }
-            explosionList.add(new TimedEntity<Explosion>(explosion, time + 1, 1));
-            
-        }
-    }
+                
+                if (solid == 1){
+                    nextNode.hitBreakable();
+                }
 
+                map.breakWall(nextNode.getPosition());
+
+                explosion.addExplosionTile(nextNode);
+                explosion.setBorder(i, nextNode);
+                range -= 1;
+            }
+        }
+        return explosion;
+    }
+    
+    
+    
     /**
      * check if this tile contains a wall, and if the wall is breakable
      *
@@ -285,24 +354,26 @@ public class Model implements ApplicationListener {
      * @return 0 if clear, 1 if wall breaks, 2 if wall is solid
      */
     private int checkIfSolid(Vector2 position) {
-
-        if(collision.isCellBlocked(position.x, position.y, map.explodableWallLayer)){
-            return 1;
-        }
-        if(collision.isCellBlocked(position.x, position.y, map.wallLayer)){
+        
+        if(map.containsSolidWall(position)){
             return 2;
         }
-
+        if(map.containsBreakableWall(position)){
+            return 1;
+        }
         return 0;
     }
 
-    private void breakWall(float x, float y){
-        if(map.explodableWallLayer.getCell((int) (x / map.explodableWallLayer.getTileWidth()), (int) (y/ map.explodableWallLayer.getTileHeight())) != null){
-            map.explodableWallLayer.setCell((int) (x / map.explodableWallLayer.getTileWidth()), (int) (y/ map.explodableWallLayer.getTileHeight()), null);
-        }
-
+    private void killPlayer(Player player){
+        player.killPlayer();
     }
 
+    private boolean checkIfPlayerExplodes(Player player){
+        if (map.containsExplosion(player.getPosition())){
+            return true;
+        }
+        return false;
+    }
 
     /*------------------- Model Functionallity -------------------*/
 }
