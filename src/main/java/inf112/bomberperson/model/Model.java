@@ -9,7 +9,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 
 import inf112.bomberperson.controller.MyInputProcessor;
 import inf112.bomberperson.game.BombermanGame;
@@ -31,7 +33,7 @@ public class Model implements ApplicationListener {
     private ArrayList<TimedEntity<Bomb>> timedBombList = new ArrayList<TimedEntity<Bomb>>();
     private ArrayList<TimedEntity<Explosion>> explosionList = new ArrayList<TimedEntity<Explosion>>();
 
-    private Collision collision = new Collision(player1);
+    private Collision collision;
 
     public Model(BombermanGame game, OrthographicCamera camera){
         this.game = game;
@@ -42,12 +44,18 @@ public class Model implements ApplicationListener {
         this.map = new Map();
         map.create();
 
-        this.player1 = new Player(new Sprite(new Texture("doc/assets/player.png")), map.wallLayer, map.explodableWallLayer);
-        this.player2 = new Player(new Sprite(new Texture("doc/assets/player.png")), map.wallLayer, map.explodableWallLayer);
-        //Map unit translation AKA the magic number
-        player1.setPosition(1 * player1.getWallLayer().getTileWidth(), (player1.getWallLayer().getHeight() - 26) *player1.getWallLayer().getTileHeight());
-        player2.setPosition(25 * player2.getWallLayer().getTileWidth(), (player2.getWallLayer().getHeight() - 2) *player2.getWallLayer().getTileHeight());
+        this.player1 = new Player(new Sprite(new Texture("doc/assets/player.png")));
+        this.player2 = new Player(new Sprite(new Texture("doc/assets/player.png")));
+
+        player1.setPosition(1 * 16, (map.getHeight() - 26) *16);
+        player2.setPosition(25 * 16, (map.getHeight() - 2) *16);
         controller = new MyInputProcessor(this);
+
+        ArrayList<TiledMapTileLayer> collisionList = new ArrayList<TiledMapTileLayer>();
+        collisionList.add(map.wallLayer);
+        collisionList.add(map.explodableWallLayer);
+        this.collision = new Collision(collisionList);
+        
         this.create();
     }
     /*
@@ -70,11 +78,12 @@ public class Model implements ApplicationListener {
      * updates the model without rendering it
      */
     public void update(){
-
         /*-------------------Player Input-------------------*/
         /*-------------------Player Input-------------------*/
 
         /*------------------- Game Logic -------------------*/
+        checkPlayerCollision(player1);
+        checkPlayerCollision(player2);
 
         time += Gdx.graphics.getDeltaTime();
         gameStateDetection(); // checks if game is over
@@ -91,8 +100,13 @@ public class Model implements ApplicationListener {
         cleanBombList(decayedExplosions);
 
 
-        if(checkIfPlayerExplodes(player)){
-            killPlayer(player);
+        if(checkIfPlayerExplodes(player1)){
+            killPlayer(player1);
+
+            gameState = false;
+        }
+        if(checkIfPlayerExplodes(player2)){
+            killPlayer(player2);
 
             gameState = false;
         }
@@ -113,7 +127,6 @@ public class Model implements ApplicationListener {
         map.getMapRenderer().getBatch().begin(); // Begin drawing
 
         /*------------------- Render Player -------------------*/
-
         player1.draw(map.getMapRenderer().getBatch());
         player2.draw(map.getMapRenderer().getBatch());
 
@@ -139,7 +152,16 @@ public class Model implements ApplicationListener {
 
         /*------------------- Render Bomb -------------------*/
     }
-
+    public void checkPlayerCollision(Player player) {
+        float oldX = player.getX();
+        float oldY = player.getY();
+        player.update(Gdx.graphics.getDeltaTime());
+        if (collision.checkCollisionOfCollidable(player)) {
+            player.setVelocity(new Vector2(0f,0f));
+            player.setX(oldX);
+            player.setY(oldY);
+        }
+    }
     @Override
     public void pause() {
 
