@@ -26,7 +26,25 @@ public class Map extends ApplicationAdapter {
     static final int WALL_TILE_ID=  386;
     static final int BRICK_TILE_ID=  106;
 
+    public TiledMap getMap() {
+        return map;
+    }
 
+    public TiledMapTileLayer getGroundLayer() {
+        return groundLayer;
+    }
+
+    public static TiledMapTileLayer getWallLayer() {
+        return wallLayer;
+    }
+
+    public static TiledMapTileLayer getExplodableWallLayer() {
+        return explodableWallLayer;
+    }
+
+    public TiledMapTile[] getWallTiles() {
+        return wallTiles;
+    }
 
     public float getWidth() {
         return MAP_WIDTH;
