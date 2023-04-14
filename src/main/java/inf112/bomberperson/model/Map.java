@@ -227,7 +227,7 @@ public class Map extends ApplicationAdapter {
         
         TiledMapTileSet tileset = map.getTileSets().getTileSet("tiles");
         TiledMapTileLayer.Cell bombCell = new TiledMapTileLayer.Cell();
-        bombCell.setTile(tileset.getTile(BOMB_TILE_ID));
+        bombCell.setTile(tileset.getTile(TextureID.BOMB.id));
         bombLayer.setCell(col, row, bombCell);
         
     }
@@ -254,7 +254,7 @@ public class Map extends ApplicationAdapter {
             TiledMapTileLayer.Cell cell = new TiledMapTileLayer.Cell();
             cell.setTile(tileset.getTile(EXPLOSION_TILE_ID));
             explosionLayer.setCell(col, row, cell);
-        }        
+        }
     }
 
     /*
@@ -283,12 +283,12 @@ public class Map extends ApplicationAdapter {
         int row = (Math.round(position.y / TILE_SIZE));
         
         TiledMapTileLayer.Cell nullCell = null;
-
+        
         // Kill powerups that are in the cell already.
         
         powerupLayer.setCell(col, row, nullCell);
-
-
+        
+        
         if(explodableWallLayer.getCell(col, row) != nullCell){
             int spawn = ThreadLocalRandom.current().nextInt(0, POWERUP_SPAWN_CHANCE);
             if (spawn == 0){
@@ -303,14 +303,23 @@ public class Map extends ApplicationAdapter {
      * @return Cell with a powerup.
      */
     private TiledMapTileLayer.Cell getPowerup(){
-        // TODO: add powerups here
+        
+
         TiledMapTileSet tileset = map.getTileSets().getTileSet("tiles");
         TiledMapTileLayer.Cell cell = new TiledMapTileLayer.Cell();
-        cell.setTile(tileset.getTile(356));
+        cell.setTile(tileset.getTile(TextureID.getRandomPowerup()));
         return cell;
     }
-    
+    public void removePowerupFromMap(Vector2 position){
+        
+        int col = (Math.round(position.x / TILE_SIZE));
+        int row = (Math.round(position.y / TILE_SIZE));
 
+        powerupLayer.setCell(col, row, null);
+    }
+    
+    
+    
     /**
      * checks if a vector position overlaps with a solid wall.
      * @param position

@@ -26,18 +26,24 @@ public class MyInputProcessor implements InputProcessor{
 
     @Override
     public boolean keyDown(int keycode) {
+        Vector2 velocityPlayer1 = model.player1.getVelocity();
+        Vector2 velocityPlayer2 = model.player2.getVelocity();
         switch (keycode){
             case Input.Keys.W:
-                model.player1.setVelocity(new Vector2(model.player1.getVelocity().x,model.player1.getVelocity().y += model.player1.getSpeed()));
+                velocityPlayer1.y += model.player1.getSpeed();
+                model.player1.setVelocity(velocityPlayer1);
                 break;
             case Input.Keys.S:
-                model.player1.setVelocity(new Vector2(model.player1.getVelocity().x,model.player1.getVelocity().y -= model.player1.getSpeed()));
+                velocityPlayer1.y -= model.player1.getSpeed();
+                model.player1.setVelocity(velocityPlayer1);
                 break;
             case Input.Keys.A:
-                model.player1.setVelocity(new Vector2(model.player1.getVelocity().x -= model.player1.getSpeed(), model.player1.getVelocity().y));
+                velocityPlayer1.x -= model.player1.getSpeed();
+                model.player1.setVelocity(velocityPlayer1);
                 break;
             case Input.Keys.D:
-                model.player1.setVelocity(new Vector2(model.player1.getVelocity().x += model.player1.getSpeed(), model.player1.getVelocity().y));
+                velocityPlayer1.x += model.player1.getSpeed();
+                model.player1.setVelocity(velocityPlayer1);
                 break;
             case Input.Keys.SPACE:
                 model.addBomb(model.player1);
@@ -46,16 +52,20 @@ public class MyInputProcessor implements InputProcessor{
                 model.gameState = false;
             
             case Input.Keys.UP:
-                model.player2.setVelocity(new Vector2(model.player2.getVelocity().x,model.player2.getVelocity().y += model.player2.getSpeed()));
+                velocityPlayer2.y += model.player2.getSpeed();
+                model.player2.setVelocity(velocityPlayer2);
                 break;
             case Input.Keys.DOWN:
-                model.player2.setVelocity(new Vector2(model.player2.getVelocity().x,model.player2.getVelocity().y -= model.player2.getSpeed()));
+                velocityPlayer2.y -= model.player2.getSpeed();
+                model.player2.setVelocity(velocityPlayer2);
                 break;
             case Input.Keys.LEFT:
-                model.player2.setVelocity(new Vector2(model.player2.getVelocity().x -= model.player2.getSpeed(), model.player2.getVelocity().y));
+                velocityPlayer2.x -= model.player2.getSpeed();
+                model.player2.setVelocity(velocityPlayer2);
                 break;
             case Input.Keys.RIGHT:
-                model.player2.setVelocity(new Vector2(model.player2.getVelocity().x += model.player2.getSpeed(), model.player2.getVelocity().y));
+                velocityPlayer2.x += model.player2.getSpeed();
+                model.player2.setVelocity(velocityPlayer2);
                 break;
             case Input.Keys.ENTER:
                 model.addBomb(model.player2);

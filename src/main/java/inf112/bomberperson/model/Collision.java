@@ -3,10 +3,13 @@ package inf112.bomberperson.model;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.math.Vector2;
 
 public class Collision {
     String blockedKey = "blocked";
     ArrayList<TiledMapTileLayer> collisionList;
+    private TiledMapTileLayer powerUpLayer;
+
     public Collision(ArrayList<TiledMapTileLayer> collisionList){
         this.collisionList = collisionList;
     }
@@ -37,6 +40,39 @@ public class Collision {
             collidesLeft(collidable, layer)
         ) {return true;}
         return false;
+    }
+
+    public boolean checkCollisionOnPowerup(Collidable collidable){
+        checkCollisionOnOnlyLayer(collidable, this.getPowerupLayer());
+        return true;
+    }
+
+    public void setPowerupLayer(TiledMapTileLayer layer) {
+        this.powerUpLayer = layer;
+    }
+
+    public String containsPowerup(Vector2 position){
+        float x = position.x;
+        float y = position.y;
+        try {
+            TiledMapTileLayer layer = getPowerupLayer();
+            TiledMapTileLayer.Cell cell = layer.getCell((int) (x / layer.getTileWidth()), (int) (y / layer.getTileHeight()));
+            
+            if (cell == null){
+                return "none";
+            }
+            if (cell.getTile().getProperties().containsKey("powerup")){
+                return (String)cell.getTile().getProperties().get("powerup");
+            }
+            return "none";
+        }
+        catch (Exception e){
+            return "none";
+        }
+    }
+
+    public TiledMapTileLayer getPowerupLayer() {
+        return this.powerUpLayer;
     }
     
     public boolean isCellBlocked(float x, float y, TiledMapTileLayer layer){
@@ -115,4 +151,5 @@ public class Collision {
         }
         return collides;
     }
+
 }
