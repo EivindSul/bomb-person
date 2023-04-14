@@ -191,7 +191,7 @@ public class Model implements ApplicationListener {
         }
     }
 
-    /**
+    /*
      * Checks if any bombs explode. if a bomb explodes, it removes this bomb from the respective player's bomb list.
      * @return bombsToExplode
     */

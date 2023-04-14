@@ -85,6 +85,7 @@ public class Player extends Sprite implements Collidable {
         return this.alive;
     }
 
+
     public boolean dropBomb(){
         return addBomb();
     }
