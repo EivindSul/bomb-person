@@ -1,18 +1,14 @@
 package inf112.bomberperson.model;
 import java.util.LinkedList;
+import java.util.concurrent.locks.ReadWriteLock;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
-
-import inf112.bomberperson.model.animations.Animated;
 import inf112.bomberperson.model.animations.PlayerAnimations;
 
-public class Player extends Sprite implements Animated {
+public class Player extends Sprite implements Collidable {
     public enum Direction{
         UP,
         DOWN,
@@ -31,18 +27,12 @@ public class Player extends Sprite implements Animated {
     //the movement velocity
     public Vector2 velocity = new Vector2();
     private float speed = 50 * 2, gravity = 60 *1.8f;
-    private TiledMapTileLayer wallLayer;
-    private  TiledMapTileLayer explodableWallLayer;
-    private String blockedKey = "blocked";
     private boolean alive = true;
     
-
-    public Player(Sprite sprite, TiledMapTileLayer wallLayer, TiledMapTileLayer explodableWallLayer){
+    public Player(Sprite sprite){
         super(sprite);
         animations = new PlayerAnimations(this);
-        this.wallLayer = wallLayer;
-        this.explodableWallLayer = explodableWallLayer;
-        setSize(1,1);
+        setSize(14,14);
         this.time = 0;
         
         //initializing player direction and state
@@ -50,7 +40,6 @@ public class Player extends Sprite implements Animated {
         this.currentState = State.WALKING;
     }
     public void draw(Batch spriteBatch){
-        update(Gdx.graphics.getDeltaTime());
         time += Gdx.graphics.getDeltaTime();
         if(alive) {
             spriteBatch.draw(animations.getActiveAnimation().getKeyFrame(time, true), getX(), getY());
@@ -85,124 +74,16 @@ public class Player extends Sprite implements Animated {
         */
     }
     public void update(float delta){
-        //save old position
-        float oldX = getX();
-        float oldY = getY();
-        boolean wallCollisionX = false, wallCollisionY = false;
-        boolean brickCollisionX = false, brickCollisionY = false;
-        //move on x
         setX(getX() + velocity.x * delta);
-        if(velocity.x < 0){ //going left
-            wallCollisionX = collidesLeft(wallLayer);
-            brickCollisionX = collidesLeft(explodableWallLayer);
-        }
-        else if(velocity.x > 0){//going right
-            wallCollisionX = collidesRight(wallLayer);
-            brickCollisionX = collidesRight(explodableWallLayer);
-        }
-        //react to x collision
-        if(wallCollisionX || brickCollisionX){
-            setX(oldX);
-            velocity.x = 0;
-        }
-
-
-        //move on y
-        setY(getY() + velocity.y *delta);
-        if(velocity.y <0){ //going down
-            wallCollisionY = collidesBottom(wallLayer);
-            brickCollisionY = collidesBottom(explodableWallLayer);
-        }
-        else if(velocity.y > 0){ //going up
-            wallCollisionY = collidesTop(wallLayer);
-            brickCollisionY = collidesTop(explodableWallLayer);
-        }
-        //react to y collision
-        if(wallCollisionY || brickCollisionY){
-            setY(oldY);
-            velocity.y = 0;
-        }
+        setY(getY() + velocity.y * delta);
     }
 
-    void killPlayer(){
+    public void killPlayer(){
         alive = false;
     }
-
-    private boolean isCellBlocked(float x, float y, TiledMapTileLayer layer){
-
-        TiledMapTileLayer.Cell cell = layer.getCell((int) (x / layer.getTileWidth()), (int) (y/ layer.getTileHeight()));
-        return cell != null && cell.getTile() != null && cell.getTile().getProperties().containsKey(blockedKey);
-
+    public boolean getAlive(){
+        return this.alive;
     }
-    public boolean collidesRight(TiledMapTileLayer layer){
-        boolean collides = false;
-        for(float step = 0; step < getHeight(); step += layer.getTileHeight()/2){
-            try {
-            collides = isCellBlocked(getX() + getWidth(), getY() + step, layer);
-            if (collides){
-                break;
-            }
-            }
-            catch (Exception e){
-                continue;
-            }
-        }
-
-        return collides;
-    }
-    public boolean collidesLeft(TiledMapTileLayer layer){
-        boolean collides = false;
-        for(float step = 0; step < getHeight(); step += layer.getTileHeight()/2){
-            try {
-            collides = isCellBlocked(getX() , getY() + step, layer);
-            if (collides){
-                break;
-            }
-            }catch (Exception e){
-                continue;
-            }
-        }
-
-        return collides;
-    }
-
-    public boolean collidesTop(TiledMapTileLayer layer){
-        boolean collides = false;
-        for(float step = 0; step < getWidth(); step += layer.getTileWidth()/2){
-            try {
-            collides = isCellBlocked(getX() + step, getY() + getHeight(), layer);
-            if (collides){
-                break;
-            }
-            }
-            catch (Exception e){
-                continue;
-            }
-        }
-
-        return collides;
-    }
-    public boolean collidesBottom(TiledMapTileLayer layer){
-        boolean collides = false;
-
-        for(float step = 0; step < getWidth(); step += layer.getTileWidth()/2){
-            try {
-            collides = isCellBlocked(getX() + step, getY(), layer);
-            if (collides){
-                break;
-            }
-            } catch (Exception e){
-                continue;
-            }
-        }
-
-        return collides;
-    }
-
-
-
-
-
 
     public boolean dropBomb(){
         return addBomb();
@@ -245,18 +126,6 @@ public class Player extends Sprite implements Animated {
     }
     public void setGravity(float gravity) {
         this.gravity = gravity;
-    }
-    public TiledMapTileLayer getWallLayer() {
-        return wallLayer;
-    }
-    public void setWallLayer(TiledMapTileLayer wallLayer) {
-        this.wallLayer = wallLayer;
-    }
-    public TiledMapTileLayer getExplodableWallLayer() {
-        return explodableWallLayer;
-    }
-    public void setExplodableWallLayer(TiledMapTileLayer explodableWallLayer) {
-        this.explodableWallLayer = explodableWallLayer;
     }
     public Vector2 getPosition(){
         return new Vector2(getX(), getY());
@@ -303,10 +172,5 @@ public class Player extends Sprite implements Animated {
         }
         public void incrementBombPower(){
             this.bombPower += 1;
-        }
-        @Override
-        public Animation<TextureRegion> getActiveAnimation() {
-            // TODO Auto-generated method stub
-            return null;
         }
 }
