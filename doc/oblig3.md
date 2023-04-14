@@ -112,6 +112,8 @@
     <ul>
         <li> Se på mulige implementasjoner av musikk, lydeffekter og andre effekter </li>
         <li> Design på sluttproduktet. </li>
+        <li> Flere tester. </li>
+        <li> Dokumentasjon av kodebiter. </li>
     </ul>
 
 
@@ -166,4 +168,9 @@ Målet vårt for denne obligen var å gjøre ferdig de siste punktene som vi had
 
 ## Kode seksjon
 
-<p> I denne obligen gikk mer ut på å implementere de siste spillbare funksjonene og refaktoring av koden var en ting vi fokuserte mest på. Vi klart å refaktorere ut modelklassen slik at vi får delt opp slik at vi har flere klasser som gjør en spesiell ting. Dette hjelper oss med å følge prinsipper som f.eks. SOLID-prinsippet. Fra oblig 2 hadde vi også mye kode funksjonalitet hos Player-klassen som vi kunne ha delt opp litt mer. Blant annet har vi trukket ut collision ut fra player slik at vi har en egen klasse fra det. </p>
+<p>I denne obligen gikk mer ut på å implementere de siste spillbare funksjonene og refaktoring av koden var en ting vi fokuserte mest på. Vi klart å refaktorere ut modelklassen slik at vi får delt opp slik at vi har flere klasser som gjør en spesiell ting. Dette hjelper oss med å følge prinsipper som f.eks. SOLID-prinsippet. Fra oblig 2 hadde vi også mye kode funksjonalitet hos Player-klassen som vi kunne ha delt opp litt mer. Blant annet har vi trukket ut collision ut fra player slik at vi har en egen klasse fra det. </p>
+<p>Manuelle tester for screens:</p>
+<p>Disse testene er hovedsakelig visuelle og går på å sjekke at alt er på plass og at knappene leder til rette screens eller ut av spillet.</p>
+
+<p>Main-menu: Skal dukke opp når spillet startes, skal inneholde tittelen til spillet og tre knapper, «New game»,  «Settings» og «Exit game». Den første skal starte spillet, vise brettet og spillerne. Den andre skal lede til regel-skjermen, denne skal ha kontroller for spillerne samt informasjon om typene vegger og bomber, samt en knapp som leder tilbake til main-menu. Den tredje skal rett å slett gå ut av spillet og ta ned vinduet. </p>
+<p>Game-over screen: Kan kommes til ved at en av spillerne blir slått ut, eller hvis man trykker Q. Skal stå «game over» som tittel samt tre knapper, «New game», «Main menu» og «Exit game», dette skal: 1. Starte et nytt spill. 2. Gå til main-menu. 3. Gå ut av spillet.</p>
