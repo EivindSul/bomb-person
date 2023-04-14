@@ -23,7 +23,7 @@ public class Bomb extends TileObject{
         Explosion explosion = new Explosion(this.getPosition(), this.getRange(), this.getPower());
         return explosion;
     }
-    private int getPower() {
+    public int getPower() {
         return this.power;
     }
 

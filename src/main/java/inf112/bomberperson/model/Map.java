@@ -30,8 +30,31 @@ public class Map extends ApplicationAdapter {
     static final int GRASS_TILE_ID=  484;
     static final int WALL_TILE_ID=  386;
     static final int BRICK_TILE_ID=  106;
+
+
+    public TiledMap getMap() {
+        return map;
+    }
+
+    public TiledMapTileLayer getGroundLayer() {
+        return groundLayer;
+    }
+
+    public static TiledMapTileLayer getWallLayer() {
+        return wallLayer;
+    }
+
+    public static TiledMapTileLayer getExplodableWallLayer() {
+        return explodableWallLayer;
+    }
+
+    public TiledMapTile[] getWallTiles() {
+        return wallTiles;
+    }
+
     static final int BOMB_TILE_ID=  174;
     static final int EXPLOSION_TILE_ID=  176;
+
 
     public float getWidth() {
         return MAP_WIDTH;
@@ -77,6 +100,7 @@ public class Map extends ApplicationAdapter {
         camera = new OrthographicCamera();
         viewport = new FitViewport(mapWidth, mapHeight, camera);
         viewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
 
 
         camera.zoom = .74f; // or any other value
