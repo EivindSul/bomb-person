@@ -1,8 +1,13 @@
 package inf112.bomberperson.model;
 
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.backends.headless.HeadlessApplication;
+import com.badlogic.gdx.backends.headless.HeadlessApplicationConfiguration;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+import inf112.bomberperson.game.BombermanGame;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 
@@ -31,12 +36,14 @@ public class MapTest {
 
     @Before
     public void setUp() {
+        HeadlessApplicationConfiguration config = new HeadlessApplicationConfiguration();
+        new HeadlessApplication(new Map(), config);
 
         map = spy(new Map());
 
-
         map.explodableWallLayer = explodableWallLayer;
     }
+
 
     @Test
     public void testTileType() {
