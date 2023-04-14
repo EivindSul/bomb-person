@@ -9,15 +9,9 @@ public class SpeedBoost extends Powerup{
 
 
     public SpeedBoost(Vector2 position){
-        super(position, "doc/assets/speedboost.png");
+        super(position);
         
     };
-    public void draw(SpriteBatch spriteBatch){
-        super.draw(spriteBatch);
-    }
-    public SpriteBatch getBatch(){
-        return super.getBatch();
-    }
 
     public void pickup(Player player){
         super.pickup(player);

@@ -5,26 +5,11 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
-public abstract class Powerup extends Sprite{
-    private SpriteBatch batch;
-    private Texture texture = new Texture("doc/assets/bomb.png");
+public abstract class Powerup extends TileObject{
 
-    public Powerup(Vector2 position, String texture){
-        super(new Sprite(new Texture(texture)));
+    public Powerup(Vector2 position){
+        super(position);
 
-        this.setX(position.x);
-        this.setY(position.y);
-
-        position = (new Vector2(this.getX(), this.getY()));
-
-        batch = new SpriteBatch();
-    }
-    public void draw(SpriteBatch spriteBatch){
-        // update(Gdx.graphics.getDeltaTime());
-        super.draw(spriteBatch);
-    }
-    public SpriteBatch getBatch(){
-        return this.batch;
     }
 
     public void pickup(Player player){
