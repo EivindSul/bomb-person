@@ -174,3 +174,7 @@ Målet vårt for denne obligen var å gjøre ferdig de siste punktene som vi had
 
 <p>Main-menu: Skal dukke opp når spillet startes, skal inneholde tittelen til spillet og tre knapper, «New game»,  «Settings» og «Exit game». Den første skal starte spillet, vise brettet og spillerne. Den andre skal lede til regel-skjermen, denne skal ha kontroller for spillerne samt informasjon om typene vegger og bomber, samt en knapp som leder tilbake til main-menu. Den tredje skal rett å slett gå ut av spillet og ta ned vinduet. </p>
 <p>Game-over screen: Kan kommes til ved at en av spillerne blir slått ut, eller hvis man trykker Q. Skal stå «game over» som tittel samt tre knapper, «New game», «Main menu» og «Exit game», dette skal: 1. Starte et nytt spill. 2. Gå til main-menu. 3. Gå ut av spillet.</p>
+
+*Bugs i spillet:*
+* Spiller kolliderer av og til med ingenting, "løses" med å trykke knappen igjen.
+* Når spiller1 dropper bomber kan det avbryte spiller2 sin bevegelse (hvis spileren beveger seg), samme løsning som over.
