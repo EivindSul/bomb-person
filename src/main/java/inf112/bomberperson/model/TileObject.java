@@ -4,10 +4,8 @@ import com.badlogic.gdx.math.Vector2;
 
 public abstract class TileObject {
 
-
     private Vector2 position;
     private int textureID;
-
 
     public TileObject(Vector2 position){
         this.position = position;
@@ -35,6 +33,13 @@ public abstract class TileObject {
         return this.position;
     }
 
+    public int getCol(){
+        return Math.round(position.x / Map.TILE_SIZE);
+    }
+    public int getRow(){
+        return Math.round(position.y / Map.TILE_SIZE);
+    }
+
     public int getTexture(){
         return this.textureID;
     }
@@ -42,6 +47,5 @@ public abstract class TileObject {
     public void setTexture(int texture){
         this.textureID = texture;
     }
-
 
 }

@@ -48,7 +48,7 @@ public class Explosion {
      * Expands a node.
      * A node is one line of the explosion. The explosion is shaped like a plus, so there are 4 nodes out of it.
      * This is only used for the explosionBorder, and needs the tile do be directed. 
-     * @param directedTile The tile for which to find next tile
+     * @param ExplosionTile The tile for which to find next tile
      * @return The neighboring tile in the same direction
      */
     public ExplosionTile expandNode(ExplosionTile directedTile){
@@ -91,6 +91,9 @@ public class Explosion {
         this.explosionBorder = newBorder;
     }
     
+    public void setBorder(int index, ExplosionTile tile) {
+        this.explosionBorder.set(index, tile);
+    }
 
     private ExplosionTile getAboveNeighbor(ExplosionTile tile){
         Vector2 neighborPosition = new Vector2 (tile.getX() + tileOffset, tile.getY());
@@ -108,13 +111,13 @@ public class Explosion {
         ExplosionTile neighbor = new ExplosionTile(neighborPosition);
         return neighbor;
     }
-
+    
     private ExplosionTile getLeftNeighbor(ExplosionTile tile){
         Vector2 neighborPosition = new Vector2 (tile.getX(), tile.getY() - tileOffset);
         ExplosionTile neighbor = new ExplosionTile(neighborPosition);
         return neighbor;
     }
-
+    
     
     
     /*------------------- GET POSITION -------------------*/
@@ -143,6 +146,7 @@ public class Explosion {
     public Vector2 getPosition(){
         return this.center;
     }
+
 
 }
 

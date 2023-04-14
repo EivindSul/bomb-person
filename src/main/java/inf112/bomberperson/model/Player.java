@@ -267,8 +267,8 @@ public class Player extends Sprite implements Animated {
     // ---------------EIVIND KODE-----------------
         private LinkedList<Bomb> bombList = new LinkedList<Bomb>();
         private int numberOfBombs = 1;
-        private int bombRange = 2;
-        private int bombPower = 1;
+        private int bombRange = 3;
+        private int bombPower = 2;
 
         private int movementSpeed = 3;
         /*------------------- DROP BOMBS -------------------*/

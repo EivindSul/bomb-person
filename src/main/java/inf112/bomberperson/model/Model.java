@@ -101,7 +101,7 @@ public class Model implements ApplicationListener {
 
 
         if(checkIfPlayerExplodes(player)){
-            killPlayer();
+            killPlayer(player);
 
             gameState = false;
         }
@@ -266,8 +266,6 @@ public class Model implements ApplicationListener {
      */
     private Explosion explosionAlgorithm(Explosion explosion){
 
-        ArrayList<ExplosionTile> border = explosion.getBorder();
-
         ArrayList<Integer> nodeIndexes = new ArrayList<Integer>();
         nodeIndexes.add(0);
         nodeIndexes.add(1);
@@ -276,30 +274,35 @@ public class Model implements ApplicationListener {
         
         // Expands nodes, one node at a time.
         for (Integer i : nodeIndexes) {
-            ExplosionTile node = border.get(i);
             int range = explosion.getRange();
-
+            
             while (range > 0){
+                ExplosionTile node = explosion.getBorder().get(i);
+                
                 if (node.getDirection() == 0){ // Direction 0 means node has stopped.
                     range = 0;
-                    continue;
+                    break;
                 }
-    
+
                 ExplosionTile nextNode = explosion.expandNode(node);
 
-                switch(checkIfSolid(nextNode.getPosition())){
-                    case 2:
-                        nextNode.hitSolid();
-    
-                        range = 0;
-                        continue;
-                    case 1:
-                        nextNode.hitBreakable();
-                        map.breakWall(nextNode.getPosition());
-                    case 0:
+                
+                int solid = checkIfSolid(nextNode.getPosition());
+
+                if (solid == 2){
+                    nextNode.hitSolid();
+                    range = 0;
+                    break;
                 }
-    
+                
+                if (solid == 1){
+                    nextNode.hitBreakable();
+                }
+
+                map.breakWall(nextNode.getPosition());
+
                 explosion.addExplosionTile(nextNode);
+                explosion.setBorder(i, nextNode);
                 range -= 1;
             }
         }
@@ -325,7 +328,7 @@ public class Model implements ApplicationListener {
         return 0;
     }
 
-    private void killPlayer(){
+    private void killPlayer(Player player){
         player.killPlayer();
     }
 
@@ -336,10 +339,6 @@ public class Model implements ApplicationListener {
         return false;
     }
 
-
-    
-    
-    
     /*------------------- Model Functionallity -------------------*/
 }
 

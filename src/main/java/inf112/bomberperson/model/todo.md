@@ -17,7 +17,9 @@
 > Make players unable to just paint the map with bomb sprites. *DONE*
 > (Made explosion decay time shorter too, it feels much more natural now)
 - Make powerups die from getting hit by an explosion *DOING
-- Make tileobjects an enum, make an abstract class for them that has default texture and getter setters. *TODO*
+> Bomb range does not work, they simply stay at range 1 *FIXED*
+> Make tileobjects abstract class that has default texture and getter setters. *DONE*
+> (Removed old version of ExplosionTile, renamed DirectedExplosionTile to ExplosionTile)
 - Animate bombs *TODO*
 
 - check collision between player and powerups *TODO

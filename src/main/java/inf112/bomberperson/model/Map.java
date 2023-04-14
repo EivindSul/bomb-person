@@ -285,6 +285,7 @@ public class Map extends ApplicationAdapter {
         TiledMapTileLayer.Cell nullCell = null;
 
         // Kill powerups that are in the cell already.
+        
         powerupLayer.setCell(col, row, nullCell);
 
 
