@@ -266,7 +266,7 @@ public class Model implements ApplicationListener {
      */
     private Explosion explosionAlgorithm(Explosion explosion){
 
-        ArrayList<DirectedExplosionTile> border = explosion.getBorder();
+        ArrayList<ExplosionTile> border = explosion.getBorder();
 
         ArrayList<Integer> nodeIndexes = new ArrayList<Integer>();
         nodeIndexes.add(0);
@@ -276,7 +276,7 @@ public class Model implements ApplicationListener {
         
         // Expands nodes, one node at a time.
         for (Integer i : nodeIndexes) {
-            DirectedExplosionTile node = border.get(i);
+            ExplosionTile node = border.get(i);
             int range = explosion.getRange();
 
             while (range > 0){
@@ -285,7 +285,7 @@ public class Model implements ApplicationListener {
                     continue;
                 }
     
-                DirectedExplosionTile nextNode = explosion.expandNode(node);
+                ExplosionTile nextNode = explosion.expandNode(node);
 
                 switch(checkIfSolid(nextNode.getPosition())){
                     case 2:
@@ -299,7 +299,7 @@ public class Model implements ApplicationListener {
                     case 0:
                 }
     
-                explosion.addExplosionTile(nextNode.getTile());
+                explosion.addExplosionTile(nextNode);
                 range -= 1;
             }
         }
