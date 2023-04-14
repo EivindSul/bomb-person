@@ -1,14 +1,44 @@
 package inf112.bomberperson.model;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 
 public class Collision {
-    Player player;
     String blockedKey = "blocked";
-
-    public Collision(Player player){
-        this.player =player;
+    ArrayList<TiledMapTileLayer> collisionList;
+    public Collision(ArrayList<TiledMapTileLayer> collisionList){
+        this.collisionList = collisionList;
     }
+    /**
+     * A genereal method gathering all collision logic in one method
+     * @param collidable checks the collidable if it collides collisionList
+     * @return true if collides, false if not
+     */
+    public boolean checkCollisionOfCollidable(Collidable collidable){
+        for (TiledMapTileLayer layer : collisionList) {
+            if (checkCollisionOnOnlyLayer(collidable, layer)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    /**
+     * A method checking collision of spesific layer
+     * @param collidable to check if collides with layer
+     * @param layer to check if collides with collidable
+     * @return true if Collidable collides with layer
+     */
+    private boolean checkCollisionOnOnlyLayer(Collidable collidable, TiledMapTileLayer layer){
+        if (
+            collidesTop(collidable, layer) ||
+            collidesBottom(collidable, layer) ||
+            collidesRight(collidable, layer) ||
+            collidesLeft(collidable, layer)
+        ) {return true;}
+        return false;
+    }
+    
     public boolean isCellBlocked(float x, float y, TiledMapTileLayer layer){
         try {
 
@@ -22,11 +52,11 @@ public class Collision {
         }
 
     }
-    public boolean collidesRight(TiledMapTileLayer layer){
+    public boolean collidesRight(Collidable collidable, TiledMapTileLayer layer){
         boolean collides = false;
-        for(float step = 0; step < player.getHeight() ; step += layer.getTileHeight()/2){
+        for(float step = 0; step < collidable.getHeight() ; step += layer.getTileHeight()/2){
             try {
-                collides = isCellBlocked(player.getX() + player.getWidth(), player.getY() + step, layer);
+                collides = isCellBlocked(collidable.getX() + collidable.getWidth(), collidable.getY() + step, layer);
                 if (collides){
                     break;
                 }
@@ -38,11 +68,11 @@ public class Collision {
 
         return collides;
     }
-    public boolean collidesLeft(TiledMapTileLayer layer){
+    public boolean collidesLeft(Collidable collidable , TiledMapTileLayer layer){
         boolean collides = false;
-        for(float step = 0; step < player.getHeight() ; step += layer.getTileHeight()/2){
+        for(float step = 0; step < collidable.getHeight() ; step += layer.getTileHeight()/2){
             try {
-                collides = isCellBlocked(player.getX() , player.getY() + step, layer);
+                collides = isCellBlocked(collidable.getX() , collidable.getY() + step, layer);
                 if (collides){
                     break;
                 }
@@ -54,11 +84,11 @@ public class Collision {
         return collides;
     }
 
-    public boolean collidesTop(TiledMapTileLayer layer){
-        boolean collides = false;
-        for(float step = 0; step < player.getWidth() ; step += layer.getTileWidth()/2){
+    public boolean collidesTop(Collidable collidable , TiledMapTileLayer layer){
+    boolean collides = false;
+    for(float step = 0; step < collidable.getWidth() ; step += layer.getTileWidth()/2){
             try {
-                collides = isCellBlocked(player.getX() + step, player.getY() + player.getHeight(), layer);
+                collides = isCellBlocked(collidable.getX() + step, collidable.getY() + collidable.getHeight(), layer);
                 if (collides){
                     break;
                 }
@@ -70,12 +100,12 @@ public class Collision {
 
         return collides;
     }
-    public boolean collidesBottom(TiledMapTileLayer layer){
+    public boolean collidesBottom(Collidable collidable , TiledMapTileLayer layer){
         boolean collides = false;
 
-        for(float step = 0; step < player.getWidth(); step += layer.getTileWidth()/2){
+        for(float step = 0; step < collidable.getWidth(); step += layer.getTileWidth()/2){
             try {
-                collides = isCellBlocked(player.getX() + step, player.getY(), layer);
+                collides = isCellBlocked(collidable.getX() + step, collidable.getY(), layer);
                 if (collides){
                     break;
                 }
@@ -83,9 +113,6 @@ public class Collision {
                 continue;
             }
         }
-
         return collides;
     }
-
-
 }

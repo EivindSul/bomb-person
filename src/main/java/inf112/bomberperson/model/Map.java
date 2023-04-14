@@ -4,10 +4,13 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Cursor.SystemCursor;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.tiles.AnimatedTiledMapTile;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -15,16 +18,19 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.Arrays;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Map extends ApplicationAdapter {
-    private static final int TILE_SIZE = 32;
+    public static final int TILE_SIZE = 16;
     static final int MAP_WIDTH = 27;
     static final int MAP_HEIGHT = 27;
     static final float WALL_DENSITY = 0.2f;
+    static final int POWERUP_SPAWN_CHANCE = 4; // One in 4 walls broken spawns a powerup.
     private static final Random random = new Random();
     static final int GRASS_TILE_ID=  484;
     static final int WALL_TILE_ID=  386;
     static final int BRICK_TILE_ID=  106;
+
 
     public TiledMap getMap() {
         return map;
@@ -46,6 +52,10 @@ public class Map extends ApplicationAdapter {
         return wallTiles;
     }
 
+    static final int BOMB_TILE_ID=  174;
+    static final int EXPLOSION_TILE_ID=  176;
+
+
     public float getWidth() {
         return MAP_WIDTH;
     }
@@ -61,16 +71,22 @@ public class Map extends ApplicationAdapter {
     enum TileType {
         GRASS,
         BRICK,
-        WALL
+        WALL,
+        EXPLOSION
     }
 
     private OrthographicCamera camera;
     private SpriteBatch batch;
     private TiledMap map;
     private OrthogonalTiledMapRenderer mapRenderer;
+
     TiledMapTileLayer groundLayer;
     static TiledMapTileLayer wallLayer;
     static TiledMapTileLayer explodableWallLayer;
+    static TiledMapTileLayer powerupLayer;
+    static TiledMapTileLayer explosionLayer;
+    static TiledMapTileLayer bombLayer;
+    
     TiledMapTile[] wallTiles;
     private TiledMapTile[] brickTiles;
     private Viewport viewport;
@@ -78,8 +94,8 @@ public class Map extends ApplicationAdapter {
 
     @Override
     public void create() {
-        int mapWidth = MAP_WIDTH * TILE_SIZE;
-        int mapHeight = MAP_HEIGHT * TILE_SIZE;
+        int mapWidth = MAP_WIDTH * TILE_SIZE * 2;
+        int mapHeight = MAP_HEIGHT * TILE_SIZE * 2;
 
         camera = new OrthographicCamera();
         viewport = new FitViewport(mapWidth, mapHeight, camera);
@@ -106,6 +122,9 @@ public class Map extends ApplicationAdapter {
         groundLayer = (TiledMapTileLayer)map.getLayers().get("Ground");
         wallLayer = (TiledMapTileLayer)map.getLayers().get("Wall");
         explodableWallLayer = (TiledMapTileLayer)map.getLayers().get("ExplodableWall");
+        powerupLayer = (TiledMapTileLayer)map.getLayers().get("Powerups");
+        explosionLayer = (TiledMapTileLayer)map.getLayers().get("Explosions");
+        bombLayer = (TiledMapTileLayer)map.getLayers().get("Bombs");
 
         // Get the wall tiles from the tileset
         TiledMapTileSet tileset = map.getTileSets().getTileSet("tiles");
@@ -203,26 +222,170 @@ public class Map extends ApplicationAdapter {
         }
 
 
-
-
-
-
+        
         explodableWallLayer.setCell(1, 1, null);
         explodableWallLayer.setCell(2, 1, null);
         explodableWallLayer.setCell(1, 2, null);
-
+        
         explodableWallLayer.setCell(24, 1, null);
         explodableWallLayer.setCell(25, 1, null);
         explodableWallLayer.setCell(25, 2, null);
-
+        
         explodableWallLayer.setCell(24, 25, null);
         explodableWallLayer.setCell(25, 24,null);
         explodableWallLayer.setCell(25, 25, null);
-
+        
         explodableWallLayer.setCell(1, 25, null);
         explodableWallLayer.setCell(2, 25, null);
         explodableWallLayer.setCell(1, 24, null);
     }
+
+
+    /*
+    * 
+    */
+    public void addBombToMap(Vector2 position){
+
+        int col = (Math.round(position.x / TILE_SIZE));
+        int row = (Math.round(position.y / TILE_SIZE));
+        
+        TiledMapTileSet tileset = map.getTileSets().getTileSet("tiles");
+        TiledMapTileLayer.Cell bombCell = new TiledMapTileLayer.Cell();
+        bombCell.setTile(tileset.getTile(BOMB_TILE_ID));
+        bombLayer.setCell(col, row, bombCell);
+        
+    }
+
+    /*
+    * 
+    */
+    public void removeBombFromMap(Vector2 position){
+
+        int col = (Math.round(position.x / TILE_SIZE));
+        int row = (Math.round(position.y / TILE_SIZE));
+        
+        bombLayer.setCell(col, row, null);
+    }
+    public void addExplosionToMap(Explosion explosion){
+
+        for (ExplosionTile tile : explosion.getExplosion()) {
+            Vector2 position = tile.getPosition();
+            
+            int col = (Math.round(position.x / TILE_SIZE));
+            int row = (Math.round(position.y / TILE_SIZE));
+            
+            TiledMapTileSet tileset = map.getTileSets().getTileSet("tiles");
+            TiledMapTileLayer.Cell cell = new TiledMapTileLayer.Cell();
+            cell.setTile(tileset.getTile(EXPLOSION_TILE_ID));
+            explosionLayer.setCell(col, row, cell);
+        }        
+    }
+
+    /*
+    * 
+    */
+    public void removeExplosionFromMap(Explosion explosion){
+
+        for (ExplosionTile tile : explosion.getExplosion()) {
+            Vector2 position = tile.getPosition();
+
+            int col = (Math.round(position.x / TILE_SIZE));
+            int row = (Math.round(position.y / TILE_SIZE));
+            
+            explosionLayer.setCell(col, row, null);
+        }
+    }
+    
+    
+    /**
+     * Removes walls and powerups in this position. 
+     * 1/4 chance of spawning a powerup in its place.
+     * @param position
+     */
+    public void breakWall(Vector2 position){
+        int col = (Math.round(position.x / TILE_SIZE));
+        int row = (Math.round(position.y / TILE_SIZE));
+        
+        TiledMapTileLayer.Cell nullCell = null;
+
+        // Kill powerups that are in the cell already.
+        
+        powerupLayer.setCell(col, row, nullCell);
+
+
+        if(explodableWallLayer.getCell(col, row) != nullCell){
+            int spawn = ThreadLocalRandom.current().nextInt(0, POWERUP_SPAWN_CHANCE);
+            if (spawn == 0){
+                powerupLayer.setCell(col, row, getPowerup());
+            }
+            explodableWallLayer.setCell(col, row, nullCell);
+        }
+    }
+    
+    /**
+     * Gets a random powerup to put in a cell.
+     * @return Cell with a powerup.
+     */
+    private TiledMapTileLayer.Cell getPowerup(){
+        // TODO: add powerups here
+        TiledMapTileSet tileset = map.getTileSets().getTileSet("tiles");
+        TiledMapTileLayer.Cell cell = new TiledMapTileLayer.Cell();
+        cell.setTile(tileset.getTile(356));
+        return cell;
+    }
+    
+
+    /**
+     * checks if a vector position overlaps with a solid wall.
+     * @param position
+     * @return if there is solid wall here
+     */
+    public boolean containsSolidWall(Vector2 position){
+        
+        int col = (Math.round(position.x / TILE_SIZE));
+        int row = (Math.round(position.y / TILE_SIZE));
+        
+        if(wallLayer.getCell(col, row) == null){
+            return false;
+        }
+        
+        return true;
+    }
+    
+    /**
+     * checks if a vector position overlaps with a breakable wall.
+     * @param position
+     * @return if there is breakable wall here
+     */
+    public boolean containsBreakableWall(Vector2 position){
+        
+        int col = (Math.round(position.x / TILE_SIZE));
+        int row = (Math.round(position.y / TILE_SIZE));
+        
+        if(explodableWallLayer.getCell(col, row) == null){
+            return false;
+        }
+        
+        return true;
+    }
+    /**
+     * checks if a vector position overlaps with an explosion.
+     * @param position
+     * @return if there is explosion here
+     */
+    public boolean containsExplosion(Vector2 position){
+
+        int col = (Math.round(position.x / TILE_SIZE));
+        int row = (Math.round(position.y / TILE_SIZE));
+
+        if(explosionLayer.getCell(col, row) == null){
+            return false;
+        }
+
+        return true;
+    }
+    
+    
     public TileType getTileTypeByCoordinate(int layer, int col, int row) {
         TiledMapTileLayer.Cell cell = null;
         if (layer == 0) {

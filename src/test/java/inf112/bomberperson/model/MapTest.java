@@ -32,11 +32,8 @@ public class MapTest {
     @Before
     public void setUp() {
 
-        Lwjgl3ApplicationConfiguration cfg = new Lwjgl3ApplicationConfiguration();
-
-        MockitoAnnotations.initMocks(this);
         map = spy(new Map());
-        map.create();
+
 
         map.explodableWallLayer = explodableWallLayer;
     }

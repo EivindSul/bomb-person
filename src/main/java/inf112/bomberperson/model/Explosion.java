@@ -12,10 +12,10 @@ public class Explosion {
     private int range;
     private int power;
     private ArrayList<ExplosionTile> explosion = new ArrayList<ExplosionTile>();
-    private ArrayList<DirectedExplosionTile> explosionBorder = new ArrayList<DirectedExplosionTile>();
+    private ArrayList<ExplosionTile> explosionBorder = new ArrayList<ExplosionTile>();
 
     // TODO: make TileOffset into a system that actually aligns the tiles to grid, instead of using Vector2.
-    private float tileOffset = (float) 16.0;
+    private float tileOffset = (float) Map.TILE_SIZE;
     
     public Explosion(Vector2 position, int bombRange, int bombPower){
         this.center = position;
@@ -23,10 +23,10 @@ public class Explosion {
         this.power = bombPower;
         ExplosionTile centerTile = new ExplosionTile(center);
         this.explosion.add(centerTile);
-        this.explosionBorder.add(new DirectedExplosionTile(centerTile, 1, bombPower));
-        this.explosionBorder.add(new DirectedExplosionTile(centerTile, 2, bombPower));
-        this.explosionBorder.add(new DirectedExplosionTile(centerTile, 3, bombPower));
-        this.explosionBorder.add(new DirectedExplosionTile(centerTile, 4, bombPower));
+        this.explosionBorder.add(new ExplosionTile(center, 1, bombPower));
+        this.explosionBorder.add(new ExplosionTile(center, 2, bombPower));
+        this.explosionBorder.add(new ExplosionTile(center, 3, bombPower));
+        this.explosionBorder.add(new ExplosionTile(center, 4, bombPower));
     }
 
     // TODO: Add method to draw ExplosionTiles
@@ -39,7 +39,7 @@ public class Explosion {
         this.explosion.add(tile);
     }
     
-    public ArrayList<DirectedExplosionTile> getBorder(){
+    public ArrayList<ExplosionTile> getBorder(){
         return this.explosionBorder;
     }
     
@@ -48,33 +48,34 @@ public class Explosion {
      * Expands a node.
      * A node is one line of the explosion. The explosion is shaped like a plus, so there are 4 nodes out of it.
      * This is only used for the explosionBorder, and needs the tile do be directed. 
-     * @param directedTile The tile for which to find next tile
+     * @param ExplosionTile The tile for which to find next tile
      * @return The neighboring tile in the same direction
      */
-    public DirectedExplosionTile expandNode(DirectedExplosionTile directedTile){
+    public ExplosionTile expandNode(ExplosionTile directedTile){
         
-        ExplosionTile tile = directedTile.getTile();
         ExplosionTile neighbor;
         int direction = directedTile.getDirection();
         int power = directedTile.getPower();
         
         switch (direction){
             case 1:  // Up
-            neighbor = getAboveNeighbor(tile);
+            neighbor = getAboveNeighbor(directedTile);
             break;
             case 2:  // Right
-            neighbor = getRightNeighbor(tile);
+            neighbor = getRightNeighbor(directedTile);
             break;
             case 3:  // Down
-            neighbor = getBelowNeighbor(tile);
+            neighbor = getBelowNeighbor(directedTile);
             break;
             case 4:  // Left
-            neighbor = getLeftNeighbor(tile);
+            neighbor = getLeftNeighbor(directedTile);
             break;
             default: 
             return directedTile;
         }
-        return new DirectedExplosionTile(neighbor, direction, power);
+        neighbor.setDirection(direction);
+        neighbor.setPower(power);
+        return neighbor;
     }
     
     /**
@@ -86,34 +87,37 @@ public class Explosion {
         return this.range;
     }
     
-    public void setBorder(ArrayList<DirectedExplosionTile> newBorder) {
+    public void setBorder(ArrayList<ExplosionTile> newBorder) {
         this.explosionBorder = newBorder;
     }
     
+    public void setBorder(int index, ExplosionTile tile) {
+        this.explosionBorder.set(index, tile);
+    }
 
     private ExplosionTile getAboveNeighbor(ExplosionTile tile){
-        Vector2 neighborPosition = new Vector2 (tile.getPositionX() + tileOffset, tile.getPositionY());
+        Vector2 neighborPosition = new Vector2 (tile.getX() + tileOffset, tile.getY());
         ExplosionTile neighbor = new ExplosionTile(neighborPosition);
         return neighbor;
     }
     private ExplosionTile getRightNeighbor(ExplosionTile tile){
-        Vector2 neighborPosition = new Vector2 (tile.getPositionX(), tile.getPositionY() + tileOffset);
+        Vector2 neighborPosition = new Vector2 (tile.getX(), tile.getY() + tileOffset);
         ExplosionTile neighbor = new ExplosionTile(neighborPosition);
         return neighbor;
 
     }
     private ExplosionTile getBelowNeighbor(ExplosionTile tile){
-        Vector2 neighborPosition = new Vector2 (tile.getPositionX() - tileOffset, tile.getPositionY());
+        Vector2 neighborPosition = new Vector2 (tile.getX() - tileOffset, tile.getY());
         ExplosionTile neighbor = new ExplosionTile(neighborPosition);
         return neighbor;
     }
-
+    
     private ExplosionTile getLeftNeighbor(ExplosionTile tile){
-        Vector2 neighborPosition = new Vector2 (tile.getPositionX(), tile.getPositionY() - tileOffset);
+        Vector2 neighborPosition = new Vector2 (tile.getX(), tile.getY() - tileOffset);
         ExplosionTile neighbor = new ExplosionTile(neighborPosition);
         return neighbor;
     }
-
+    
     
     
     /*------------------- GET POSITION -------------------*/
@@ -142,6 +146,7 @@ public class Explosion {
     public Vector2 getPosition(){
         return this.center;
     }
+
 
 }
 

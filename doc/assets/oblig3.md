@@ -51,3 +51,37 @@
     drepe players.
     Markere dette som innlevering, og begynne på enventuell refractoring. Refractoring er ikke enda diskutert med alle og det vil bli nødvenig å gå grundig gjennom dette.
     </p>
+
+<h1>Referat 9 (12.04.2023)</h1>
+<h2>Hvem som var tilstede</h2>
+    <p>Alle</p>
+<h2>Hva dere diskuterte</h2>
+    <p> Noe av hva vi diskuterte idag
+        <ul>
+            <li>Hvordan refrakturere collision inn i model</li>
+            <li>Death i model</li>
+        </ul>
+    </p>
+<h2>Hvilke avgjørelser dere tok</h2>
+<p>Collision bør bli refractoret</p>
+<h2>Hva dere ble enige om å gjøre til neste gang</h2>
+<p>Planlagt møte i morgen, vil derfor ikke stadfeste noe som skal gjøres. Men i morgen og fremover til oblig3 innlevering 14.04.2023 blir vi enig om å jobbe med :
+    powerups,
+    to players,
+    drepe players.
+    </p>
+
+<h1>Referat 10 (13.04.2023)</h1>
+<h2>Hvem som var tilstede</h2>
+    <p>Alle</p>
+<h2>Hva dere diskuterte</h2>
+    <p> Noe av hva vi diskuterte idag
+        <ul>
+            <li>Player deaths og bombene til tiles</li>
+            <li>To players er nå inne i spillet</li>
+            <li>Collision er refractoret</li>
+        </ul>
+    </p>
+<h2>Hvilke avgjørelser dere tok</h2>
+<p>Bomben,Eksplosjoner og powerups skal være en TileObject</p>
+<h2>Hva dere ble enige om å gjøre til neste gang</h2>
