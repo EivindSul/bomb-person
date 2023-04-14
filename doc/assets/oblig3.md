@@ -51,3 +51,30 @@
     drepe players.
     Markere dette som innlevering, og begynne på enventuell refractoring. Refractoring er ikke enda diskutert med alle og det vil bli nødvenig å gå grundig gjennom dette.
     </p>
+
+<h1>Referat 9 (12.04.2023)</h1>
+<h2>Hvem som var tilstede</h2>
+    <p>Alle</p>
+<h2>Hva dere diskuterte</h2>
+    <p> Noe av hva vi diskuterte idag
+        <ul>
+            <li>Hvordan refrakturere collision inn i model</li>
+            <li>Death in model</li>
+        </ul>
+    </p>
+<h2>Hvilke avgjørelser dere tok</h2>
+<h2>Hva dere ble enige om å gjøre til neste gang</h2>
+
+<h1>Referat 10 (13.04.2023)</h1>
+<h2>Hvem som var tilstede</h2>
+    <p>Alle</p>
+<h2>Hva dere diskuterte</h2>
+    <p> Noe av hva vi diskuterte idag
+        <ul>
+            <li>Hvordan refrakturere collision inn i model</li>
+            <li>Powerups</li>
+            <li>DeathScreen</li>
+        </ul>
+    </p>
+<h2>Hvilke avgjørelser dere tok</h2>
+<h2>Hva dere ble enige om å gjøre til neste gang</h2>
