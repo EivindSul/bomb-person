@@ -47,11 +47,11 @@ public class Collision {
         return true;
     }
 
-    protected void setPowerupLayer(TiledMapTileLayer layer) {
+    public void setPowerupLayer(TiledMapTileLayer layer) {
         this.powerUpLayer = layer;
     }
 
-    protected String containsPowerup(Vector2 position){
+    public String containsPowerup(Vector2 position){
         float x = position.x;
         float y = position.y;
         try {
