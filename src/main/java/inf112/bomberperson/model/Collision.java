@@ -42,16 +42,16 @@ public class Collision {
         return false;
     }
 
-    public boolean checkCollisionOnPowerup(Collidable collidable){
+    private boolean checkCollisionOnPowerup(Collidable collidable){
         checkCollisionOnOnlyLayer(collidable, this.getPowerupLayer());
         return true;
     }
 
-    public void setPowerupLayer(TiledMapTileLayer layer) {
+    protected void setPowerupLayer(TiledMapTileLayer layer) {
         this.powerUpLayer = layer;
     }
 
-    public String containsPowerup(Vector2 position){
+    protected String containsPowerup(Vector2 position){
         float x = position.x;
         float y = position.y;
         try {
@@ -71,11 +71,18 @@ public class Collision {
         }
     }
 
-    public TiledMapTileLayer getPowerupLayer() {
+    private TiledMapTileLayer getPowerupLayer() {
         return this.powerUpLayer;
     }
-    
-    public boolean isCellBlocked(float x, float y, TiledMapTileLayer layer){
+
+    /**
+     * A method that checks if the a cell is blocked.
+     * @param x - x-position
+     * @param y - y-position
+     * @param layer - check the layer is other than grass.
+     * @return True if the cell blocked.
+     */
+    private boolean isCellBlocked(float x, float y, TiledMapTileLayer layer){
         try {
 
             TiledMapTileLayer.Cell cell = layer.getCell((int) (x / layer.getTileWidth()), (int) (y / layer.getTileHeight()));
