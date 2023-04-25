@@ -12,7 +12,37 @@
         <li>interaktiv lyd(dorcas)</li>
         <li>object frabrikk(eivind)</li>
         <li>Tester med test coverage, Headless applicationtest Sebastian og Kjell prøver.</li>
-        <li>lisens og kildebruk(sebastian,kjell)</li>
+        <li>lisens og kildebruk(sebastian,jackie)</li>
         <li>dokumentasjon i koden i tilleg til innkapsling(Brian og jackie)</li>
     </ul>
+
+
+<h1>Referat 13 (25.04.2023)</h1>
+<h2>Hvem som var tilstede</h2>
+    <p>Sebastian, Kjell, Jackie, Eivind, Brian, Dorcas</p>
+<h2>Hva dere diskuterte</h2>
+    <p>Jackie tok fram et viktig poeng fra tilbakemeldingen på oblig3, det var rapportert at spillerens bevegelse ikke fungerer på linux, dette må undersøkes mer. Det ble også tatt opp at vi må ha oppdatert klassediagrammet til siste innlevering. Model var også kritisert for å være ustrukturert</p>
+    <p>Det er en latency bug med bombene, dette mistenker vi har noe med kontrollerne å gjøre</p>
+    <p>Facotry design patternet hadde passet best in dersom det produserte tiles. Da kan vi produsere tiles til mappet, powerups, bomber og eksplosjoner </p>
+    <p>I tilbakemeldingen ble det spurt om bedre forklaring på hvordan man skal starte spillet.</p>
+    <p>Brain prøvde på controller buggen vi har</p>
+<h2>Hvilke avgjørelser dere tok</h2>
+    <p>factorien skal ta hånd om mye av generering av bomber,eksplosjoner,osv... i model.</p>
+<h2>Hva dere ble enige om å gjøre til neste gang</h2>
+    <p>Til neste gang vil vi jobbe med å implimentere det vi mangler av spesifikke krav, samt prøve å fikse noe av tilbakemeldingene vi har fått. I tillegg vil vi prøve å fikse controller bug</p>
+    <ul>
+        <li>uml diagram(sebastian)</li>
+        <li>se på programvare for å test(spotbugs) visst tid til overs</li>
+        <li>problem med menyer på linux</li>
+        <li>strukturere model litt(sebastian)</li>
+    </ul>
+    <ul>
+        <li>interaktiv lyd(dorcas)</li>
+        <li>TileFactory frabrikk(eivind)</li>
+        <li>Tester med test coverage, Headless applicationtest Sebastian og Kjell prøver.</li>
+        <li>lisens og kildebruk i tillegg til bedre forklaring på hvordan vi starter spillet(sebastian,jackie)</li>
+        <li>dokumentasjon i koden i tilleg til innkapsling(Brian og jackie)</li>
+    </ul>
+    <p>til neste gang vil vi spørre gruppeleder om : mockito , headless application og tester, tilbakemelding om powerups(eivind), spotbugg, linux problemet med spillet(kjell og sebastian), lisens(sebastian og jakcie), spør om MVC struktur</p>
+
     
