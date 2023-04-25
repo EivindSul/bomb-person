@@ -1,8 +1,10 @@
-package inf112.bomberperson.model;
+package inf112.bomberperson.model.tiles;
 
 import java.util.ArrayList;
 
 import com.badlogic.gdx.math.Vector2;
+
+import inf112.bomberperson.model.map.Map;
 
 // Explosion is a list of ExplosionTiles. It contains a timer to tell when it is to be removed from the map, and all its related ExplosionTiles.
 

@@ -1,4 +1,4 @@
-package inf112.bomberperson.model;
+package inf112.bomberperson.model.map;
 
 import java.util.concurrent.ThreadLocalRandom;
 

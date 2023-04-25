@@ -1,4 +1,4 @@
-package inf112.bomberperson.model;
+package inf112.bomberperson.model.map;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -16,6 +16,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import inf112.bomberperson.model.tiles.Explosion;
+import inf112.bomberperson.model.tiles.ExplosionTile;
+
 import java.util.Arrays;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -27,9 +30,9 @@ public class Map extends ApplicationAdapter {
     static final float WALL_DENSITY = 0.2f;
     static final int POWERUP_SPAWN_CHANCE = 4; // One in 4 walls broken spawns a powerup.
     private static final Random random = new Random();
-    static final int GRASS_TILE_ID=  484;
-    static final int WALL_TILE_ID=  386;
-    static final int BRICK_TILE_ID=  106;
+    public static final int GRASS_TILE_ID=  484;
+    public static final int WALL_TILE_ID=  386;
+    public static final int BRICK_TILE_ID=  106;
 
 
     public TiledMap getMap() {
@@ -68,7 +71,7 @@ public class Map extends ApplicationAdapter {
     }
 
 
-    enum TileType {
+    public enum TileType {
         GRASS,
         BRICK,
         WALL,
@@ -80,12 +83,12 @@ public class Map extends ApplicationAdapter {
     private TiledMap map;
     private OrthogonalTiledMapRenderer mapRenderer;
 
-    TiledMapTileLayer groundLayer;
-    static TiledMapTileLayer wallLayer;
-    static TiledMapTileLayer explodableWallLayer;
-    static TiledMapTileLayer powerupLayer;
+    public TiledMapTileLayer groundLayer;
+    public static TiledMapTileLayer wallLayer;
+    public static TiledMapTileLayer explodableWallLayer;
+    public static TiledMapTileLayer powerupLayer;
     static TiledMapTileLayer explosionLayer;
-    static TiledMapTileLayer bombLayer;
+    public static TiledMapTileLayer bombLayer;
     
     TiledMapTile[] wallTiles;
     private TiledMapTile[] brickTiles;

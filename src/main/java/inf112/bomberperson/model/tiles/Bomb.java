@@ -1,4 +1,4 @@
-package inf112.bomberperson.model;
+package inf112.bomberperson.model.tiles;
 
 import com.badlogic.gdx.math.Vector2;
 

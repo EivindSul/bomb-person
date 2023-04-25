@@ -1,6 +1,8 @@
-package inf112.bomberperson.model;
+package inf112.bomberperson.model.tiles;
 
 import com.badlogic.gdx.math.Vector2;
+
+import inf112.bomberperson.model.map.Map;
 
 public abstract class TileObject {
 

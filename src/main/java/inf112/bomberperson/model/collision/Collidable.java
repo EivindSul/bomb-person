@@ -1,4 +1,4 @@
-package inf112.bomberperson.model;
+package inf112.bomberperson.model.collision;
 
 public interface Collidable {
     public float getX();
