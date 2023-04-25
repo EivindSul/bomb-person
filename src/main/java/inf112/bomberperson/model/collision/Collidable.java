@@ -1,4 +1,4 @@
-package inf112.bomberperson.model;
+package inf112.bomberperson.model.collision;
 
 /**
  * A Collision interface asking implementing objects for these four attributes:
