@@ -34,7 +34,7 @@
         <li>uml diagram(sebastian)</li>
         <li>se på programvare for å test(spotbugs) visst tid til overs</li>
         <li>problem med menyer på linux</li>
-        <li>strukturere model litt(sebastian)</li>
+        <li>fikse MVC litt</li>
     </ul>
     <ul>
         <li>interaktiv lyd(dorcas)</li>
