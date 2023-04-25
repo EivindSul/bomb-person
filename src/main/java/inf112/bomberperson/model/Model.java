@@ -12,6 +12,11 @@ import com.badlogic.gdx.math.Vector2;
 
 import inf112.bomberperson.controller.MyInputProcessor;
 import inf112.bomberperson.game.BombermanGame;
+import inf112.bomberperson.model.collision.Collision;
+import inf112.bomberperson.model.map.Map;
+import inf112.bomberperson.model.tiles.Bomb;
+import inf112.bomberperson.model.tiles.Explosion;
+import inf112.bomberperson.model.tiles.ExplosionTile;
 import inf112.bomberperson.screens.GameOverScreen;
 
 

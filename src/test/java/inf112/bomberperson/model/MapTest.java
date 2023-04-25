@@ -1,15 +1,30 @@
-// package inf112.bomberperson.model;
+// // package inf112.bomberperson.model;
 
+// <<<<<<< HEAD
+// // import com.badlogic.gdx.Game;
+// // import com.badlogic.gdx.backends.headless.HeadlessApplication;
+// // import com.badlogic.gdx.backends.headless.HeadlessApplicationConfiguration;
+// // import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+// // import inf112.bomberperson.game.BombermanGame;
+// // import org.junit.Before;
+// // import org.junit.Test;
+// // import org.junit.jupiter.api.BeforeAll;
+// // import org.junit.jupiter.api.extension.ExtendWith;
+// // import org.mockito.Mock;
+// =======
 // import com.badlogic.gdx.Game;
 // import com.badlogic.gdx.backends.headless.HeadlessApplication;
 // import com.badlogic.gdx.backends.headless.HeadlessApplicationConfiguration;
 // import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 // import inf112.bomberperson.game.BombermanGame;
+// import inf112.bomberperson.model.map.Map;
+
 // import org.junit.Before;
 // import org.junit.Test;
 // import org.junit.jupiter.api.BeforeAll;
 // import org.junit.jupiter.api.extension.ExtendWith;
 // import org.mockito.Mock;
+// >>>>>>> main
 
 // import org.mockito.MockitoAnnotations;
 // import com.badlogic.gdx.maps.tiled.*;

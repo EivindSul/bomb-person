@@ -1,23 +1,19 @@
-package inf112.bomberperson.model;
+package inf112.bomberperson.model.map;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Cursor.SystemCursor;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.maps.tiled.tiles.AnimatedTiledMapTile;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import java.util.Arrays;
-import java.util.Random;
+import inf112.bomberperson.model.tiles.Explosion;
+import inf112.bomberperson.model.tiles.ExplosionTile;
+
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Map extends ApplicationAdapter {
@@ -26,7 +22,6 @@ public class Map extends ApplicationAdapter {
     static final int MAP_HEIGHT = 27;
     static final float WALL_DENSITY = 0.2f;
     static final int POWERUP_SPAWN_CHANCE = 4; // One in 4 walls broken spawns a powerup.
-    private static final Random random = new Random();
     private TiledMapTileSet tileset;
     static final int GRASS_TILE_ID=  484;
     static final int WALL_TILE_ID=  386;
@@ -96,6 +91,31 @@ public class Map extends ApplicationAdapter {
     }
 
 
+// <<<<<<< HEAD:src/main/java/inf112/bomberperson/model/Map.java
+// =======
+//     public enum TileType {
+//         GRASS,
+//         BRICK,
+//         WALL,
+//         EXPLOSION
+//     }
+
+//     private OrthographicCamera camera;
+//     private SpriteBatch batch;
+//     private TiledMap map;
+//     private OrthogonalTiledMapRenderer mapRenderer;
+
+//     public TiledMapTileLayer groundLayer;
+//     public static TiledMapTileLayer wallLayer;
+//     public static TiledMapTileLayer explodableWallLayer;
+//     public static TiledMapTileLayer powerupLayer;
+//     static TiledMapTileLayer explosionLayer;
+//     public static TiledMapTileLayer bombLayer;
+    
+//     TiledMapTile[] wallTiles;
+//     private TiledMapTile[] brickTiles;
+//     private Viewport viewport;
+// >>>>>>> main:src/main/java/inf112/bomberperson/model/map/Map.java
 
 
     @Override
@@ -413,9 +433,5 @@ public class Map extends ApplicationAdapter {
 
         return layer.getCell(col, row);
     }
-    
-
-
-
 }
 

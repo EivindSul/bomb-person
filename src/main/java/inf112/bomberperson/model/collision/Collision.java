@@ -1,4 +1,4 @@
-package inf112.bomberperson.model;
+package inf112.bomberperson.model.collision;
 
 import java.util.ArrayList;
 

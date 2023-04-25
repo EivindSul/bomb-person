@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import inf112.bomberperson.model.animations.PlayerAnimations;
+import inf112.bomberperson.model.collision.Collidable;
+import inf112.bomberperson.model.tiles.Bomb;
 
 public class Player extends Sprite implements Collidable {
     public enum Direction{
