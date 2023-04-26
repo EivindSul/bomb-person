@@ -23,17 +23,6 @@ public class Map extends ApplicationAdapter {
     static final float WALL_DENSITY = 0.2f;
     static final int POWERUP_SPAWN_CHANCE = 4; // One in 4 walls broken spawns a powerup.
     private TiledMapTileSet tileset;
-    static final int GRASS_TILE_ID=  484;
-    static final int WALL_TILE_ID=  386;
-    static final int BRICK_TILE_ID=  106;
-    static final int BOMB_TILE_ID=  174;
-    static final int EXPLOSION_TILE_ID=  176;
-    enum TileType {
-        GRASS,
-        BRICK,
-        WALL,
-        EXPLOSION
-    }
 
     private OrthographicCamera camera;
     private SpriteBatch batch;
@@ -41,13 +30,39 @@ public class Map extends ApplicationAdapter {
     private OrthogonalTiledMapRenderer mapRenderer;
     
     TiledMapTile[] wallTiles;
-    private TiledMapTile[] brickTiles;
     private Viewport viewport;
 
     public Map(){
-        this.create();
-    }
+        int mapWidth = MAP_WIDTH * TILE_SIZE * 2;
+        int mapHeight = MAP_HEIGHT * TILE_SIZE * 2;
 
+        camera = new OrthographicCamera();
+        viewport = new FitViewport(mapWidth, mapHeight, camera);
+        viewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+        camera.zoom = .74f; // or any other value
+        camera.position.set(mapWidth / 3.33f, mapHeight / 3.33f, 0);
+        viewport.update(mapWidth, mapHeight);
+
+
+        batch = new SpriteBatch();
+
+        // Load the map from Tiled
+        map = new TmxMapLoader().load("doc/assets/tiles2.tmx");
+        tileset = map.getTileSets().getTileSet("tiles");
+
+        // Create the map renderer
+        mapRenderer = new OrthogonalTiledMapRenderer(map);
+        mapRenderer.setView(camera);
+
+        // Get the wall tiles from the tileset
+        TiledMapTileSet tileset = map.getTileSets().getTileSet("tiles");
+        TiledMapTile wallTile1 = tileset.getTile(TextureID.SOLID_WALL.id);
+        wallTiles = new TiledMapTile[]{wallTile1};
+
+        // Randomly generate the map
+        generateMap();
+    }
 
     public TiledMap getMap() {
         return map;
@@ -72,11 +87,6 @@ public class Map extends ApplicationAdapter {
     public TiledMapTileLayer getLayerByName(String layer) {
         return (TiledMapTileLayer)getMap().getLayers().get(layer);
     }
-    
-    public TiledMapTile[] getWallTiles() {
-        return wallTiles;
-    }
-
 
 
     public float getWidth() {
@@ -89,76 +99,6 @@ public class Map extends ApplicationAdapter {
     public OrthogonalTiledMapRenderer getMapRenderer() {
         return mapRenderer;
     }
-
-
-// <<<<<<< HEAD:src/main/java/inf112/bomberperson/model/Map.java
-// =======
-//     public enum TileType {
-//         GRASS,
-//         BRICK,
-//         WALL,
-//         EXPLOSION
-//     }
-
-//     private OrthographicCamera camera;
-//     private SpriteBatch batch;
-//     private TiledMap map;
-//     private OrthogonalTiledMapRenderer mapRenderer;
-
-//     public TiledMapTileLayer groundLayer;
-//     public static TiledMapTileLayer wallLayer;
-//     public static TiledMapTileLayer explodableWallLayer;
-//     public static TiledMapTileLayer powerupLayer;
-//     static TiledMapTileLayer explosionLayer;
-//     public static TiledMapTileLayer bombLayer;
-    
-//     TiledMapTile[] wallTiles;
-//     private TiledMapTile[] brickTiles;
-//     private Viewport viewport;
-// >>>>>>> main:src/main/java/inf112/bomberperson/model/map/Map.java
-
-
-    @Override
-    public void create() {
-        int mapWidth = MAP_WIDTH * TILE_SIZE * 2;
-        int mapHeight = MAP_HEIGHT * TILE_SIZE * 2;
-
-        camera = new OrthographicCamera();
-        viewport = new FitViewport(mapWidth, mapHeight, camera);
-        viewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
-
-
-        camera.zoom = .74f; // or any other value
-        camera.position.set(mapWidth / 3.33f, mapHeight / 3.33f, 0);
-        viewport.update(mapWidth, mapHeight);
-
-
-
-        batch = new SpriteBatch();
-
-        // Load the map from Tiled
-        map = new TmxMapLoader().load("doc/assets/tiles2.tmx");
-        tileset = map.getTileSets().getTileSet("tiles");
-
-        // Create the map renderer
-        mapRenderer = new OrthogonalTiledMapRenderer(map);
-        mapRenderer.setView(camera);
-
-        // Get the wall tiles from the tileset
-        TiledMapTileSet tileset = map.getTileSets().getTileSet("tiles");
-        TiledMapTile wallTile1 = tileset.getTile(WALL_TILE_ID);
-        wallTiles = new TiledMapTile[]{wallTile1};
-
-        // Get the brick tiles from the tileset
-        TiledMapTile brickTile1 = tileset.getTile(BRICK_TILE_ID);
-        brickTiles = new TiledMapTile[]{brickTile1};
-
-        // Randomly generate the map
-        generateMap();
-    }
-
-
 
     @Override
     public void render() {
@@ -183,135 +123,74 @@ public class Map extends ApplicationAdapter {
         mapRenderer.dispose();
     }
 
+    /**
+     * Randomize the brick pattern and clear the corners on the map.
+     */
     public void generateMap() {
-        TiledMapTile brickTile = tileset.getTile(BRICK_TILE_ID);
-        TiledMapTile grassTile = tileset.getTile(GRASS_TILE_ID);
-
-        // Set the corner cells and their immediate neighbors to grass
-        TiledMapTileLayer.Cell grassCell = new TiledMapTileLayer.Cell();
-        grassCell.setTile(grassTile);
-
-
-        // Randomly place grass on the brick cells
-        for (int x = 0; x < MAP_WIDTH -2; x++) {
-            for (int y = 0; y < MAP_HEIGHT -2; y++) {
-                TiledMapTileLayer.Cell cell = getDynamicLayer().getCell(x, y);
-                if (cell == null) {
-                    continue;
-                }
-                TiledMapTile tile = cell.getTile();
-                if (tile == null) {
-                    continue;
-                }
-
-                if (tile.getId() == BRICK_TILE_ID) {
+        
+        // Randomly remove bricks from pre-determined positions
+        for (int x = 0; x < MAP_WIDTH - 2; x++) {
+            for (int y = 0; y < MAP_HEIGHT - 2; y++) {
+                if (containsBrickWall(x, y)) {
                     if (Math.random() < WALL_DENSITY) {
-                        getDynamicLayer().setCell(x, y, null);
+                        clearCell("Dynamic", x, y);;
                     }
                 }
             }
-
         }
-
 
         // Randomly place bricks on the remaining cells
-        for (int x = 0; x < MAP_WIDTH -2; x++) {
-            for (int y = 0; y < MAP_HEIGHT -2; y++) {
-                TiledMapTileLayer.Cell cell = getGroundLayer().getCell(x, y);
-
-                if (cell == null) {
-                    continue;
-                }
-                TiledMapTile tile = cell.getTile();
-                if (tile == null) {
-                    continue;
-                }
-                if (tile.getId() == GRASS_TILE_ID && getStaticLayer().getCell(x,y)==null) {
+        for (int x = 0; x < MAP_WIDTH - 2; x++) {
+            for (int y = 0; y < MAP_HEIGHT - 2; y++) {
+                if (!containsSolidWall(x, y)) {
                     if (Math.random() < WALL_DENSITY) {
-                        TiledMapTileLayer.Cell brickCell = new TiledMapTileLayer.Cell();
-                        brickCell.setTile(brickTile);
-                        getDynamicLayer().setCell(x, y, brickCell);
+                        setCell("Dynamic", x, y, TextureID.BRICK_WALL.id);;
                     }
                 }
             }
-
         }
 
-
+        // Make sure corners are clear, which is where the players spawn.
+        clearCell("Dynamic", 1, 1);
+        clearCell("Dynamic", 2, 1);
+        clearCell("Dynamic", 1, 2);
         
-        getDynamicLayer().setCell(1, 1, null);
-        getDynamicLayer().setCell(2, 1, null);
-        getDynamicLayer().setCell(1, 2, null);
+        clearCell("Dynamic", 24, 1);
+        clearCell("Dynamic", 25, 1);
+        clearCell("Dynamic", 25, 2);
         
-        getDynamicLayer().setCell(24, 1, null);
-        getDynamicLayer().setCell(25, 1, null);
-        getDynamicLayer().setCell(25, 2, null);
+        clearCell("Dynamic", 24, 25);
+        clearCell("Dynamic", 25, 25);
+        clearCell("Dynamic", 25, 24);
         
-        getDynamicLayer().setCell(24, 25, null);
-        getDynamicLayer().setCell(25, 24,null);
-        getDynamicLayer().setCell(25, 25, null);
-        
-        getDynamicLayer().setCell(1, 25, null);
-        getDynamicLayer().setCell(2, 25, null);
-        getDynamicLayer().setCell(1, 24, null);
+        clearCell("Dynamic", 2, 25);
+        clearCell("Dynamic", 1, 25);
+        clearCell("Dynamic", 1, 24);
     }
 
 
-    /*
-    * 
-    */
     public void addBombToMap(Vector2 position){
-
-        int col = (Math.round(position.x / TILE_SIZE));
-        int row = (Math.round(position.y / TILE_SIZE));
-        
-        TiledMapTileSet tileset = map.getTileSets().getTileSet("tiles");
-        TiledMapTileLayer.Cell bombCell = new TiledMapTileLayer.Cell();
-        bombCell.setTile(tileset.getTile(TextureID.BOMB.id));
-        getDynamicLayer().setCell(col, row, bombCell);
-        
+        setCell("Dynamic", position, TextureID.BOMB.id);
     }
 
-    /*
-    * 
-    */
     public void removeBombFromMap(Vector2 position){
-
-        int col = (Math.round(position.x / TILE_SIZE));
-        int row = (Math.round(position.y / TILE_SIZE));
-        
-        getDynamicLayer().setCell(col, row, null);
+        clearCell("Dynamic", position);
     }
+
     public void addExplosionToMap(Explosion explosion){
-
         for (ExplosionTile tile : explosion.getExplosion()) {
             Vector2 position = tile.getPosition();
-            
-            int col = (Math.round(position.x / TILE_SIZE));
-            int row = (Math.round(position.y / TILE_SIZE));
-            
-            TiledMapTileSet tileset = map.getTileSets().getTileSet("tiles");
-            TiledMapTileLayer.Cell cell = new TiledMapTileLayer.Cell();
-            cell.setTile(tileset.getTile(EXPLOSION_TILE_ID));
-            getDynamicLayer().setCell(col, row, cell);
+            setCell("Dynamic", position, TextureID.EXPLOSION.id);
         }
     }
 
-    /*
-    * 
-    */
+
     public void removeExplosionFromMap(Explosion explosion){
-
         for (ExplosionTile tile : explosion.getExplosion()) {
             Vector2 position = tile.getPosition();
-
-            int col = (Math.round(position.x / TILE_SIZE));
-            int row = (Math.round(position.y / TILE_SIZE));
-            
-            getDynamicLayer().setCell(col, row, null);
+            clearCell("Dynamic", position);
         }
     }
-    
     
     /**
      * Removes walls and powerups in this position. 
@@ -319,43 +198,44 @@ public class Map extends ApplicationAdapter {
      * @param position
      */
     public void breakWall(Vector2 position){
-        int col = (Math.round(position.x / TILE_SIZE));
-        int row = (Math.round(position.y / TILE_SIZE));
-        
-        TiledMapTileLayer.Cell nullCell = null;
-        
         // Kill powerups that are in the cell already.
-        
-        getPowerupLayer().setCell(col, row, nullCell);
-        
-        
+        removePowerupFromMap(position);
+
         if(containsBrickWall(position)){
-            int spawn = ThreadLocalRandom.current().nextInt(0, POWERUP_SPAWN_CHANCE);
-            if (spawn == 0){
-                getPowerupLayer().setCell(col, row, getPowerup());
-            }
-            getDynamicLayer().setCell(col, row, nullCell);
+            trySpawnPowerup(position);
+            clearCell("Dynamic", position);
         }
     }
     
     /**
-     * Gets a random powerup to put in a cell.
-     * @return Cell with a powerup.
+     * Try to spawn a powerup in this location. Chance for powerup is determined by static value POWERUP_SPAWN_CHANCE
+     * @param position
      */
-    private TiledMapTileLayer.Cell getPowerup(){
-        
-
-        TiledMapTileSet tileset = map.getTileSets().getTileSet("tiles");
-        TiledMapTileLayer.Cell cell = new TiledMapTileLayer.Cell();
-        cell.setTile(tileset.getTile(TextureID.getRandomPowerup()));
-        return cell;
+    private void trySpawnPowerup(Vector2 position) {
+        int spawn = ThreadLocalRandom.current().nextInt(0, POWERUP_SPAWN_CHANCE);
+        if (spawn == 0){
+            int powerupID = TextureID.getRandomPowerup();
+            setCell("Powerup", position, powerupID);
+        }
     }
+
+    /**
+     * Remove powerup from this location
+     * @param position
+     */
     public void removePowerupFromMap(Vector2 position){
-        
         int col = (Math.round(position.x / TILE_SIZE));
         int row = (Math.round(position.y / TILE_SIZE));
+        this.removePowerupFromMap(col, row);
+    }
 
-        getPowerupLayer().setCell(col, row, null);
+    /**
+     * Remove powerup from this location
+     * @param col
+     * @param row
+     */
+    public void removePowerupFromMap(int col, int row){
+        clearCell("Powerup", col, row);;
     }
     
     /**
@@ -364,11 +244,21 @@ public class Map extends ApplicationAdapter {
      * @return if there is solid wall here
      */
     public boolean containsSolidWall(Vector2 position){
-        
         int col = (Math.round(position.x / TILE_SIZE));
         int row = (Math.round(position.y / TILE_SIZE));
+        return this.containsSolidWall(col, row);
+    }
+
+    /**
+     * checks if a vector position overlaps with a solid wall.
+     * @param position
+     * @return if there is solid wall here
+     */
+    public boolean containsSolidWall(int col, int row){
+
+        TiledMapTileLayer.Cell cell = getCell("Static", col, row);
         
-        if(getStaticLayer().getCell(col, row) == null){
+        if(cell == null){
             return false;
         }
         
@@ -378,20 +268,31 @@ public class Map extends ApplicationAdapter {
     /**
      * checks if a vector position overlaps with a breakable wall.
      * @param position
-     * @return if there is breakable wall here
+     * @return if there is brick wall here
      */
     public boolean containsBrickWall(Vector2 position){
+        int col = (Math.round(position.x / TILE_SIZE));
+        int row = (Math.round(position.y / TILE_SIZE));
+        return this.containsBrickWall(col, row);
+    }
 
-        TiledMapTileLayer.Cell cell = getCellFromVector("Dynamic", position);
+    /**
+     * checks if a vector position overlaps with a breakable wall.
+     * @param col
+     * @param row
+     * @return if there is brick wall here
+     */
+    public boolean containsBrickWall(int col, int row){
+        TiledMapTileLayer.Cell cell = getCell("Dynamic", col, row);
         
         if(cell == null){
             return false;
         }
-        if(cell.getTile() == tileset.getTile(BRICK_TILE_ID)){
-            return false;
+        if(cell.getTile() == tileset.getTile(TextureID.BRICK_WALL.id)){
+            return true;
         }
         
-        return true;
+        return false;
     }
     
     /**
@@ -400,38 +301,161 @@ public class Map extends ApplicationAdapter {
      * @return if there is explosion here
      */
     public boolean containsExplosion(Vector2 position){
-
         int col = (Math.round(position.x / TILE_SIZE));
         int row = (Math.round(position.y / TILE_SIZE));
+        return this.containsExplosion(col, row);
+    }
 
-        if(getDynamicLayer().getCell(col, row) == null){
+    /**
+     * checks if a vector position overlaps with an explosion.
+     * @param col
+     * @param row
+     * @return if there is explosion here
+     */
+    public boolean containsExplosion(int col, int row){
+        TiledMapTileLayer.Cell cell = getCell("Dynamic", col, row);
+        
+        if(cell == null){
             return false;
         }
-
-        return true;
+        if(cell.getTile() == tileset.getTile(TextureID.EXPLOSION.id)){
+            return true;
+        }
+        return false;
     }
     
-    
-
-    public void setCellFromVector(String layerName, Vector2 position, int id){
-
+    /**
+     * checks if a vector position overlaps with a bomb.
+     * @param position
+     * @return if there is bomb here
+     */
+    public boolean containsBomb(Vector2 position){
         int col = (Math.round(position.x / TILE_SIZE));
         int row = (Math.round(position.y / TILE_SIZE));
+        return this.containsBomb(col, row);
+    }
+    
+    /**
+     * checks if a vector position overlaps with a bomb.
+     * @param col
+     * @param row
+     * @return if there is bomb here
+     */
+    public boolean containsBomb(int col, int row){
+        TiledMapTileLayer.Cell cell = getCell("Dynamic", col, row);
+        
+        if(cell == null){
+            return false;
+        }
+        if(cell.getTile() == tileset.getTile(TextureID.BOMB.id)){
+            return true;
+        }
+        return false;
+    }
+    
+
+    /**
+     * Set this cell to contain an tile.
+     * Layers:
+     * "Dynamic" is for bombs, explosions, brick walls. 
+     * "Powerup" is for powerups
+     * "Static" is for unbreakable walls
+     * "Ground" is for the ground
+     * @param layerName "Dynamic" is for bombs, explosions, brick walls. "Powerup is for powerups"
+     * @param position
+     * @param id texture id, some are specified in TextureID.java
+     */
+    public void setCell(String layerName, Vector2 position, int id){
+        int col = (Math.round(position.x / TILE_SIZE));
+        int row = (Math.round(position.y / TILE_SIZE));
+        this.setCell(layerName, col, row, id);
+    }
+    
+    /**
+     * Set this cell to contain an tile.
+     * Layers:
+     * "Dynamic" is for bombs, explosions, brick walls. 
+     * "Powerup" is for powerups
+     * "Static" is for unbreakable walls
+     * "Ground" is for the ground
+     * @param layerName "Dynamic" is for bombs, explosions, brick walls. "Powerup is for powerups"
+     * @param col
+     * @param row
+     * @param id texture id, some are specified in TextureID.java
+     */
+    public void setCell(String layerName, int col, int row, int id){
 
         TiledMapTileLayer.Cell cell = new TiledMapTileLayer.Cell();
+        cell.setTile(tileset.getTile(id));
         TiledMapTileLayer layer = getLayerByName(layerName);
 
         layer.setCell(col, row, cell);
     }
-    
-    public com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell getCellFromVector(String layerName, Vector2 position){
 
+    /** Remove tile in this layer on this position
+     * Layers:
+     * "Dynamic" is for bombs, explosions, brick walls. 
+     * "Powerup" is for powerups
+     * "Static" is for unbreakable walls
+     * "Ground" is for the ground
+     * @param layerName
+     * @param position
+     */
+    public void clearCell(String layerName, Vector2 position){
         int col = (Math.round(position.x / TILE_SIZE));
         int row = (Math.round(position.y / TILE_SIZE));
+        this.clearCell(layerName, col, row);
+    }
+
+    /** Remove tile in this layer on this position
+     * Layers:
+     * "Dynamic" is for bombs, explosions, brick walls. 
+     * "Powerup" is for powerups
+     * "Static" is for unbreakable walls
+     * "Ground" is for the ground
+     * @param layerName
+     * @param col
+     * @param row
+     */
+    public void clearCell(String layerName, int col, int row){
+
+        TiledMapTileLayer layer = getLayerByName(layerName);
+
+        layer.setCell(col, row, null);
+    }
+    
+    /**Get the cell content in this layer on this position.
+     * Layers:
+     * "Dynamic" is for bombs, explosions, brick walls. 
+     * "Powerup" is for powerups
+     * "Static" is for unbreakable walls
+     * "Ground" is for the ground
+     * @param layerName
+     * @param position
+     * @return Cell in this location
+     */
+    public com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell getCell(String layerName, Vector2 position){
+        int col = (Math.round(position.x / TILE_SIZE));
+        int row = (Math.round(position.y / TILE_SIZE));
+
+        return this.getCell(layerName, col, row);
+    }
+
+    /**Get the cell content in this layer on this position.
+     * Layers:
+     * "Dynamic" is for bombs, explosions, brick walls. 
+     * "Powerup" is for powerups
+     * "Static" is for unbreakable walls
+     * "Ground" is for the ground
+     * @param layerName
+     * @param col
+     * @param row
+     * @return Cell in this location
+     */
+    public com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell getCell(String layerName, int col, int row){
 
         TiledMapTileLayer layer = getLayerByName(layerName);
 
         return layer.getCell(col, row);
     }
 }
-
