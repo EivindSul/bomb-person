@@ -42,7 +42,7 @@ public class Collision {
         return false;
     }
 
-    public boolean checkCollisionOnPowerup(Collidable collidable){
+    private boolean checkCollisionOnPowerup(Collidable collidable){
         checkCollisionOnOnlyLayer(collidable, this.getPowerupLayer());
         return true;
     }
@@ -71,15 +71,21 @@ public class Collision {
         }
     }
 
-    public TiledMapTileLayer getPowerupLayer() {
+    private TiledMapTileLayer getPowerupLayer() {
         return this.powerUpLayer;
     }
-    
-    public boolean isCellBlocked(float x, float y, TiledMapTileLayer layer){
+
+    /**
+     * A method that checks if the a cell is blocked.
+     * @param x - x-position
+     * @param y - y-position
+     * @param layer - check the layer is other than grass.
+     * @return True if the cell blocked.
+     */
+    private boolean isCellBlocked(float x, float y, TiledMapTileLayer layer){
         try {
 
             TiledMapTileLayer.Cell cell = layer.getCell((int) (x / layer.getTileWidth()), (int) (y / layer.getTileHeight()));
-            // System.out.println(cell.getTile().getId());
             return cell != null && cell.getTile() != null && cell.getTile().getProperties().containsKey(blockedKey);
         }
         catch (Exception e){
@@ -88,6 +94,13 @@ public class Collision {
         }
 
     }
+
+    /**
+     * A method that checks if it collides with something on right side.
+     * @param collidable check if collides with layer
+     * @param layer to check if collides with collidable
+     * @return true if Collidable collides with layer on right side.
+     */
     public boolean collidesRight(Collidable collidable, TiledMapTileLayer layer){
         boolean collides = false;
         for(float step = 0; step < collidable.getHeight() ; step += layer.getTileHeight()/2){
@@ -104,6 +117,13 @@ public class Collision {
 
         return collides;
     }
+
+    /**
+     * A method that checks if it collides with something on left side.
+     * @param collidable check if collides with layer
+     * @param layer to check if collides with collidable
+     * @return true if Collidable collides with layer on left side.
+     */
     public boolean collidesLeft(Collidable collidable , TiledMapTileLayer layer){
         boolean collides = false;
         for(float step = 0; step < collidable.getHeight() ; step += layer.getTileHeight()/2){
@@ -120,6 +140,13 @@ public class Collision {
         return collides;
     }
 
+
+    /**
+     * A method that checks if it collides with something on top side.
+     * @param collidable check if collides with layer
+     * @param layer to check if collides with collidable
+     * @return true if Collidable collides with layer on top side.
+     */
     public boolean collidesTop(Collidable collidable , TiledMapTileLayer layer){
     boolean collides = false;
     for(float step = 0; step < collidable.getWidth() ; step += layer.getTileWidth()/2){
@@ -136,6 +163,13 @@ public class Collision {
 
         return collides;
     }
+
+    /**
+     * A method that checks if it collides with something on bottom side.
+     * @param collidable check if collides with layer
+     * @param layer to check if collides with collidable
+     * @return true if Collidable collides with layer on bottom.
+     */
     public boolean collidesBottom(Collidable collidable , TiledMapTileLayer layer){
         boolean collides = false;
 
