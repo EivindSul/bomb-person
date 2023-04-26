@@ -44,7 +44,6 @@ public class Model implements ApplicationListener {
         this.controller = new MyInputProcessor(this);
 
         this.map = new Map();
-        map.create();
 
         this.player1 = new Player(new Sprite(new Texture("doc/assets/player.png")));
         this.player2 = new Player(new Sprite(new Texture("doc/assets/player.png")));
@@ -54,10 +53,9 @@ public class Model implements ApplicationListener {
         controller = new MyInputProcessor(this);
 
         ArrayList<TiledMapTileLayer> collisionList = new ArrayList<TiledMapTileLayer>();
-        TiledMapTileLayer powerupLayer = map.powerupLayer;
-        collisionList.add(map.wallLayer);
-        collisionList.add(map.explodableWallLayer);
-        collisionList.add(map.bombLayer);
+        TiledMapTileLayer powerupLayer = map.getPowerupLayer();
+        collisionList.add(map.getStaticLayer());
+        collisionList.add(map.getDynamicLayer());
         this.collision = new Collision(collisionList);
         this.collision.setPowerupLayer(powerupLayer);
         this.create();
@@ -353,7 +351,7 @@ public class Model implements ApplicationListener {
         if(map.containsSolidWall(position)){
             return 2;
         }
-        if(map.containsBreakableWall(position)){
+        if(map.containsBrickWall(position)){
             return 1;
         }
         return 0;
