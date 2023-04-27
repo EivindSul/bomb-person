@@ -5,7 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
-import inf112.bomberperson.model.animations.PlayerAnimations;
+import inf112.bomberperson.screens.animations.PlayerAnimations;
 import inf112.bomberperson.model.collision.Collidable;
 import inf112.bomberperson.model.tiles.Bomb;
 
@@ -48,12 +48,7 @@ public class Player extends Sprite implements Collidable {
         this.currentDirection = Direction.UP;
         this.currentState = State.WALKING;
     }
-    public void draw(Batch spriteBatch){
-        time += Gdx.graphics.getDeltaTime();
-        if(alive) {
-            spriteBatch.draw(animations.getActiveAnimation().getKeyFrame(time, true), getX(), getY());
-        }
-    }
+
     public Direction getCurrentDirection() {
         updateDirectionAndState();
         return currentDirection;

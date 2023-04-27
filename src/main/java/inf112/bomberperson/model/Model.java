@@ -30,6 +30,7 @@ public class Model implements ApplicationListener {
     // Maybe edit to an enum since we will have more than two screens.
     public Boolean gameState; // GAME OVER == FALSE
 
+
     public float time = 0;
 
     private ArrayList<TimedEntity<Bomb>> timedBombList = new ArrayList<TimedEntity<Bomb>>();
@@ -128,11 +129,11 @@ public class Model implements ApplicationListener {
         map.getMapRenderer().getBatch().begin(); // Begin drawing
 
         /*------------------- Render Player -------------------*/
-        player1.draw(map.getMapRenderer().getBatch());
-        player2.draw(map.getMapRenderer().getBatch());
+        //player1.draw(map.getMapzRenderer().getBatch());
+        //player2.draw(map.getMapRenderer().getBatch());
 
         /*------------------- Render Player -------------------*/
-        
+
         /*------------------- Render Bomb -------------------*/
 
         map.getMapRenderer().getBatch().end(); // End drawing
