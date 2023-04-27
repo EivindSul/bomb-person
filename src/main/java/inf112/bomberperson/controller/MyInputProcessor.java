@@ -15,8 +15,6 @@ public class MyInputProcessor implements InputProcessor{
     public MyInputProcessor(Model model){
         this.model = model;
         this.sound = Gdx.audio.newSound(Gdx.files.internal("doc/assets/Sounds/zapsplat_foley_footstep_single_on_dirty_stone_step_flip_flop_004_30440.mp3"));
-        this.dropBombsound = Gdx.audio.newSound(Gdx.files.internal("doc/assets/Sounds/zapsplat_foley_footstep_single_boys_sneaker_on_concrete_002_50912.mp3"));
-        this.bombSound = Gdx.audio.newSound(Gdx.files.internal("doc/assets/Sounds/zapsplat_explosions_designed_huge_fire_bomb_ball_005_89762.mp3"));
     }  
     /**
      * Very unreadable code, will refractor, but the concept is that when key is pressed down players velocity will change
@@ -39,85 +37,80 @@ public class MyInputProcessor implements InputProcessor{
         switch (keycode){
             case Input.Keys.W:
                 velocityPlayer1.y += model.player1.getSpeed();
-                long id1 = sound.play();
-                sound.setVolume(id1, 0.3f );
+                playSound();
                 model.player1.setVelocity(velocityPlayer1);
                 break;
             case Input.Keys.S:
                 velocityPlayer1.y -= model.player1.getSpeed();
-                long id2 = sound.play();
-                sound.setVolume(id2, 0.3f );
+                playSound();
                 model.player1.setVelocity(velocityPlayer1);
                 break;
             case Input.Keys.A:
                 velocityPlayer1.x -= model.player1.getSpeed();
-                long id3 = sound.play();
-                sound.setVolume(id3, 0.3f );
+                playSound();
                 model.player1.setVelocity(velocityPlayer1);
                 break;
             case Input.Keys.D:
                 velocityPlayer1.x += model.player1.getSpeed();
-                long id4 = sound.play();
-                sound.setVolume(id4, 0.3f );
+                playSound();
                 model.player1.setVelocity(velocityPlayer1);
                 break;
             case Input.Keys.SPACE:
-                dropBombsound.play();
-                long id9 = bombSound.play();
-                bombSound.setVolume(id9, 0.7f);
                 model.addBomb(model.player1);
                 break;
             case Input.Keys.Q:
-                sound.stop();
+                stopSound();
                 model.gameState = false;
             
             case Input.Keys.UP:
                 velocityPlayer2.y += model.player2.getSpeed();
-                long id5 = sound.play();
-                sound.setVolume(id5, 0.3f );
+                playSound();
                 model.player2.setVelocity(velocityPlayer2);
                 break;
             case Input.Keys.DOWN:
                 velocityPlayer2.y -= model.player2.getSpeed();
-                long id6 = sound.play();
-                sound.setVolume(id6, 0.3f );
+                playSound();
                 model.player2.setVelocity(velocityPlayer2);
                 break;
             case Input.Keys.LEFT:
                 velocityPlayer2.x -= model.player2.getSpeed();
-                long id7 = sound.play();
-                sound.setVolume(id7, 0.3f );
+                playSound();
                 model.player2.setVelocity(velocityPlayer2);
                 break;
             case Input.Keys.RIGHT:
                 velocityPlayer2.x += model.player2.getSpeed();
-                long id8 = sound.play();
-                sound.setVolume(id8, 0.3f );
+                playSound();
                 model.player2.setVelocity(velocityPlayer2);
                 break;
             case Input.Keys.ENTER:
-                dropBombsound.play();
-                long id10 = bombSound.play();
-                bombSound.setVolume(id10, 0.6f);
                 model.addBomb(model.player2);
                 break;
         }
         return true;
     }
+    void stopSound(){
+        sound.stop();
+    }
+
+    void playSound(){
+        long id = sound.loop();
+        sound.setVolume(id, 0.6f );
+    }
+
     @Override
     public boolean keyUp(int keycode) {
         switch (keycode){
             case Input.Keys.A, Input.Keys.D:
-                sound.stop();
+                stopSound();
                 model.player1.setVelocity(new Vector2((model.player1.velocity.x = 0),model.player1.velocity.y = model.player1.getVelocity().y));
             case Input.Keys.W, Input.Keys.S:
-                sound.stop();
+                stopSound();
                 model.player1.setVelocity(new Vector2((model.player1.velocity.x = model.player1.getVelocity().x),model.player1.velocity.y = 0));
             case Input.Keys.LEFT, Input.Keys.RIGHT:
-                sound.stop();
+                stopSound();
                 model.player2.setVelocity(new Vector2((model.player2.velocity.x = 0),model.player2.velocity.y = model.player2.getVelocity().y));
             case Input.Keys.UP, Input.Keys.DOWN:
-                sound.stop();
+                stopSound();
                 model.player2.setVelocity(new Vector2((model.player2.velocity.x = model.player2.getVelocity().x),model.player2.velocity.y = 0));
 
         }

@@ -32,6 +32,8 @@ public class Model implements ApplicationListener {
     public Boolean gameState; // GAME OVER == FALSE
     Sound killSound;
     Sound powerUpSound;
+    Sound dropBombsound;
+    Sound bombSound;
 
     public float time = 0;
 
@@ -51,6 +53,8 @@ public class Model implements ApplicationListener {
         map.create();
         killSound = Gdx.audio.newSound(Gdx.files.internal("doc/assets/Sounds/zapsplat_horror_monster_small_dying_screech_003_72195.mp3"));
         powerUpSound = Gdx.audio.newSound(Gdx.files.internal("doc/assets/Sounds/zapsplat_bell_small_hand_short_ring_003_84222.mp3"));
+        this.dropBombsound = Gdx.audio.newSound(Gdx.files.internal("doc/assets/Sounds/zapsplat_foley_footstep_single_boys_sneaker_on_concrete_002_50912.mp3"));
+        this.bombSound = Gdx.audio.newSound(Gdx.files.internal("doc/assets/Sounds/zapsplat_explosions_designed_huge_fire_bomb_ball_005_89762.mp3"));
 
 
 
@@ -164,7 +168,7 @@ public class Model implements ApplicationListener {
             map.removePowerupFromMap(player.getPosition());
             player.applyPowerup(powerup);
             long id =powerUpSound.play();
-            powerUpSound.setVolume(id, 1);
+            powerUpSound.setVolume(id, 0.6f);
 
         }
     }
@@ -277,7 +281,14 @@ public class Model implements ApplicationListener {
                 timedBombList.add(newBomb);
             }
             map.addBombToMap(player.getPosition());
+            playBombSound();
         }
+    }
+    void playBombSound(){
+        dropBombsound.play();
+        long id = bombSound.play();
+        bombSound.setVolume(id, 0.6f);
+
     }
 
     /**
