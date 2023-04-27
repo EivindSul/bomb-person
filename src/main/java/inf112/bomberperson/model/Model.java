@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -29,6 +30,10 @@ public class Model implements ApplicationListener {
     public MyInputProcessor controller;
     // Maybe edit to an enum since we will have more than two screens.
     public Boolean gameState; // GAME OVER == FALSE
+    Sound killSound;
+    Sound powerUpSound;
+    Sound dropBombsound;
+    Sound bombSound;
 
     public float time = 0;
 
@@ -42,6 +47,15 @@ public class Model implements ApplicationListener {
         this.camera = camera;
 
         this.map = new Map();
+
+        map.create();
+        killSound = Gdx.audio.newSound(Gdx.files.internal("doc/assets/Sounds/zapsplat_horror_monster_small_dying_screech_003_72195.mp3"));
+        powerUpSound = Gdx.audio.newSound(Gdx.files.internal("doc/assets/Sounds/zapsplat_bell_small_hand_short_ring_003_84222.mp3"));
+        this.dropBombsound = Gdx.audio.newSound(Gdx.files.internal("doc/assets/Sounds/zapsplat_foley_footstep_single_boys_sneaker_on_concrete_002_50912.mp3"));
+        this.bombSound = Gdx.audio.newSound(Gdx.files.internal("doc/assets/Sounds/zapsplat_explosions_designed_huge_fire_bomb_ball_005_89762.mp3"));
+
+
+
 
         this.player1 = new Player(new Sprite(new Texture("doc/assets/player.png")));
         this.player2 = new Player(new Sprite(new Texture("doc/assets/player.png")));
@@ -153,6 +167,9 @@ public class Model implements ApplicationListener {
         if (!powerup.equals("none")){
             map.removePowerupFromMap(player.getPosition());
             player.applyPowerup(powerup);
+            long id =powerUpSound.play();
+            powerUpSound.setVolume(id, 0.6f);
+
         }
     }
     @Override
@@ -264,7 +281,14 @@ public class Model implements ApplicationListener {
                 timedBombList.add(newBomb);
             }
             map.addBombToMap(player.getPosition());
+            playBombSound();
         }
+    }
+    void playBombSound(){
+        dropBombsound.play();
+        long id = bombSound.play();
+        bombSound.setVolume(id, 0.6f);
+
     }
 
     /**
@@ -275,15 +299,19 @@ public class Model implements ApplicationListener {
      */
     private void explodeBombs(ArrayList<TimedEntity<Bomb>> bombsToExplode) {
         // The bombs in bombsToExplode should already be removed in the explosionDetection method.
+
         for (TimedEntity<Bomb> timedBomb : bombsToExplode) {
             Bomb bomb = timedBomb.getEntity();
             Explosion explosion = bomb.explodeBomb();
+
             
             explosion = explosionAlgorithm(explosion);
             
             explosionList.add(new TimedEntity<Explosion>(explosion, time + (float)0.5, 1));
             map.addExplosionToMap(explosion);
+
         }
+
     }
     
     
@@ -358,6 +386,7 @@ public class Model implements ApplicationListener {
     }
 
     private void killPlayer(Player player){
+        killSound.play();
         player.killPlayer();
     }
 

@@ -1,18 +1,24 @@
 package inf112.bomberperson.controller;
 
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-
 import inf112.bomberperson.model.Model;
 
 public class MyInputProcessor implements InputProcessor{
     private Model model;
+
     public MyInputProcessor(Model model){
         this.model = model;
     }
+
+
+
 
     private Map<Integer,ICallable<Void>> keyPressedHandlers = new HashMap<Integer, ICallable<Void>>();
     private Map<Integer,ICallable<Void>> keyUpHandlers = new HashMap<Integer, ICallable<Void>>();
@@ -71,6 +77,7 @@ public class MyInputProcessor implements InputProcessor{
     public boolean keyUp(int keycode) {
         if(keyUpHandlers.containsKey(keycode)){
             keyUpHandlers.get(keycode).call();
+
         }
         return true;
     }
