@@ -56,6 +56,19 @@
     <p>Vi trenger å ha brukt sportbugs vertfall en gang og ta i bruk tilbakemeldingen fra den.</p>
     <p>Lisens var tydligvis ikke nødvendig, altså det var ikke nødvendig med noen offisiel lisens, det er nok med å referere til grafikk i readme og oppgi hvordan vi ønsker at det skal brukes</p>
     <p>Powerups til eivind</p>
+    <p>Dette er hva vi mangler å gjøre nå :
+        <ul><b>Dokumentasjon</b>
+            <li>Spotbugs</li>
+            <li>Javadocs(spesielt mellom metoder på tvers av pakker)</li>
+            <li>oblig4 (viktig å ta med helgetlige vurderingen av alle forrige obliggene)</li>
+            <li>UML Diagram</li>
+            <li>Lisenser</li>
+        </ul>
+        <ul><b>Funksjonalitet</b>
+            <li>Testing(enten refractore MVC eller bruke Mockito, eller begge :D)</li>
+            <li>Merge inn lyder</li>
+        </ul>
+    </p>
 <h2>Hvilke avgjørelser dere tok</h2>
     <p>Sebastian og kjell, pair programmet MVC refractor, der hvor rendering av map og player blir tatt ut av model og inn i GameScreen, refractor var vanskelig fordi, det var vansklig å få til refractoren</p>
 <h2>Hva dere ble enige om å gjøre til neste gang</h2>
