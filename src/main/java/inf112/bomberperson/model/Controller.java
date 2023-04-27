@@ -7,6 +7,7 @@ import javax.swing.event.MouseInputListener;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector2;
 
 import inf112.bomberperson.model.Player;
@@ -17,8 +18,10 @@ import inf112.bomberperson.model.Model;
  */
 public class Controller {
     Model model;
+    Sound sound;
     public Controller(Model model){
         this.model = model;
+        this.sound = Gdx.audio.newSound(Gdx.files.internal("doc/assets/Sounds/zapsplat_foley_footsteps_barefoot_on_small_stones_66815.mp3"));
     }
     public void registerInput(){
         //TODO :
