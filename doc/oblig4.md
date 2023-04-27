@@ -56,6 +56,9 @@
     <p>Vi trenger å ha brukt sportbugs vertfall en gang og ta i bruk tilbakemeldingen fra den.</p>
     <p>Lisens var tydligvis ikke nødvendig, altså det var ikke nødvendig med noen offisiel lisens, det er nok med å referere til grafikk i readme og oppgi hvordan vi ønsker at det skal brukes</p>
     <p>Powerups til eivind</p>
+<h2>Hvilke avgjørelser dere tok</h2>
+    <p>Sebastian og kjell, pair programmet MVC refractor, der hvor rendering av map og player blir tatt ut av model og inn i GameScreen, refractor var vanskelig fordi, det var vansklig å få til refractoren</p>
+<h2>Hva dere ble enige om å gjøre til neste gang</h2>
     <p>Dette er hva vi mangler å gjøre nå :
         <ul><b>Dokumentasjon</b>
             <li>Spotbugs</li>
@@ -69,6 +72,3 @@
             <li>Merge inn lyder</li>
         </ul>
     </p>
-<h2>Hvilke avgjørelser dere tok</h2>
-    <p>Sebastian og kjell, pair programmet MVC refractor, der hvor rendering av map og player blir tatt ut av model og inn i GameScreen, refractor var vanskelig fordi, det var vansklig å få til refractoren</p>
-<h2>Hva dere ble enige om å gjøre til neste gang</h2>
