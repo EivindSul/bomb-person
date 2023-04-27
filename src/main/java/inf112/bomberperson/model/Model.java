@@ -41,8 +41,6 @@ public class Model implements ApplicationListener {
         this.game = game;
         this.camera = camera;
 
-        this.controller = new MyInputProcessor(this);
-
         this.map = new Map();
 
         this.player1 = new Player(new Sprite(new Texture("doc/assets/player.png")));
@@ -50,7 +48,9 @@ public class Model implements ApplicationListener {
 
         player1.setPosition(1 * 16, (map.getHeight() - 26) *16);
         player2.setPosition(25 * 16, (map.getHeight() - 2) *16);
-        controller = new MyInputProcessor(this);
+        
+        this.controller = new MyInputProcessor(this);
+        controller.mapInputs();
 
         ArrayList<TiledMapTileLayer> collisionList = new ArrayList<TiledMapTileLayer>();
         TiledMapTileLayer powerupLayer = map.getPowerupLayer();
