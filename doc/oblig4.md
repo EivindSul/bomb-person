@@ -55,20 +55,23 @@
     <p>Fikk beskjed om at forrige tilbakemelding om controller problemer på linux skal bli sett bort ifra</p>
     <p>Vi trenger å ha brukt sportbugs vertfall en gang og ta i bruk tilbakemeldingen fra den.</p>
     <p>Lisens var tydligvis ikke nødvendig, altså det var ikke nødvendig med noen offisiel lisens, det er nok med å referere til grafikk i readme og oppgi hvordan vi ønsker at det skal brukes</p>
-    <p>Powerups til eivind</p>
+    <p>Powerups til eivind, vi har fått tilbakemelding på powerupsene på player ikke er særlig utvidbart. Siden vi ikke har mange powerups akkurat nå, og med henhold til tid, har vi valgt å beholde det slik det er nå, dette er dette et designvalg. Alternativet hadde vert å hatt et interface av powerups og på den måten bare trengt en metode for å applye en powerup på player</p>
 <h2>Hvilke avgjørelser dere tok</h2>
     <p>Sebastian og kjell, pair programmet MVC refractor, der hvor rendering av map og player blir tatt ut av model og inn i GameScreen, refractor var vanskelig fordi, det var vansklig å få til refractoren</p>
+    <p></p>
 <h2>Hva dere ble enige om å gjøre til neste gang</h2>
     <p>Dette er hva vi mangler å gjøre nå :
         <ul><b>Dokumentasjon</b>
-            <li>Spotbugs</li>
-            <li>Javadocs(spesielt mellom metoder på tvers av pakker)</li>
-            <li>oblig4 (viktig å ta med helgetlige vurderingen av alle forrige obliggene)</li>
-            <li>UML Diagram</li>
-            <li>Lisenser</li>
+            <li>Spotbugs(brian, jackie)</li>
+            <li>oblig4 (viktig å ta med helgetlige vurderingen av alle forrige obliggene)(brian,jackie,sebatian)</li>
+            <li>UML Diagram(sebastian)</li>
+            <li>Lisenser(jackie)</li>
         </ul>
         <ul><b>Funksjonalitet</b>
-            <li>Testing(enten refractore MVC eller bruke Mockito, eller begge :D)</li>
-            <li>Merge inn lyder</li>
+            <li>Testing(enten refractore MVC eller bruke Mockito, eller begge :D)(kjell & sebastian)</li>
+            <li>tileFactory(eivind)</li>
+            <li>fikse game over screen til å være mer åpenbart hvem som dør(brain)</li>
+            <li>Collision fix(dorcas)</li>
         </ul>
     </p>
+    <p>neste uke onsdag 3.mai (12-15) skal vi møtes og bli ferdig med oblig</p>
