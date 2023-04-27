@@ -1,121 +1,87 @@
 package inf112.bomberperson.controller;
 
+
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
+import java.util.HashMap;
+import java.util.Map;
+
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.math.Vector2;
 import inf112.bomberperson.model.Model;
 
 public class MyInputProcessor implements InputProcessor{
     private Model model;
-    Sound sound;
-    Sound dropBombsound;
-    Sound bombSound;
+
     public MyInputProcessor(Model model){
         this.model = model;
-        this.sound = Gdx.audio.newSound(Gdx.files.internal("doc/assets/Sounds/zapsplat_foley_footstep_single_on_dirty_stone_step_flip_flop_004_30440.mp3"));
-    }  
-    /**
-     * Very unreadable code, will refractor, but the concept is that when key is pressed down players velocity will change
-     * And when key is released players velocity is set to 0
-     */
+    }
 
-    /*
-    |1||1||1||1||1|
-    |1||_||1||1||1|
-    |1||x||1||1||1|
-    |1||_||_||_||1|
-    |1||1||1||1||1|
-    When player is pressing W and D now, it collides and cannot move unless you release both W and D
-    */
+
+
+
+    private Map<Integer,ICallable<Void>> keyPressedHandlers = new HashMap<Integer, ICallable<Void>>();
+    private Map<Integer,ICallable<Void>> keyUpHandlers = new HashMap<Integer, ICallable<Void>>();
+
+    public void mapInputs(){
+        // Set up player controllers
+        PlayerController controller1 = new PlayerController(model.player1, model);
+        PlayerController controller2 = new PlayerController(model.player2, model);
+        
+        // Map keys to player controllers
+        // Player 1 moves up on W, player 2 moves up on Arrow up
+        keyPressedHandlers.put(Input.Keys.W, controller1.playerUp);
+        keyPressedHandlers.put(Input.Keys.UP, controller2.playerUp);
+
+        // Player 1 moves down on S, player 2 moves down on Arrow down
+        keyPressedHandlers.put(Input.Keys.S, controller1.playerDown);
+        keyPressedHandlers.put(Input.Keys.DOWN, controller2.playerDown);
+        
+        // Player 1 moves right on D, player 2 moves right on Arrow right
+        keyPressedHandlers.put(Input.Keys.D, controller1.playerRight);
+        keyPressedHandlers.put(Input.Keys.RIGHT, controller2.playerRight);
+        
+        // Player 1 moves left on A, player 2 moves left on Arrow left
+        keyPressedHandlers.put(Input.Keys.A, controller1.playerLeft);
+        keyPressedHandlers.put(Input.Keys.LEFT, controller2.playerLeft);
+        
+        // Player 1 drops bomb on Spacebar, player 2 drops bomb on Enter
+        keyPressedHandlers.put(Input.Keys.SPACE, controller1.playerDrop);
+        keyPressedHandlers.put(Input.Keys.ENTER, controller2.playerDrop);
+        
+        // Stop vertical movement of players
+        keyUpHandlers.put(Input.Keys.W, controller1.playerStopVert);
+        keyUpHandlers.put(Input.Keys.UP, controller2.playerStopVert);
+        keyUpHandlers.put(Input.Keys.S, controller1.playerStopVert);
+        keyUpHandlers.put(Input.Keys.DOWN, controller2.playerStopVert);
+
+        // Stop horizontal movement of players
+        keyUpHandlers.put(Input.Keys.D, controller1.playerStopHori);
+        keyUpHandlers.put(Input.Keys.RIGHT, controller2.playerStopHori);
+        keyUpHandlers.put(Input.Keys.A, controller1.playerStopHori);
+        keyUpHandlers.put(Input.Keys.LEFT, controller2.playerStopHori);
+    }
 
     @Override
     public boolean keyDown(int keycode) {
-        Vector2 velocityPlayer1 = model.player1.getVelocity();
-        Vector2 velocityPlayer2 = model.player2.getVelocity();
-        switch (keycode){
-            case Input.Keys.W:
-                velocityPlayer1.y += model.player1.getSpeed();
-                playSound();
-                model.player1.setVelocity(velocityPlayer1);
-                break;
-            case Input.Keys.S:
-                velocityPlayer1.y -= model.player1.getSpeed();
-                playSound();
-                model.player1.setVelocity(velocityPlayer1);
-                break;
-            case Input.Keys.A:
-                velocityPlayer1.x -= model.player1.getSpeed();
-                playSound();
-                model.player1.setVelocity(velocityPlayer1);
-                break;
-            case Input.Keys.D:
-                velocityPlayer1.x += model.player1.getSpeed();
-                playSound();
-                model.player1.setVelocity(velocityPlayer1);
-                break;
-            case Input.Keys.SPACE:
-                model.addBomb(model.player1);
-                break;
-            case Input.Keys.Q:
-                stopSound();
-                model.gameState = false;
-            
-            case Input.Keys.UP:
-                velocityPlayer2.y += model.player2.getSpeed();
-                playSound();
-                model.player2.setVelocity(velocityPlayer2);
-                break;
-            case Input.Keys.DOWN:
-                velocityPlayer2.y -= model.player2.getSpeed();
-                playSound();
-                model.player2.setVelocity(velocityPlayer2);
-                break;
-            case Input.Keys.LEFT:
-                velocityPlayer2.x -= model.player2.getSpeed();
-                playSound();
-                model.player2.setVelocity(velocityPlayer2);
-                break;
-            case Input.Keys.RIGHT:
-                velocityPlayer2.x += model.player2.getSpeed();
-                playSound();
-                model.player2.setVelocity(velocityPlayer2);
-                break;
-            case Input.Keys.ENTER:
-                model.addBomb(model.player2);
-                break;
+        if (keycode == Input.Keys.Q) {
+            model.gameState = false;
+        }
+        else if(keyPressedHandlers.containsKey(keycode)){
+            keyPressedHandlers.get(keycode).call();
         }
         return true;
-    }
-    void stopSound(){
-        sound.stop();
-    }
-
-    void playSound(){
-        long id = sound.loop();
-        sound.setVolume(id, 0.6f );
     }
 
     @Override
     public boolean keyUp(int keycode) {
-        switch (keycode){
-            case Input.Keys.A, Input.Keys.D:
-                stopSound();
-                model.player1.setVelocity(new Vector2((model.player1.velocity.x = 0),model.player1.velocity.y = model.player1.getVelocity().y));
-            case Input.Keys.W, Input.Keys.S:
-                stopSound();
-                model.player1.setVelocity(new Vector2((model.player1.velocity.x = model.player1.getVelocity().x),model.player1.velocity.y = 0));
-            case Input.Keys.LEFT, Input.Keys.RIGHT:
-                stopSound();
-                model.player2.setVelocity(new Vector2((model.player2.velocity.x = 0),model.player2.velocity.y = model.player2.getVelocity().y));
-            case Input.Keys.UP, Input.Keys.DOWN:
-                stopSound();
-                model.player2.setVelocity(new Vector2((model.player2.velocity.x = model.player2.getVelocity().x),model.player2.velocity.y = 0));
+        if(keyUpHandlers.containsKey(keycode)){
+            keyUpHandlers.get(keycode).call();
 
         }
         return true;
     }
+
     @Override
     public boolean keyTyped(char character) {
         // TODO Auto-generated method stub
