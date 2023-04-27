@@ -1,8 +1,10 @@
-package inf112.bomberperson.model;
+package inf112.bomberperson.model.map;
 
 import java.util.concurrent.ThreadLocalRandom;
 
 public enum TextureID {
+    GRASS(484),
+    SOLID_WALL(386),
     BRICK_WALL(106),
     BOMB(174),
     BOMB_RED(175),

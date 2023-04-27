@@ -13,6 +13,11 @@ import com.badlogic.gdx.math.Vector2;
 
 import inf112.bomberperson.controller.MyInputProcessor;
 import inf112.bomberperson.game.BombermanGame;
+import inf112.bomberperson.model.collision.Collision;
+import inf112.bomberperson.model.map.Map;
+import inf112.bomberperson.model.tiles.Bomb;
+import inf112.bomberperson.model.tiles.Explosion;
+import inf112.bomberperson.model.tiles.ExplosionTile;
 import inf112.bomberperson.screens.GameOverScreen;
 
 
@@ -42,9 +47,11 @@ public class Model implements ApplicationListener {
         this.controller = new MyInputProcessor(this);
 
         this.map = new Map();
+
         map.create();
         killSound = Gdx.audio.newSound(Gdx.files.internal("doc/assets/Sounds/zapsplat_horror_monster_small_dying_screech_003_72195.mp3"));
         powerUpSound = Gdx.audio.newSound(Gdx.files.internal("doc/assets/Sounds/zapsplat_bell_small_hand_short_ring_003_84222.mp3"));
+
 
 
 
@@ -56,10 +63,9 @@ public class Model implements ApplicationListener {
         controller = new MyInputProcessor(this);
 
         ArrayList<TiledMapTileLayer> collisionList = new ArrayList<TiledMapTileLayer>();
-        TiledMapTileLayer powerupLayer = map.powerupLayer;
-        collisionList.add(map.wallLayer);
-        collisionList.add(map.explodableWallLayer);
-        collisionList.add(map.bombLayer);
+        TiledMapTileLayer powerupLayer = map.getPowerupLayer();
+        collisionList.add(map.getStaticLayer());
+        collisionList.add(map.getDynamicLayer());
         this.collision = new Collision(collisionList);
         this.collision.setPowerupLayer(powerupLayer);
         this.create();
@@ -362,7 +368,7 @@ public class Model implements ApplicationListener {
         if(map.containsSolidWall(position)){
             return 2;
         }
-        if(map.containsBreakableWall(position)){
+        if(map.containsBrickWall(position)){
             return 1;
         }
         return 0;
