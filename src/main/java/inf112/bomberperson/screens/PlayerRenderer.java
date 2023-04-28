@@ -16,8 +16,9 @@ public class PlayerRenderer {
     public PlayerAnimations animations;
 
 
-    public PlayerRenderer(Player player){
+    public PlayerRenderer(Player player,Player player2){
         this.player = player;
+        this.player2 = player2;
         this.animations = new PlayerAnimations(player);
     }
 
@@ -29,7 +30,7 @@ public class PlayerRenderer {
         time += Gdx.graphics.getDeltaTime();
 
         spriteBatch.draw(animations.getActiveAnimation().getKeyFrame(time, true), player.getX(), player.getY());
-
+        spriteBatch.draw(animations.getActiveAnimation().getKeyFrame(time, true), player2.getX(), player2.getY());
 
     }
 

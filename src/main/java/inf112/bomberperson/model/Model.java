@@ -7,6 +7,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 
@@ -19,17 +20,20 @@ import inf112.bomberperson.model.tiles.Explosion;
 import inf112.bomberperson.model.tiles.ExplosionTile;
 import inf112.bomberperson.screens.GameOverScreen;
 
+import com.badlogic.gdx.graphics.GL20;
+
 
 public class Model implements ApplicationListener {
     OrthographicCamera camera;
     private BombermanGame game;
-    Map map;
+    public Map map;
     public Player player1;
     public Player player2;
     public MyInputProcessor controller;
     // Maybe edit to an enum since we will have more than two screens.
     public Boolean gameState; // GAME OVER == FALSE
 
+    private SpriteBatch batch;
 
     public float time = 0;
 
@@ -45,6 +49,8 @@ public class Model implements ApplicationListener {
         this.controller = new MyInputProcessor(this);
 
         this.map = new Map();
+
+        batch = new SpriteBatch();
 
         this.player1 = new Player(new Sprite(new Texture("doc/assets/player.png")));
         this.player2 = new Player(new Sprite(new Texture("doc/assets/player.png")));
@@ -122,11 +128,18 @@ public class Model implements ApplicationListener {
      * Renderer updates the model and then renders objects
      */
     public void render(){
+        //Gdx.gl.glClearColor(0, 0, 0, 1);
+        //Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        //map.getCamera().update();
+
         /*------------------- Render Map -------------------*/
-        map.render();
+        //map.getMapRenderer().render();
+        //batch.setProjectionMatrix(map.getCamera().combined);
+        //batch.begin();
+
         /*------------------- Render Map -------------------*/
 
-        map.getMapRenderer().getBatch().begin(); // Begin drawing
+        //map.getMapRenderer().render(); // Begin drawing
 
         /*------------------- Render Player -------------------*/
         //player1.draw(map.getMapzRenderer().getBatch());
@@ -136,7 +149,7 @@ public class Model implements ApplicationListener {
 
         /*------------------- Render Bomb -------------------*/
 
-        map.getMapRenderer().getBatch().end(); // End drawing
+        //batch.end(); // End drawing
 
         /*------------------- Render Bomb -------------------*/
     }
@@ -170,6 +183,9 @@ public class Model implements ApplicationListener {
     public void dispose() {
         player1.getTexture().dispose();
         player2.getTexture().dispose();
+        //batch.dispose();
+        map.getMap().dispose();
+        map.getMapRenderer().dispose();
 
     }
 

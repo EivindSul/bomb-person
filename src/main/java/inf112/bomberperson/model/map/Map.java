@@ -25,12 +25,14 @@ public class Map extends ApplicationAdapter {
     private TiledMapTileSet tileset;
 
     private OrthographicCamera camera;
-    private SpriteBatch batch;
+    //private SpriteBatch batch;
     private TiledMap map;
     private OrthogonalTiledMapRenderer mapRenderer;
     
     TiledMapTile[] wallTiles;
     private Viewport viewport;
+
+
 
     public Map(){
         int mapWidth = MAP_WIDTH * TILE_SIZE * 2;
@@ -45,7 +47,7 @@ public class Map extends ApplicationAdapter {
         viewport.update(mapWidth, mapHeight);
 
 
-        batch = new SpriteBatch();
+        //batch = new SpriteBatch();
 
         // Load the map from Tiled
         map = new TmxMapLoader().load("doc/assets/tiles2.tmx");
@@ -63,7 +65,9 @@ public class Map extends ApplicationAdapter {
         // Randomly generate the map
         generateMap();
     }
-
+    public OrthographicCamera getCamera() {
+        return camera;
+    }
     public TiledMap getMap() {
         return map;
     }
@@ -103,24 +107,26 @@ public class Map extends ApplicationAdapter {
     @Override
     public void render() {
         // Clear the screen
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        //Gdx.gl.glClearColor(0, 0, 0, 1);
+        //Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // Update the camera
-        camera.update();
+        //camera.update();
 
         // Render the map
-        batch.setProjectionMatrix(camera.combined);
-        batch.begin();
-        mapRenderer.render();
-        batch.end();
+
+        //batch.setProjectionMatrix(camera.combined);
+        //batch.begin();
+
+        //mapRenderer.render();
+        //batch.end();
     }
 
     @Override
     public void dispose() {
-        batch.dispose();
-        map.dispose();
-        mapRenderer.dispose();
+        //batch.dispose();
+        //map.dispose();
+        //mapRenderer.dispose();
     }
 
     /**
