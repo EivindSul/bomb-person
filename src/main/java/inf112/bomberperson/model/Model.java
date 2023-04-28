@@ -33,7 +33,7 @@ public class Model implements ApplicationListener {
     // Maybe edit to an enum since we will have more than two screens.
     public Boolean gameState; // GAME OVER == FALSE
 
-    private SpriteBatch batch;
+    //private SpriteBatch batch;
 
     public float time = 0;
 
@@ -50,7 +50,7 @@ public class Model implements ApplicationListener {
 
         this.map = new Map();
 
-        batch = new SpriteBatch();
+        //batch = new SpriteBatch();
 
         this.player1 = new Player(new Sprite(new Texture("doc/assets/player.png")));
         this.player2 = new Player(new Sprite(new Texture("doc/assets/player.png")));

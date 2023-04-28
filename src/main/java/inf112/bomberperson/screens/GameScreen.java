@@ -25,8 +25,13 @@ public class GameScreen implements Screen {
         this.model = new Model(game, camera);
         playerRenderer = new PlayerRenderer(model.player1, model.player2);
         batch = game.batch;
-        mapRenderer = model.map.getMapRenderer();
+        //mapRenderer = model.map.getMapRenderer();
         mapCamera = model.map.getCamera();
+
+        // Create the map renderer
+        mapRenderer = new OrthogonalTiledMapRenderer(model.map.getMap());
+        mapRenderer.setView(mapCamera);
+
 
 
     }

@@ -27,7 +27,7 @@ public class Map extends ApplicationAdapter {
     private OrthographicCamera camera;
     //private SpriteBatch batch;
     private TiledMap map;
-    private OrthogonalTiledMapRenderer mapRenderer;
+    //private OrthogonalTiledMapRenderer mapRenderer;
     
     TiledMapTile[] wallTiles;
     private Viewport viewport;
@@ -53,9 +53,7 @@ public class Map extends ApplicationAdapter {
         map = new TmxMapLoader().load("doc/assets/tiles2.tmx");
         tileset = map.getTileSets().getTileSet("tiles");
 
-        // Create the map renderer
-        mapRenderer = new OrthogonalTiledMapRenderer(map);
-        mapRenderer.setView(camera);
+
 
         // Get the wall tiles from the tileset
         TiledMapTileSet tileset = map.getTileSets().getTileSet("tiles");
@@ -99,10 +97,13 @@ public class Map extends ApplicationAdapter {
     public float getHeight() {
         return MAP_HEIGHT;
     }
-
-    public OrthogonalTiledMapRenderer getMapRenderer() {
-        return mapRenderer;
+    public float getTileSize() {
+        return TILE_SIZE;
     }
+
+    //public OrthogonalTiledMapRenderer getMapRenderer() {
+    //    return mapRenderer;
+    //}
 
     @Override
     public void render() {
