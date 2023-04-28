@@ -2,7 +2,6 @@ package inf112.bomberperson.model;
 
 import java.util.ArrayList;
 
-import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
@@ -26,8 +25,6 @@ public class Model {
     // Maybe edit to an enum since we will have more than two screens.
     public Boolean gameState; // GAME OVER == FALSE
 
-    //private SpriteBatch batch;
-
     public float time = 0;
 
     private ArrayList<TimedEntity<Bomb>> timedBombList = new ArrayList<TimedEntity<Bomb>>();
@@ -42,7 +39,6 @@ public class Model {
 
         this.map = new Map();
 
-        //batch = new SpriteBatch();
 
         this.player1 = new Player();
         this.player2 = new Player();

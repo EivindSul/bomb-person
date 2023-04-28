@@ -20,16 +20,7 @@ public class Map {
 
 
     public Map(){
-
-        /*---remove this from map and into screen/view
-        camera = new OrthographicCamera();
-        viewport = new FitViewport(mapWidth, mapHeight, camera);
-        viewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
-        camera.zoom = .74f; // or any other value
-        camera.position.set(mapWidth / 3.33f, mapHeight / 3.33f, 0);
-        viewport.update(mapWidth, mapHeight);
-        --*/
+        
         // Load the map from Tiled
         map = new TmxMapLoader().load("doc/assets/tiles2.tmx");
         tileset = map.getTileSets().getTileSet("tiles");
