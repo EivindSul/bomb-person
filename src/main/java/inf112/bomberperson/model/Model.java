@@ -2,7 +2,6 @@ package inf112.bomberperson.model;
 
 import java.util.ArrayList;
 
-import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -21,10 +20,9 @@ import inf112.bomberperson.model.tiles.ExplosionTile;
 import inf112.bomberperson.screens.GameOverScreen;
 
 
-public class Model implements ApplicationListener {
-    OrthographicCamera camera;
+public class Model {
     private BombermanGame game;
-    Map map;
+    public Map map;
     public Player player1;
     public Player player2;
     public MyInputProcessor controller;
@@ -42,23 +40,18 @@ public class Model implements ApplicationListener {
 
     private Collision collision;
 
-    public Model(BombermanGame game, OrthographicCamera camera){
+    public Model(BombermanGame game){
         this.game = game;
-        this.camera = camera;
 
         this.map = new Map();
 
-        map.create();
         killSound = Gdx.audio.newSound(Gdx.files.internal("doc/assets/Sounds/zapsplat_horror_monster_small_dying_screech_003_72195.mp3"));
         powerUpSound = Gdx.audio.newSound(Gdx.files.internal("doc/assets/Sounds/zapsplat_bell_small_hand_short_ring_003_84222.mp3"));
         this.dropBombsound = Gdx.audio.newSound(Gdx.files.internal("doc/assets/Sounds/zapsplat_foley_footstep_single_boys_sneaker_on_concrete_002_50912.mp3"));
         this.bombSound = Gdx.audio.newSound(Gdx.files.internal("doc/assets/Sounds/zapsplat_explosions_designed_huge_fire_bomb_ball_005_89762.mp3"));
 
-
-
-
-        this.player1 = new Player(new Sprite(new Texture("doc/assets/player.png")));
-        this.player2 = new Player(new Sprite(new Texture("doc/assets/player.png")));
+        this.player1 = new Player();
+        this.player2 = new Player();
 
         player1.setPosition(1 * 16, (map.getHeight() - 26) *16);
         player2.setPosition(25 * 16, (map.getHeight() - 2) *16);
@@ -72,31 +65,11 @@ public class Model implements ApplicationListener {
         collisionList.add(map.getDynamicLayer());
         this.collision = new Collision(collisionList);
         this.collision.setPowerupLayer(powerupLayer);
-        this.create();
-    }
-    /*
-     * Initializer method:
-     * All pre-generated objects and method has to be initialized here
-     */
-    public void create(){
+        
         this.gameState = true;
-
         Gdx.input.setInputProcessor(controller);        
-
     }
-
-    @Override
-    public void resize(int i, int i1) {
-
-    }
-
-    /*
-     * updates the model without rendering it
-     */
     public void update(){
-        /*-------------------Player Input-------------------*/
-        /*-------------------Player Input-------------------*/
-
         /*------------------- Game Logic -------------------*/
         checkPlayerCollision(player1);
         checkPlayerCollision(player2);
@@ -125,34 +98,8 @@ public class Model implements ApplicationListener {
 
             gameState = false;
         }
-
-        /*------------------- Game Logic -------------------*/
-
-        /*------------------- Update Map -------------------*/
-        /*------------------- Update Map -------------------*/
     }
-    /*
-     * Renderer updates the model and then renders objects
-     */
-    public void render(){
-        /*------------------- Render Map -------------------*/
-        map.render();
-        /*------------------- Render Map -------------------*/
-
-        map.getMapRenderer().getBatch().begin(); // Begin drawing
-
-        /*------------------- Render Player -------------------*/
-        player1.draw(map.getMapRenderer().getBatch());
-        player2.draw(map.getMapRenderer().getBatch());
-
-        /*------------------- Render Player -------------------*/
-        
-        /*------------------- Render Bomb -------------------*/
-
-        map.getMapRenderer().getBatch().end(); // End drawing
-
-        /*------------------- Render Bomb -------------------*/
-    }
+    /*------------------- Model Functionallity -------------------*/
     public void checkPlayerCollision(Player player) {
         float oldX = player.getX();
         float oldY = player.getY();
@@ -172,24 +119,6 @@ public class Model implements ApplicationListener {
 
         }
     }
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void dispose() {
-        player1.getTexture().dispose();
-        player2.getTexture().dispose();
-
-    }
-
-    /*------------------- Model Functionallity -------------------*/
 
     /*
      * Checks if game is over and calls a game over screen

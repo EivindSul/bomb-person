@@ -1,60 +1,29 @@
 package inf112.bomberperson.model.map;
 
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.*;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
-
 import inf112.bomberperson.model.tiles.Explosion;
 import inf112.bomberperson.model.tiles.ExplosionTile;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-public class Map extends ApplicationAdapter {
+public class Map {
     public static final int TILE_SIZE = 16;
     static final int MAP_WIDTH = 27;
     static final int MAP_HEIGHT = 27;
     static final float WALL_DENSITY = 0.2f;
     static final int POWERUP_SPAWN_CHANCE = 4; // One in 4 walls broken spawns a powerup.
     private TiledMapTileSet tileset;
-
-    private OrthographicCamera camera;
-    private SpriteBatch batch;
     private TiledMap map;
-    private OrthogonalTiledMapRenderer mapRenderer;
-    
     TiledMapTile[] wallTiles;
-    private Viewport viewport;
+
+
 
     public Map(){
-        int mapWidth = MAP_WIDTH * TILE_SIZE * 2;
-        int mapHeight = MAP_HEIGHT * TILE_SIZE * 2;
-
-        camera = new OrthographicCamera();
-        viewport = new FitViewport(mapWidth, mapHeight, camera);
-        viewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
-        camera.zoom = .74f; // or any other value
-        camera.position.set(mapWidth / 3.33f, mapHeight / 3.33f, 0);
-        viewport.update(mapWidth, mapHeight);
-
-
-        batch = new SpriteBatch();
-
+        
         // Load the map from Tiled
         map = new TmxMapLoader().load("doc/assets/tiles2.tmx");
         tileset = map.getTileSets().getTileSet("tiles");
-
-        // Create the map renderer
-        mapRenderer = new OrthogonalTiledMapRenderer(map);
-        mapRenderer.setView(camera);
-
         // Get the wall tiles from the tileset
         TiledMapTileSet tileset = map.getTileSets().getTileSet("tiles");
         TiledMapTile wallTile1 = tileset.getTile(TextureID.SOLID_WALL.id);
@@ -63,64 +32,32 @@ public class Map extends ApplicationAdapter {
         // Randomly generate the map
         generateMap();
     }
-
     public TiledMap getMap() {
         return map;
     }
-
     public TiledMapTileLayer getGroundLayer() {
         return getLayerByName("Ground");
     }
-
     public TiledMapTileLayer getStaticLayer() {
         return getLayerByName("Static");
     }
-
     public TiledMapTileLayer getDynamicLayer() {
         return getLayerByName("Dynamic");
     }
-
     public TiledMapTileLayer getPowerupLayer() {
         return getLayerByName("Powerup");
-    }
-    
+    } 
     public TiledMapTileLayer getLayerByName(String layer) {
         return (TiledMapTileLayer)getMap().getLayers().get(layer);
     }
-
-
     public float getWidth() {
         return MAP_WIDTH;
     }
     public float getHeight() {
         return MAP_HEIGHT;
     }
-
-    public OrthogonalTiledMapRenderer getMapRenderer() {
-        return mapRenderer;
-    }
-
-    @Override
-    public void render() {
-        // Clear the screen
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        // Update the camera
-        camera.update();
-
-        // Render the map
-        batch.setProjectionMatrix(camera.combined);
-        batch.begin();
-        mapRenderer.render();
-        batch.end();
-    }
-
-    @Override
-    public void dispose() {
-        batch.dispose();
-        map.dispose();
-        mapRenderer.dispose();
+    public float getTileSize() {
+        return TILE_SIZE;
     }
 
     /**

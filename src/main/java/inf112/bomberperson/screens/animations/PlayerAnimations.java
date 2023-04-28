@@ -1,11 +1,8 @@
-package inf112.bomberperson.model.animations;
-
-import java.util.Vector;
+package inf112.bomberperson.screens.animations;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
 
 import inf112.bomberperson.model.Player;
 import inf112.bomberperson.model.Player.State;
