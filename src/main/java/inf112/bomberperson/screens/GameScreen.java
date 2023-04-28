@@ -87,6 +87,10 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
         batch.dispose();
+        model.player1.getTexture().dispose();
+        model.player2.getTexture().dispose();
+        model.map.getMap().dispose();
+        mapRenderer.dispose();
         game.dispose();
 
         //clear screen

@@ -181,11 +181,11 @@ public class Model implements ApplicationListener {
 
     @Override
     public void dispose() {
-        player1.getTexture().dispose();
-        player2.getTexture().dispose();
+        //player1.getTexture().dispose();
+        //player2.getTexture().dispose();
         //batch.dispose();
-        map.getMap().dispose();
-        map.getMapRenderer().dispose();
+        //map.getMap().dispose();
+        //map.getMapRenderer().dispose();
 
     }
 
