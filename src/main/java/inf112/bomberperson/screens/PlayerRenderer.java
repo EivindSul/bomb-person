@@ -30,7 +30,6 @@ public class PlayerRenderer {
      */
     public void draw(Batch spriteBatch){
         time += Gdx.graphics.getDeltaTime();
-
         spriteBatch.draw(animations1.getActiveAnimation().getKeyFrame(time, true), player.getX(), player.getY());
         spriteBatch.draw(animations2.getActiveAnimation().getKeyFrame(time, true), player2.getX(), player2.getY());
 

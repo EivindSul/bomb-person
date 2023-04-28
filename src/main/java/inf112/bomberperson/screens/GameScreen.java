@@ -9,6 +9,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import inf112.bomberperson.game.BombermanGame;
 import inf112.bomberperson.model.Model;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 
 
 public class GameScreen implements Screen {
@@ -17,21 +18,29 @@ public class GameScreen implements Screen {
     public Model model;
     public PlayerRenderer playerRenderer;
     public Batch batch;
-    public OrthographicCamera mapCamera;
     public OrthogonalTiledMapRenderer mapRenderer;
+    private FitViewport viewport;
     
     public GameScreen (BombermanGame game){
         camera = new OrthographicCamera();
         this.model = new Model(game);
         playerRenderer = new PlayerRenderer(model.player1, model.player2);
         batch = game.batch;
-        mapCamera = model.map.getCamera();
-        // Create the map renderer
+        
+        //creating map renderer and focusing camera to it
         mapRenderer = new OrthogonalTiledMapRenderer(model.map.getMap());
-        mapRenderer.setView(mapCamera);
+        mapRenderer.setView(camera);
+    
+        //getting values from map
+        int mapHeight = ((int)(model.map.getHeight() * model.map.getTileSize())); 
+        int mapWidth = ((int)(model.map.getWidth() * model.map.getTileSize()));
 
-
-
+        //applying the values from map to focus viewport on map
+        viewport = new FitViewport(mapWidth, mapHeight, camera);
+        viewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        camera.position.set(mapWidth / 2f, mapHeight / 2f, 0);
+        camera.zoom = Gdx.graphics.getWidth() / (float) mapWidth;
+        camera.update();
     }
 
     @Override
@@ -39,15 +48,13 @@ public class GameScreen implements Screen {
         //clear screen
         ScreenUtils.clear(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        mapCamera.update();
-
         //update camera
         camera.update();
-        //compute model
-        // handle all game logic and input and update the model
+
+        mapRenderer.setView(camera);
+		mapRenderer.render();
+        
         model.update();
-
-
 
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
