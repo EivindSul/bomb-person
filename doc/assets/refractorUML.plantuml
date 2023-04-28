@@ -1,53 +1,19 @@
 @startuml bomberman
-interface Collidable {
-    + move()
-    + getRectangle()
-}
-interface Controllable {
-  enum DIRECTIONS up,down,left,right,udle
-  + registerInput()
-}
-interface Animated {
-    enum ANIMATION every animation type,
-    + getActiveAnimation()
-}
+interface Collidable {}
 
-class CollisionDetector {
+class Collision {
     - map : Map
     + detectCollisions(collidable: Collidable)
 }
+Collision --> Collidable
 
-class Player implements Collidable {
-    + move()
-}
-class Player1Controller implements Controllable{
-    + registerInput()
-}
-class Player2Controller implements Controllable{
-    + registerInput()
-}
-class PlayerAnimations {
-    
-}
-
-class Map {
-
-}
-
-class Model {
-
-}
-
-Model --> Map
-Model --> CollisionDetector
-Model --> Player
-
-CollisionDetector --> Map
-CollisionDetector --> Collidable
-
-Player --> Controllable : assigns a controller on creation
+class Player implements Collidable {}
+class PlayerAnimations {}
 Player --> PlayerAnimations
 
-Player --|> Animated
+class Map {}
 
+class Model {}
+Model --> Collision
+Model --> Map
 @enduml
