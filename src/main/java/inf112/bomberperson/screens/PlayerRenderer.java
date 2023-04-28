@@ -13,13 +13,15 @@ public class PlayerRenderer {
     public Player player2;
 
 
-    public PlayerAnimations animations;
+    public PlayerAnimations animations1;
+    public PlayerAnimations animations2;
 
 
-    public PlayerRenderer(Player player,Player player2){
-        this.player = player;
+    public PlayerRenderer(Player player1,Player player2){
+        this.player = player1;
         this.player2 = player2;
-        this.animations = new PlayerAnimations(player);
+        this.animations1 = new PlayerAnimations(player1);
+        this.animations2 = new PlayerAnimations(player2);
     }
 
     /**
@@ -29,8 +31,8 @@ public class PlayerRenderer {
     public void draw(Batch spriteBatch){
         time += Gdx.graphics.getDeltaTime();
 
-        spriteBatch.draw(animations.getActiveAnimation().getKeyFrame(time, true), player.getX(), player.getY());
-        spriteBatch.draw(animations.getActiveAnimation().getKeyFrame(time, true), player2.getX(), player2.getY());
+        spriteBatch.draw(animations1.getActiveAnimation().getKeyFrame(time, true), player.getX(), player.getY());
+        spriteBatch.draw(animations2.getActiveAnimation().getKeyFrame(time, true), player2.getX(), player2.getY());
 
     }
 

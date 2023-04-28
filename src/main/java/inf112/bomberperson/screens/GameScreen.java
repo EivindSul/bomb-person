@@ -22,12 +22,10 @@ public class GameScreen implements Screen {
     
     public GameScreen (BombermanGame game){
         camera = new OrthographicCamera();
-        this.model = new Model(game, camera);
+        this.model = new Model(game);
         playerRenderer = new PlayerRenderer(model.player1, model.player2);
         batch = game.batch;
-        //mapRenderer = model.map.getMapRenderer();
         mapCamera = model.map.getCamera();
-
         // Create the map renderer
         mapRenderer = new OrthogonalTiledMapRenderer(model.map.getMap());
         mapRenderer.setView(mapCamera);
@@ -57,11 +55,6 @@ public class GameScreen implements Screen {
         playerRenderer.draw(batch);
 
         batch.end();
-
-
-        //playerRenderer.draw(batch);
-        // render all the model components
-        model.render();
     }
 
     @Override
@@ -92,8 +85,6 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
         batch.dispose();
-        model.player1.getTexture().dispose();
-        model.player2.getTexture().dispose();
         model.map.getMap().dispose();
         mapRenderer.dispose();
         game.dispose();

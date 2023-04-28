@@ -1,15 +1,11 @@
 package inf112.bomberperson.model;
 import java.util.LinkedList;
-
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import inf112.bomberperson.screens.animations.PlayerAnimations;
 import inf112.bomberperson.model.collision.Collidable;
 import inf112.bomberperson.model.tiles.Bomb;
 
-public class Player extends Sprite implements Collidable {
+public class Player implements Collidable {
     public enum Direction{
         UP,
         DOWN,
@@ -20,6 +16,11 @@ public class Player extends Sprite implements Collidable {
         IDLE,
         WALKING;
     }
+
+    private float x;
+    private float y;
+    private float width;
+    private float height;
     private Direction currentDirection;
     private State currentState;
 
@@ -38,10 +39,10 @@ public class Player extends Sprite implements Collidable {
 
     private int speed = 100;
     
-    public Player(Sprite sprite){
-        super(sprite);
+    public Player(){
         animations = new PlayerAnimations(this);
-        setSize(10,10);
+        this.height = 10;
+        this.width = 10;
         this.time = 0;
         
         //initializing player direction and state
@@ -88,27 +89,47 @@ public class Player extends Sprite implements Collidable {
     public boolean getAlive(){
         return this.alive;
     }
-
-    
     public Vector2 getVelocity() {
         return velocity;
     }
-    
     public void setVelocity(Vector2 velocity) {
         float velX = velocity.x; // * speed;
         float velY = velocity.y; // * speed;
         
         this.velocity = new Vector2(velX, velY);
     }
-    
-    
-    /*------------------- POSITION -------------------*/
-    
     public Vector2 getPosition(){
         return new Vector2(getX(), getY());
     }
+    public void setPosition(float x, float y) {
+        this.setX(x);
+        this.setY(y);
+    }
     public int getSpeed(){
         return this.speed;
+    }
+    public void setX(float x) {
+        this.x = x;
+    }
+    public void setY(float y) {
+        this.y = y;
+    }
+    @Override
+    public float getX() {
+        return this.x;
+    }
+    @Override
+    public float getY() {
+        return this.y;
+    }
+    @Override
+    public float getWidth() {
+        return this.width;
+    }
+
+    @Override
+    public float getHeight() {
+        return this.height;
     }
     
     /*------------------- DROP BOMBS -------------------*/
