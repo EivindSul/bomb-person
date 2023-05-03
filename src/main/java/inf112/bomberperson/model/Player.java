@@ -24,8 +24,7 @@ public class Player implements Collidable {
     private Direction currentDirection;
     private State currentState;
 
-    //animations
-    PlayerAnimations animations;
+
     float time;
 
     //the movement velocity
@@ -40,7 +39,7 @@ public class Player implements Collidable {
     private int speed = 100;
     
     public Player(){
-        animations = new PlayerAnimations(this);
+
         this.height = 10;
         this.width = 10;
         this.time = 0;
@@ -189,7 +188,7 @@ public class Player implements Collidable {
         this.bombPower += 1;
     }
     
-    private int getBombRange() {
+    public int getBombRange() {
         return this.bombRange;
     }
 

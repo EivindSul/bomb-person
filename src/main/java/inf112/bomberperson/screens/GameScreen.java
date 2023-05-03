@@ -10,6 +10,7 @@ import inf112.bomberperson.game.BombermanGame;
 import inf112.bomberperson.model.Model;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import inf112.bomberperson.screens.animations.PlayerAnimations;
 
 
 public class GameScreen implements Screen {
@@ -41,6 +42,9 @@ public class GameScreen implements Screen {
         camera.position.set(mapWidth / 2f, mapHeight / 2f, 0);
         camera.zoom = Gdx.graphics.getWidth() / (float) mapWidth;
         camera.update();
+
+        new PlayerAnimations(model.player1);
+        new PlayerAnimations(model.player2);
     }
 
     @Override
