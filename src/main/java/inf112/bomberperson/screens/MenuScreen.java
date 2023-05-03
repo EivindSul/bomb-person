@@ -49,6 +49,7 @@ public class MenuScreen implements Screen {
         // Buttons for starting a game, the rules and closing the game
         TextButton newGame = new TextButton("New game", skin);
         TextButton rules = new TextButton("Settings", skin);
+        TextButton powerups = new TextButton("Powerups", skin);
         TextButton exitGame = new TextButton("Exit game", skin);
 
         // Adding buttons
@@ -56,6 +57,8 @@ public class MenuScreen implements Screen {
         table.add(newGame).padTop(20).minWidth(250).minHeight(50);
         table.row();
         table.add(rules).padTop(20).minWidth(250).minHeight(50);
+        table.row();
+        table.add(powerups).padTop(20).minWidth(250).minHeight(50);
         table.row();
         table.add(exitGame).padTop(20).minWidth(250).minHeight(50);
 
@@ -74,6 +77,15 @@ public class MenuScreen implements Screen {
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 dispose();
                 game.setScreen(new RulesScreen(game));
+                return true;
+            }
+        });
+
+        powerups.addListener(new InputListener(){
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                dispose();
+                game.setScreen(new PowerupsScreen(game));
                 return true;
             }
         });

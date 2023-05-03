@@ -8,11 +8,21 @@ public class BombermanGame extends Game {
     public static final int WIDTH = 720;
     public static final int HEIGHT = 720;
     public SpriteBatch batch;
+    private int winner;
 
     @Override
     public void create() {
         batch = new SpriteBatch();
+        winner = 4; // Default "winner"
         this.setScreen(new MenuScreen(this));
+    }
+
+    public void setWinner(int winner) {
+        this.winner = winner;
+    }
+
+    public int getWinner() {
+        return winner;
     }
 
     @Override

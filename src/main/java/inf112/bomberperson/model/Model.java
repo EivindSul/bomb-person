@@ -87,14 +87,22 @@ public class Model {
         cleanExplodeTimeList(bombsToExplode);
         cleanBombList(decayedExplosions);
 
+        if(checkIfPlayerExplodes(player1) && checkIfPlayerExplodes(player2)){
+            killPlayer(player1);
+            killPlayer(player2);
+            game.setWinner(1);
 
+            gameState = false;
+        }
         if(checkIfPlayerExplodes(player1)){
             killPlayer(player1);
+            game.setWinner(3);
 
             gameState = false;
         }
         if(checkIfPlayerExplodes(player2)){
             killPlayer(player2);
+            game.setWinner(2);
 
             gameState = false;
         }
