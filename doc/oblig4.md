@@ -86,19 +86,15 @@
         <ul> 
             <li> Tester </li>
             <li> Tilefactory </li>
-            <li> Lyden/ lydeffekter </li>
-        </ul>
-    <p> Hvis vi har tid: </p>
-        <ul>
-            <li> Powerups </li>
-            <li> Flytte map ut av model </li>
+            <li> Fikse lyd/ lydeffekter </li>
         </ul>
 
 <h2>Hvilke avgjørelser dere tok</h2>
     <p> Vi valgte å gjøre følgende: </p>
 <ul>
-<li> Skrive tester i Player klassen </li>
-<li> Skrive på oblig4.md </li>
+<li> Skrive tester i Player klassen. </li>
+<li> Skrive på oblig4.md. </li>
+<li> Gjøre ferdig tilefactory til neste gang.</li>
 </ul>
     
 <h2>Hva dere ble enige om å gjøre til neste gang</h2>
@@ -127,3 +123,11 @@
     </p>
 
 <h1> Kode seksjon </h1>
+    <p> Dette har vi fikset siden sist: Kontrollerne er nå uavhengige. Det vil si at vi har to kontroller som er uavhengige av hverandre og kan nå styres av to spiller.
+        Vi har fått fikset refaktorteringen, nå har vi mer oversiktlig over hvor klassene befinner seg.
+    </p>
+    <p> Her kan du finne det siste klassediagrammet av hvordan våre klasser har blitt delt inn i: (Link)
+    </p>
+    <p> Spotbugs: Vi har fått testet spotbugs i koden vår. .... 
+    </p>
+
