@@ -21,7 +21,7 @@ import inf112.bomberperson.game.BombermanGame;
 public class PowerupsScreen implements Screen{
     BombermanGame game;
 
-    BitmapFont font;
+    Label.LabelStyle font;
     protected Skin skin;
     protected final Stage stage;
 
@@ -36,7 +36,7 @@ public class PowerupsScreen implements Screen{
     @Override
     public void show() {
         // Font for the screen
-        Label.LabelStyle font = new Label.LabelStyle(new BitmapFont(), Color.WHITE); 
+        font = new Label.LabelStyle(new BitmapFont(), Color.WHITE); 
         Label text;
         Image image;
 

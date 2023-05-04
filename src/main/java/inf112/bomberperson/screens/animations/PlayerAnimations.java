@@ -14,10 +14,12 @@ public class PlayerAnimations {
     private Animation<TextureRegion> southWalkingAnim;
     private Animation<TextureRegion> westWalkingAnim;
     
+    /* Animantions for an idle state of the player, not implemented.
     private Animation<TextureRegion> idleNorth;
     private Animation<TextureRegion> idleEast;
     private Animation<TextureRegion> idleSouth;
-    private Animation<TextureRegion> idleWest;
+    private Animation<TextureRegion> idleWest; */
+
     Player player;
     public PlayerAnimations(Player player){
         this.player = player;

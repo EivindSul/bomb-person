@@ -19,7 +19,7 @@ import inf112.bomberperson.game.BombermanGame;
 public class MenuScreen implements Screen {
     BombermanGame game;
 
-    BitmapFont font;
+    Label.LabelStyle font;
     protected Skin skin;
     protected final Stage stage;
 
@@ -34,7 +34,7 @@ public class MenuScreen implements Screen {
     @Override
     public void show() {
         // Screen font
-        Label.LabelStyle font = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
+        font = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
 
         // Table to draw on
         Table table = new Table();
