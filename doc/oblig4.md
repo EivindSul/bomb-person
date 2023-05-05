@@ -106,11 +106,15 @@
 <h1>Referat 16 (05.05.2023)</h1>
 
 <h2>Hvem som var tilstede</h2>
-<p> Kjell, Jackie, Brian, Sebastian </p>
-
+<p> Kjell, Jackie, Brian, Sebastian, Dorcas, Eivind (Alle var tilstedet)</p>
+    
 <h2>Hva dere diskuterte</h2>
+    Diskusjon av tester, om vi skal mocke map. Få test coverage til 75%.
+    
 
 <h2>Hvilke avgjørelser dere tok</h2>
+    Vanlige JUnit tester fungerer ikke for mye av koden. 
+    Dette skyldes naturen av LibGdx og problemene med grafikk. 
 
 <h2>Hva dere ble enige om å gjøre til neste gang</h2>
 
