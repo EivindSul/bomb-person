@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 
+import inf112.bomberperson.model.map.Map;
+
 public class Collision {
     String blockedKey = "blocked";
     ArrayList<TiledMapTileLayer> collisionList;
@@ -47,15 +49,17 @@ public class Collision {
     }
 
     public String containsPowerup(Vector2 position){
-        float x = position.x;
-        float y = position.y;
         try {
             TiledMapTileLayer layer = getPowerupLayer();
-            TiledMapTileLayer.Cell cell = layer.getCell((int) (x / layer.getTileWidth()), (int) (y / layer.getTileHeight()));
+            int col = (Math.round(position.x / Map.TILE_SIZE));
+            int row = (Math.round(position.y / Map.TILE_SIZE));
+
+            TiledMapTileLayer.Cell cell = layer.getCell(col,row);
             
             if (cell == null){
                 return "none";
             }
+
             if (cell.getTile().getProperties().containsKey("powerup")){
                 return (String)cell.getTile().getProperties().get("powerup");
             }
@@ -198,5 +202,4 @@ public class Collision {
         }
         return collides;
     }
-
 }

@@ -109,12 +109,13 @@ public class Model {
         }
 
         String powerup = collision.containsPowerup(player.getPosition());
-        if (!powerup.equals("none")){
+        
+        if (!powerup.equals("none") && player.getPowerupDelay() <= time){
+            player.setPowerupDelay(time + (float)0.2);
             map.removePowerupFromMap(player.getPosition());
             player.applyPowerup(powerup);
             long id =powerUpSound.play();
             powerUpSound.setVolume(id, 0.6f);
-
         }
     }
 
