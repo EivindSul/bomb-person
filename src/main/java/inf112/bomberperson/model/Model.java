@@ -135,7 +135,7 @@ public class Model {
      * Adds this bomb to timedBombList, which is the list of current bombs on the map.
      * @param player The player that drops the bomb
      */
-    public void addBomb(Player player){
+    public void dropBomb(Player player){
         int playerNumber = player.getNumber();
         if (tileFactory.legalBombDrop(playerNumber, player.getBombLimit(), player.getPosition())){
             Bomb bomb = new Bomb(player.getPosition(), player.getBombRange(), player.getBombPower());
