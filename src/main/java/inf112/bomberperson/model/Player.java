@@ -29,7 +29,6 @@ public class Player implements Collidable {
     public Vector2 velocity = new Vector2();
 
     private boolean alive = true;
-    private LinkedList<Bomb> bombList = new LinkedList<Bomb>();
     private int bombLimit = 1;
     private int bombRange = 1;
     private int bombPower = 1;
@@ -37,7 +36,8 @@ public class Player implements Collidable {
     private int speed = 100;
     private int number;
 
-
+    private float powerupDelay = 0;
+    
     public Player(int number){
 
         this.height = 10;
@@ -70,11 +70,7 @@ public class Player implements Collidable {
             currentDirection = Direction.UP;
             currentState = State.WALKING;
         }
-        /*
-        if ( (velocity.x == 0)||(velocity.y == 0) ) {
-            currentState = State.IDLE;
-        }
-        */
+
     }
     public void update(float delta){
         setX(getX() + velocity.x * delta);
@@ -128,33 +124,6 @@ public class Player implements Collidable {
     @Override
     public float getHeight() {
         return this.height;
-    }
-    
-    /*------------------- DROP BOMBS -------------------*/
-    
-    // public boolean dropBomb() {
-
-    //     if (bombList.size() >= getBombLimit()){
-    //         return false;
-    //     }
-    //     Bomb bomb = new Bomb(this.getPosition(), this.getBombRange(), this.getBombPower());
-    //     bombList.add(bomb);
-    //     return true;
-        
-    // }
-    
-    public boolean noBombs(){
-        return bombList.isEmpty();
-    }
-    
-    /*------------------- GET BOMB LIST -------------------*/
-    
-    public LinkedList<Bomb> getBombList(){
-        return this.bombList;
-    }
-    
-    public Bomb popBombList(){
-        return this.bombList.pop();
     }
     
     /*------------------- NUMBER OF BOMBS -------------------*/
@@ -217,4 +186,12 @@ public class Player implements Collidable {
     public int getNumber() {
         return this.number;
     }
+
+    public void setPowerupDelay(float time){
+        this.powerupDelay = time;
+    }
+    public float getPowerupDelay(){
+        return this.powerupDelay;
+    }
+
 }

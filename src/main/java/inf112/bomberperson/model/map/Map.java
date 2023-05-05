@@ -104,7 +104,9 @@ public class Map {
     }
 
     public void removeBombFromMap(Vector2 position){
-        clearCell("Dynamic", position);
+        if(containsBomb(position)){
+            clearCell("Dynamic", position);
+        }
     }
 
     public void addExplosionToMap(Explosion explosion){

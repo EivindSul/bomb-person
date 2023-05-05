@@ -28,7 +28,6 @@ public class PlayerTest {
         assertEquals(player.getCurrentState(), Player.State.WALKING);
         assertEquals(player.getVelocity(), new Vector2(0, 0));
         assertTrue(player.getAlive());
-        assertEquals(player.getBombList(), new LinkedList<>());
         assertEquals(player.getBombLimit(), 1);
         assertEquals(player.getBombRange(), 1);
         assertEquals(player.getBombPower(), 1);
@@ -139,17 +138,7 @@ public class PlayerTest {
         assertEquals(initialSpeed + 10, newSpeed);
     }
 
-    @Test
-    public void testPopBombList() {
-
-        Bomb bomb1 = new Bomb(player.getPosition(), player.getBombRange(), player.getBombPower());
-        Bomb bomb2 = new Bomb(player.getPosition(), player.getBombRange(), player.getBombPower());
-        player.getBombList().add(bomb1);
-        player.getBombList().add(bomb2);
-        Bomb poppedBomb = player.popBombList();
-        assertEquals(bomb1, poppedBomb);
-        assertEquals(1, player.getBombList().size());
-    }
+    // Removed popbomblisttest, because removed popbomblist
 }
 
 

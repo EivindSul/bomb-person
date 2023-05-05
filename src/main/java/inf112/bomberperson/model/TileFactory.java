@@ -41,29 +41,6 @@ public class TileFactory {
     }
 
 
-    public void triggerEvent(Vector2 position){
-
-    }
-
-
-
-    public void placeBomb(Vector2 position){
-        
-    }
-    
-    private void explodeBomb(Vector2 position){
-
-    }
-
-    public void removePowerup(){
-
-    }
-
-
-
-
-
-
     /*
      * Checks if any bombs explode. if a bomb explodes, it removes this bomb from the respective player's bomb list.
      * @return bombsToExplode
