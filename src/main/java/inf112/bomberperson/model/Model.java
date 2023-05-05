@@ -91,13 +91,13 @@ public class Model {
 
             gameState = false;
         }
-        if(checkIfPlayerExplodes(player1)){
+        else if(checkIfPlayerExplodes(player1)){
             killPlayer(player1);
             game.setWinner(3);
 
             gameState = false;
         }
-        if(checkIfPlayerExplodes(player2)){
+        else if(checkIfPlayerExplodes(player2)){
             killPlayer(player2);
             game.setWinner(2);
 
