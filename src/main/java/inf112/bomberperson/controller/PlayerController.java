@@ -16,6 +16,7 @@ public class PlayerController {
     public ICallable<Void> playerDown;
     public ICallable<Void> playerLeft;
     public ICallable<Void> playerDrop;
+    public ICallable<Void> endGame;
 
     public ICallable<Void> playerStopVert;
     public ICallable<Void> playerStopHori;
@@ -92,6 +93,14 @@ public class PlayerController {
             public Void call(){
                 stopSound();
                 player.setVelocity(new Vector2((player.velocity.x = 0), player.velocity.y = player.getVelocity().y));
+                return null;
+            }
+        };
+
+        endGame = new ICallable<Void>(){
+            public Void call(){
+                stopSound();
+                model.gameState = false;
                 return null;
             }
         };
