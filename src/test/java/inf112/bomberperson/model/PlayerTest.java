@@ -30,7 +30,7 @@ public class PlayerTest {
         assertTrue(player.getAlive());
         assertEquals(player.getBombList(), new LinkedList<>());
         assertEquals(player.getBombLimit(), 1);
-
+        assertEquals(player.getBombRange(), 1);
         assertEquals(player.getBombPower(), 1);
         assertEquals(player.getSpeed(), 100);
     }
