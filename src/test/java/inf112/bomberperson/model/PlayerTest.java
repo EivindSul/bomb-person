@@ -1,11 +1,8 @@
 package inf112.bomberperson.model;
 
 import com.badlogic.gdx.math.Vector2;
-import inf112.bomberperson.model.tiles.Bomb;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.LinkedList;
 
 import static org.junit.Assert.*;
 
