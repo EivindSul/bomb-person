@@ -114,7 +114,7 @@
 
 <h2>Hvilke avgjørelser dere tok</h2>
     Vanlige JUnit tester fungerer ikke for mye av koden. 
-    Dette skyldes av naturen av LibGdx og problemene med grafikk.
+    Dette skyldes av LibGdx og problemene med grafikk. Vi har prøvd med headlessApplication og Mockito uten å lykkes. 
     La inn lisenser og jar.fil beskrivelse i READ.ME. 
 
 
