@@ -46,7 +46,7 @@
     <p>til neste gang vil vi spørre gruppeleder om : mockito , headless application og tester, tilbakemelding om powerups(eivind), spotbugg, linux problemet med spillet(kjell og sebastian), lisens(sebastian og jakcie), spør om MVC struktur</p>
 
     
-<h1>Refaret 14 (26.04.2023)</h1>
+<h1>Referat 14 (26.04.2023)</h1>
 <h2>Hvem som var tilstede</h2>
     <p>Alle var tilstede</p>
 <h2>Hva dere diskuterte</h2>
@@ -75,3 +75,72 @@
         </ul>
     </p>
     <p>neste uke onsdag 3.mai (12-15) skal vi møtes og bli ferdig med oblig</p>
+
+<h1>Referat 15 (03.05.2023)</h1>
+
+<h2>Hvem som var tilstede</h2>
+    <p> Sebastian, Kjell, Jackie, Dorcas, Brian</p>
+    
+<h2>Hva dere diskuterte</h2>
+    <p> Hva har vi igjen: </p>
+        <ul> 
+            <li> Tester </li>
+            <li> Tilefactory </li>
+            <li> Fikse lyd/ lydeffekter </li>
+        </ul>
+
+<h2>Hvilke avgjørelser dere tok</h2>
+    <p> Vi valgte å gjøre følgende: </p>
+<ul>
+<li> Skrive tester i Player klassen. </li>
+<li> Skrive på oblig4.md. </li>
+<li> Gjøre ferdig tilefactory til neste gang.</li>
+</ul>
+    
+<h2>Hva dere ble enige om å gjøre til neste gang</h2>
+    <p> Skrive flere tester </br>
+        Planlegge siste utkast til innlevering </br>
+        Siste møte: Fredag 05.mai klokka: 10:00 - 15:00 </br>
+   </p>
+
+<h1>Referat 16 (05.05.2023)</h1>
+
+<h2>Hvem som var tilstede</h2>
+<p> Kjell, Jackie, Brian, Sebastian </p>
+
+<h2>Hva dere diskuterte</h2>
+
+<h2>Hvilke avgjørelser dere tok</h2>
+
+<h2>Hva dere ble enige om å gjøre til neste gang</h2>
+
+
+<h1> Prosjektrapport </h1>
+    <p> Som vi gjorde det i oblig3 hadde vi valgt å ikke ha noen spesielle roller enn kun utvikler og kundekontakt (Sebastian). Vi føler at det passet for oss siden vi alle kunne være med å planlegge hvordan vi skal håndtere videre planer. Vi samarbeidet veldig bra som et team. Eivind hadde igjen rollen som skulle legge igjen den siste taggen før endelige innleveringen.  </br>
+        Gruppedynamikken har vært veldig bra. Vi har blant annet klart å komme til enighet over når møte skal være: Hva vi skal jobbe med videre og fordeling av hvem som skal gjøre hva. </br>
+        Kommunikasjonen har vært veldig bra. Diskusjon og kommunikasjonen har vært gjennom vår Discord server, og kommunikasjonen når vi møtes fysisk har vært enda bedre. Lite misforståelser og mye enigheter, spesielt da vi brukte trello som en oversikt over hva vi holder på med. Gjennom hele prosjektet har det vært noen forskjell over hvem som har committet mer enn andre i gruppa. Det skyldes av at flere har jobbet sammen i en maskin, en form for "pair programming". Alle i gruppa har vært med å bidra til prosjektet. Nesten hver møte har nesten alle eller alle i gruppa møtt opp.  </br>
+    </p>
+    <p> Det som har vært bra er hvordan vi jobbet som team. Alle eller nesten alle møtt opp de dagene vi skulle møte opp, og alle hadde gjort det de skulle gjøre. 
+        Vi hadde gode planer om hv alle skal drive med til neste gang, og var egentlig veldig bra på å tenke på SOLID prinsippene.
+        En ting som vi kunne ha gjort annerledes er å bruke de konseptene som er skrevet i boken som Test Driven Development.
+        Vi begynte å tenke på testene for seint, noe som gjorde at vi måtte refaktore veldig mye for å teste noen klasser, mens andre kunne ikke testes pga graffiken. Andre konsepter som vi ikke tenkte veldig mye på er det med å følge på Object Calisthenics for å unngå Code Smells. 
+        Selv om vi hadde det i bakhodet, var det fortsatt vanskelig å følge alle Object Calisthenics med tanken på størrelsen av prosjektet. Selv med alt dette er vi forsatt veldig stolt av det vi har fått til. Vi har lagd en ganske bra spill som er multiplayer og som har Powerups. Vi har kule lyder
+        og spilleren ser og fungerer ganske bra. Alt i alt er vi fornøyd med det vi har fått til.
+    </p>
+
+<h1> Krav og Spesifikasjon: </h1>
+    <p>
+        Vi har refaktorert koden sånn at det følger MVC- prinsippen. Vi har valgt å prioritere refaktorisering av koden, lyd og lydeffekter, få multiplayer til å fungere altså at kontrollerne skal være uavhengig av hverandre, skrive flere tester og lage en tilefactory. Vi har klart å implementere disse tingene og fungerer som det skal. Siden sist oblig3 jobbet vi med å fokusere på powerups. 
+    </p>
+
+<h1> Kode seksjon </h1>
+    <p> Dette har vi fikset siden sist: Kontrollerne er nå uavhengige. Det vil si at vi har to kontroller som er uavhengige av hverandre og kan nå styres av to spiller.
+        Vi har fått fikset refaktorteringen, nå har vi mer oversiktlig over hvor klassene befinner seg.
+    </p>
+    <p> Her kan du finne det siste klassediagrammet av hvordan våre klasser har blitt delt inn i: (Link)
+    </p>
+    <p> Spotbugs: Vi har fått testet spotbugs i koden vår. Vi brukte spotBugs mot slutten for å gå gjennom koden å se etter ting som vi hadde oversett mens vi lagde spillet. Jeg skal være ærlig og si det var litt av hvert der. Inkludert var: 13 «bugs» relatert til ubrukte metoder og varibler, noen feil i koden slik som å ikke kaste RuntimeExeptions og å dele på integers når man vil ha en float ut. Disse har blitt fjernet/fikset.
+Det var samtidig også noen tilfeller hvor spotBugs foreslo at systemet var mer åpent for å vise frem intern data ved bruken av referanser istedenfor kopier av dataen, et tilfelle av dette kan finnes i Model sin konstruktør ved «this.game = game», men var usikker på om dette var noe som kunne gjøres noe med, så det ble latt være.
+Med tanke på det som ble funnet med hjelp av programmet har det vært veldig nyttig, selv bare for å finne deler av koden som var dårlig/trengte små forandringer.
+    </p>
+
