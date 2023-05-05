@@ -97,7 +97,13 @@ public class TileFactory {
         return decayedExplosions;
     }
 
-    public void addBomb(TimedEntity<Bomb> newBomb) {
+    /**add a bomb to a players position on the map.
+     * @param player that drops bomb
+     * @param time when bomb should detonate
+     */
+    public void addBomb(Player player, float time) {
+        Bomb bomb = new Bomb(player.getPosition(), player.getBombRange(), player.getBombPower());
+        TimedEntity<Bomb> newBomb = new TimedEntity<Bomb>(bomb, time, player.getNumber());
         timedBombList.add(newBomb);
         map.addBombToMap(newBomb.getEntity().getPosition());
     }
@@ -192,7 +198,15 @@ public class TileFactory {
         return 0;
     }
 
-    public boolean legalBombDrop(int playerNumber, int bombLimit, Vector2 position) {
+    /** Checks that a bomb is legal to drop by a player on their position. 
+     * @param player
+     * @return whether the tile is free and the player does not exceed their maximum amount of dropped bombs
+     */
+    public boolean legalBombDrop(Player player) {
+        int playerNumber = player.getNumber();
+        int bombLimit = player.getBombLimit();
+        Vector2 position = player.getPosition();
+
         for (TimedEntity<Bomb> timedBomb : timedBombList) {
             if(timedBomb.getOwner() == playerNumber){
                 bombLimit -= 1;
