@@ -140,7 +140,7 @@
     <p> Dette har vi fikset siden sist: Kontrollerne er nå uavhengige. Det vil si at vi har to kontroller som er uavhengige av hverandre og kan nå styres av to spiller.
         Vi har fått fikset refaktorteringen, nå har vi mer oversiktlig over hvor klassene befinner seg.
     </p>
-    <p> Her kan du finne det siste klassediagrammet av hvordan våre klasser har blitt delt inn i: (Link)
+    <p> Du finner det siste klassediagrammet under "doc/assets/ClassDiagramFinal.pdf", er også referet til i readme
     </p>
     <p> Spotbugs: Vi har fått testet spotbugs i koden vår. Vi brukte spotBugs mot slutten for å gå gjennom koden å se etter ting som vi hadde oversett mens vi lagde spillet. Jeg skal være ærlig og si det var litt av hvert der. Inkludert var: 13 «bugs» relatert til ubrukte metoder og varibler, noen feil i koden slik som å ikke kaste RuntimeExeptions og å dele på integers når man vil ha en float ut. Disse har blitt fjernet/fikset.
 Det var samtidig også noen tilfeller hvor spotBugs foreslo at systemet var mer åpent for å vise frem intern data ved bruken av referanser istedenfor kopier av dataen, et tilfelle av dette kan finnes i Model sin konstruktør ved «this.game = game», men var usikker på om dette var noe som kunne gjøres noe med, så det ble latt være.
