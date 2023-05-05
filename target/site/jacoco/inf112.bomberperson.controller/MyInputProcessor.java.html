@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MyInputProcessor.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">bomberman-gdx</a> &gt; <a href="index.source.html" class="el_package">inf112.bomberperson.controller</a> &gt; <span class="el_source">MyInputProcessor.java</span></div><h1>MyInputProcessor.java</h1><pre class="source lang-java linenums">package inf112.bomberperson.controller;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
+import inf112.bomberperson.model.Model;
+
+public class MyInputProcessor implements InputProcessor{
+    private Model model;
+
+<span class="nc" id="L13">    public MyInputProcessor(Model model){</span>
+<span class="nc" id="L14">        this.model = model;</span>
+<span class="nc" id="L15">    }</span>
+
+<span class="nc" id="L17">    private Map&lt;Integer, ICallable&lt;Void&gt;&gt; keyPressedHandlers = new HashMap&lt;Integer, ICallable&lt;Void&gt;&gt;();</span>
+<span class="nc" id="L18">    private Map&lt;Integer, ICallable&lt;Void&gt;&gt; keyUpHandlers = new HashMap&lt;Integer, ICallable&lt;Void&gt;&gt;();</span>
+
+    /** 
+     * Maps the actions of the different inputs to the correct keys in two hashmaps, one for pressing a key and one for releasing it.
+     * Movment: P1 WASD, P2 arrows.
+     * Drop Bomb: P1 SPACEBAR, P2 ENTER.
+    */
+    public void mapInputs(){
+        // Set up player controllers
+<span class="nc" id="L27">        PlayerController controller1 = new PlayerController(model.player1, model);</span>
+<span class="nc" id="L28">        PlayerController controller2 = new PlayerController(model.player2, model);</span>
+        
+        // Map keys to player controllers
+        // Player 1 moves up on W, player 2 moves up on Arrow up
+<span class="nc" id="L32">        keyPressedHandlers.put(Input.Keys.W, controller1.playerUp);</span>
+<span class="nc" id="L33">        keyPressedHandlers.put(Input.Keys.UP, controller2.playerUp);</span>
+
+        // Player 1 moves down on S, player 2 moves down on Arrow down
+<span class="nc" id="L36">        keyPressedHandlers.put(Input.Keys.S, controller1.playerDown);</span>
+<span class="nc" id="L37">        keyPressedHandlers.put(Input.Keys.DOWN, controller2.playerDown);</span>
+        
+        // Player 1 moves right on D, player 2 moves right on Arrow right
+<span class="nc" id="L40">        keyPressedHandlers.put(Input.Keys.D, controller1.playerRight);</span>
+<span class="nc" id="L41">        keyPressedHandlers.put(Input.Keys.RIGHT, controller2.playerRight);</span>
+        
+        // Player 1 moves left on A, player 2 moves left on Arrow left
+<span class="nc" id="L44">        keyPressedHandlers.put(Input.Keys.A, controller1.playerLeft);</span>
+<span class="nc" id="L45">        keyPressedHandlers.put(Input.Keys.LEFT, controller2.playerLeft);</span>
+        
+        // Player 1 drops bomb on Spacebar, player 2 drops bomb on Enter
+<span class="nc" id="L48">        keyPressedHandlers.put(Input.Keys.SPACE, controller1.playerDrop);</span>
+<span class="nc" id="L49">        keyPressedHandlers.put(Input.Keys.ENTER, controller2.playerDrop);</span>
+        
+        // Stop vertical movement of players
+<span class="nc" id="L52">        keyUpHandlers.put(Input.Keys.W, controller1.playerStopVert);</span>
+<span class="nc" id="L53">        keyUpHandlers.put(Input.Keys.UP, controller2.playerStopVert);</span>
+<span class="nc" id="L54">        keyUpHandlers.put(Input.Keys.S, controller1.playerStopVert);</span>
+<span class="nc" id="L55">        keyUpHandlers.put(Input.Keys.DOWN, controller2.playerStopVert);</span>
+
+        // Stop horizontal movement of players
+<span class="nc" id="L58">        keyUpHandlers.put(Input.Keys.D, controller1.playerStopHori);</span>
+<span class="nc" id="L59">        keyUpHandlers.put(Input.Keys.RIGHT, controller2.playerStopHori);</span>
+<span class="nc" id="L60">        keyUpHandlers.put(Input.Keys.A, controller1.playerStopHori);</span>
+<span class="nc" id="L61">        keyUpHandlers.put(Input.Keys.LEFT, controller2.playerStopHori);</span>
+<span class="nc" id="L62">    }</span>
+
+    @Override
+    public boolean keyDown(int keycode) {
+<span class="nc bnc" id="L66" title="All 2 branches missed.">        if (keycode == Input.Keys.Q) {</span>
+<span class="nc" id="L67">            model.gameState = false;</span>
+        }
+<span class="nc bnc" id="L69" title="All 2 branches missed.">        else if(keyPressedHandlers.containsKey(keycode)){</span>
+<span class="nc" id="L70">            keyPressedHandlers.get(keycode).call();</span>
+        }
+<span class="nc" id="L72">        return true;</span>
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+<span class="nc bnc" id="L77" title="All 2 branches missed.">        if(keyUpHandlers.containsKey(keycode)){</span>
+<span class="nc" id="L78">            keyUpHandlers.get(keycode).call();</span>
+        }
+<span class="nc" id="L80">        return true;</span>
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+<span class="nc" id="L85">        return false;</span>
+    }
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+<span class="nc" id="L89">        return false;</span>
+    }
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+<span class="nc" id="L93">        return false;</span>
+    }
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+<span class="nc" id="L97">        return false;</span>
+    }
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+<span class="nc" id="L101">        return false;</span>
+    }
+    @Override
+    public boolean scrolled(float amountX, float amountY) {
+<span class="nc" id="L105">        return false;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
