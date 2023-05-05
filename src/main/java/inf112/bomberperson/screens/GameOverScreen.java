@@ -19,7 +19,7 @@ import inf112.bomberperson.game.BombermanGame;
 public class GameOverScreen implements Screen {
     BombermanGame game;
 
-    BitmapFont font;
+    Label.LabelStyle font;
     protected Skin skin;
     protected final Stage stage;
 
@@ -34,7 +34,7 @@ public class GameOverScreen implements Screen {
     @Override
     public void show() {
         // Screen font
-        Label.LabelStyle font = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
+        font = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
 
         // Table to draw on, add to the stage
         Table table = new Table();
@@ -47,8 +47,26 @@ public class GameOverScreen implements Screen {
         table.add(title);
         table.row();
 
-        title = new Label("Do you want to play again?", font);
+        // Get the winner of the game
+        if (game.getWinner() == 1) {
+            title = new Label("It's a tie", font);
+        }
+        else if (game.getWinner() == 2) {
+            title = new Label("Player 1 wins", font);
+        }
+        else if (game.getWinner() == 3) {
+            title = new Label("Player 2 wins", font);
+        }
+        else if (game.getWinner() == 4) {
+            title = new Label("You quit the game", font);
+        }
+
         title.setFontScale(3f);
+        table.add(title);
+        table.row();
+
+        title = new Label("Do you want to play again?", font);
+        title.setFontScale(2f);
         table.add(title);
 
         // Buttons for choosing what to do next

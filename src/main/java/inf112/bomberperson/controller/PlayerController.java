@@ -1,5 +1,7 @@
 package inf112.bomberperson.controller;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector2;
 
 import inf112.bomberperson.model.Model;
@@ -19,12 +21,15 @@ public class PlayerController {
     public ICallable<Void> playerStopHori;
 
     private Vector2 velocityPlayer;
+    private Sound sound= Gdx.audio.newSound(Gdx.files.internal("doc/assets/Sounds/zapsplat_foley_footstep_single_on_dirty_stone_step_flip_flop_004_30440.mp3"));
 
     public PlayerController(final Player player, Model model) {
+
 
         // Player moves up
         playerUp = new ICallable<Void>(){
             public Void call(){
+                playSound();
                 velocityPlayer = player.getVelocity(); // Get current velocity
                 velocityPlayer.y += player.getSpeed(); // Add speed to velocity
                 player.setVelocity(velocityPlayer); // Set new velocity
@@ -35,6 +40,7 @@ public class PlayerController {
         // Player moves down
         playerDown = new ICallable<Void>(){
             public Void call(){
+                playSound();
                 velocityPlayer = player.getVelocity();
                 velocityPlayer.y -= player.getSpeed();
                 player.setVelocity(velocityPlayer);
@@ -45,6 +51,7 @@ public class PlayerController {
         // Player moves right
         playerRight = new ICallable<Void>(){
             public Void call(){
+                playSound();
                 velocityPlayer = player.getVelocity();
                 velocityPlayer.x += player.getSpeed();
                 player.setVelocity(velocityPlayer);
@@ -55,6 +62,7 @@ public class PlayerController {
         // Player moves left
         playerLeft = new ICallable<Void>(){
             public Void call(){
+                playSound();
                 velocityPlayer = player.getVelocity();
                 velocityPlayer.x -= player.getSpeed();
                 player.setVelocity(velocityPlayer);
@@ -73,6 +81,7 @@ public class PlayerController {
         // Player stops moving vertically
         playerStopVert = new ICallable<Void>(){
             public Void call(){
+                stopSound();
                 player.setVelocity(new Vector2((player.velocity.x = player.getVelocity().x), player.velocity.y = 0));
                 return null;
             }
@@ -81,10 +90,20 @@ public class PlayerController {
         // Player stops moving horizontally
         playerStopHori = new ICallable<Void>(){
             public Void call(){
+                stopSound();
                 player.setVelocity(new Vector2((player.velocity.x = 0), player.velocity.y = player.getVelocity().y));
                 return null;
             }
         };
+    }
+
+    void stopSound(){
+        sound.stop();
+    }
+
+    void playSound(){
+        long id = sound.loop();
+        sound.setVolume(id, 0.6f );
     }
 }
 

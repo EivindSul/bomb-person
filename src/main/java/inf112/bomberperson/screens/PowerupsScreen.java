@@ -4,10 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL30;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -16,7 +18,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import inf112.bomberperson.game.BombermanGame;
 
-public class RulesScreen implements Screen{
+public class PowerupsScreen implements Screen{
     BombermanGame game;
 
     Label.LabelStyle font;
@@ -24,7 +26,7 @@ public class RulesScreen implements Screen{
     protected final Stage stage;
 
 
-    public RulesScreen(BombermanGame game){
+    public PowerupsScreen(BombermanGame game){
         this.game = game;
         this.skin = new Skin(Gdx.files.internal("doc/assets/UI/uiskin.json"));
         this.stage = new Stage(new ScreenViewport());
@@ -35,6 +37,8 @@ public class RulesScreen implements Screen{
     public void show() {
         // Font for the screen
         font = new Label.LabelStyle(new BitmapFont(), Color.WHITE); 
+        Label text;
+        Image image;
 
         // Setting up table to stage
         Table table = new Table();
@@ -42,58 +46,51 @@ public class RulesScreen implements Screen{
 
         // Adding contents, go down a row, then continue
         table.setFillParent(true);
-        Label title = new Label("Controls", font);
+        Label title = new Label("Powerups", font);
         title.setFontScale(3f);
         table.add(title).colspan(2).center();
 
         table.row();
-        Label text = new Label("Player 1 Controls:\nUp: W\nLeft: A\nDown: S\nRight: D\nDrop bomb: Spacebar\nStarts bottom left", font);
+        image = new Image(new Texture(Gdx.files.internal("doc/assets/bombcountboost.png")));
+        table.add(image).size(50, 50).pad(20);
+
+        text = new Label("Player can drop one more bomb", font);
         text.setFontScale(1.5f);
         table.add(text).pad(20);
 
-        text = new Label("Player 2 Controls:\nUp: Arrow Up\nLeft: Arrow Left\nDown: Arrow Down\nRight: Arrow Right\nDrop bomb: Enter\nStarts top right", font);
+        table.row();
+        image = new Image(new Texture(Gdx.files.internal("doc/assets/speedboost.png")));
+        table.add(image).size(50, 50).pad(20);
+
+        text = new Label("Buffs the speed of the player", font);
         text.setFontScale(1.5f);
         table.add(text).pad(20);
 
         table.row();
-        table.setFillParent(true);
-        title = new Label("Quit current Game : Q", font);
-        title.setFontScale(1.5f);
-        table.add(title).colspan(2).center();
+        image = new Image(new Texture(Gdx.files.internal("doc/assets/powerboost.png")));
+        table.add(image).size(50, 50).pad(20);
 
-        table.row();
-        table.setFillParent(true);
-        title = new Label("Game features", font);
-        title.setFontScale(3f);
-        table.add(title).colspan(2).center();
-
-        table.row();
-        title = new Label("Walls:", font);
-        title.setFontScale(1.5f);
-        table.add(title).pad(20);
-
-        title = new Label("Bombs:", font);
-        title.setFontScale(1.5f);
-        table.add(title).pad(20);
-
-        table.row();
-        text = new Label("Stone wall: Unbreakable, used as cover\nBrick wall: Breakable by bombs\nCan drop powerups", font);
-        text.setFontScale(1.25f);
+        text = new Label("Buffs the power of the bomb", font);
+        text.setFontScale(1.5f);
         table.add(text).pad(20);
 
-        text = new Label("5 second timer\nExplodes in a cross\nExplotion breaks brick walls but is stopped", font);
-        text.setFontScale(1.25f);
+        table.row();
+        image = new Image(new Texture(Gdx.files.internal("doc/assets/rangeboost.png")));
+        table.add(image).size(50, 50).pad(20);
+
+        text = new Label("Buffs the range of the bomb", font);
+        text.setFontScale(1.5f);
         table.add(text).pad(20);
 
         // Button for going back to menu
-        TextButton newGame = new TextButton("Back to menu", skin);
+        TextButton goBack = new TextButton("Back to menu", skin);
 
         // Adding in button
         table.row();
-        table.add(newGame).padTop(20).minWidth(250).minHeight(50).colspan(2).center();
+        table.add(goBack).padTop(20).minWidth(250).minHeight(50).colspan(2).center();
 
         // Setting listener on button to respond to being clicked
-        newGame.addListener(new InputListener(){
+        goBack.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 dispose();
@@ -104,7 +101,7 @@ public class RulesScreen implements Screen{
     }
 
     @Override
-    public void render(float v) {
+    public void render(float delta) {
         // Setting up backgroun colour
         Gdx.gl.glClearColor(0.1f, 0.14f, 0.1f, 1);
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
@@ -114,7 +111,7 @@ public class RulesScreen implements Screen{
     }
 
     @Override
-    public void resize(int i, int i1) {
+    public void resize(int width, int height) {
 
     }
 
@@ -129,8 +126,8 @@ public class RulesScreen implements Screen{
     }
 
     @Override
-    public void hide() {  
-        
+    public void hide() {
+
     }
 
     @Override
@@ -138,4 +135,5 @@ public class RulesScreen implements Screen{
         stage.dispose();
         game.dispose();
     }
+    
 }

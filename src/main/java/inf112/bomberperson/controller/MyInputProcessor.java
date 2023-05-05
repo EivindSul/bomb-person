@@ -5,18 +5,23 @@ import java.util.Map;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-
 import inf112.bomberperson.model.Model;
 
 public class MyInputProcessor implements InputProcessor{
     private Model model;
+
     public MyInputProcessor(Model model){
         this.model = model;
     }
 
-    private Map<Integer,ICallable<Void>> keyPressedHandlers = new HashMap<Integer, ICallable<Void>>();
-    private Map<Integer,ICallable<Void>> keyUpHandlers = new HashMap<Integer, ICallable<Void>>();
+    private Map<Integer, ICallable<Void>> keyPressedHandlers = new HashMap<Integer, ICallable<Void>>();
+    private Map<Integer, ICallable<Void>> keyUpHandlers = new HashMap<Integer, ICallable<Void>>();
 
+    /** 
+     * Maps the actions of the different inputs to the correct keys in two hashmaps, one for pressing a key and one for releasing it.
+     * Movment: P1 WASD, P2 arrows.
+     * Drop Bomb: P1 SPACEBAR, P2 ENTER.
+    */
     public void mapInputs(){
         // Set up player controllers
         PlayerController controller1 = new PlayerController(model.player1, model);
@@ -77,32 +82,26 @@ public class MyInputProcessor implements InputProcessor{
 
     @Override
     public boolean keyTyped(char character) {
-        // TODO Auto-generated method stub
         return false;
     }
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        // TODO Auto-generated method stub
         return false;
     }
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        // TODO Auto-generated method stub
         return false;
     }
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        // TODO Auto-generated method stub
         return false;
     }
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        // TODO Auto-generated method stub
         return false;
     }
     @Override
     public boolean scrolled(float amountX, float amountY) {
-        // TODO Auto-generated method stub
         return false;
     }
 

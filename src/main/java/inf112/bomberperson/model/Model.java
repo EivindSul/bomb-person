@@ -2,11 +2,8 @@ package inf112.bomberperson.model;
 
 import java.util.ArrayList;
 
-import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 
@@ -20,15 +17,18 @@ import inf112.bomberperson.model.tiles.ExplosionTile;
 import inf112.bomberperson.screens.GameOverScreen;
 
 
-public class Model implements ApplicationListener {
-    OrthographicCamera camera;
+public class Model {
     private BombermanGame game;
-    Map map;
+    public Map map;
     public Player player1;
     public Player player2;
     public MyInputProcessor controller;
     // Maybe edit to an enum since we will have more than two screens.
     public Boolean gameState; // GAME OVER == FALSE
+    Sound killSound;
+    Sound powerUpSound;
+    Sound dropBombsound;
+    Sound bombSound;
 
     public float time = 0;
 
@@ -37,20 +37,24 @@ public class Model implements ApplicationListener {
 
     private Collision collision;
 
-    public Model(BombermanGame game, OrthographicCamera camera){
+    public Model(BombermanGame game){
         this.game = game;
-        this.camera = camera;
-
-        this.controller = new MyInputProcessor(this);
 
         this.map = new Map();
 
-        this.player1 = new Player(new Sprite(new Texture("doc/assets/player.png")));
-        this.player2 = new Player(new Sprite(new Texture("doc/assets/player.png")));
+        killSound = Gdx.audio.newSound(Gdx.files.internal("doc/assets/Sounds/zapsplat_horror_monster_small_dying_screech_003_72195.mp3"));
+        powerUpSound = Gdx.audio.newSound(Gdx.files.internal("doc/assets/Sounds/zapsplat_bell_small_hand_short_ring_003_84222.mp3"));
+        this.dropBombsound = Gdx.audio.newSound(Gdx.files.internal("doc/assets/Sounds/zapsplat_foley_footstep_single_boys_sneaker_on_concrete_002_50912.mp3"));
+        this.bombSound = Gdx.audio.newSound(Gdx.files.internal("doc/assets/Sounds/zapsplat_explosions_designed_huge_fire_bomb_ball_005_89762.mp3"));
+
+        this.player1 = new Player();
+        this.player2 = new Player();
 
         player1.setPosition(1 * 16, (map.getHeight() - 26) *16);
         player2.setPosition(25 * 16, (map.getHeight() - 2) *16);
-        controller = new MyInputProcessor(this);
+        
+        this.controller = new MyInputProcessor(this);
+        controller.mapInputs();
 
         ArrayList<TiledMapTileLayer> collisionList = new ArrayList<TiledMapTileLayer>();
         TiledMapTileLayer powerupLayer = map.getPowerupLayer();
@@ -58,31 +62,11 @@ public class Model implements ApplicationListener {
         collisionList.add(map.getDynamicLayer());
         this.collision = new Collision(collisionList);
         this.collision.setPowerupLayer(powerupLayer);
-        this.create();
-    }
-    /*
-     * Initializer method:
-     * All pre-generated objects and method has to be initialized here
-     */
-    public void create(){
+        
         this.gameState = true;
-
         Gdx.input.setInputProcessor(controller);        
-
     }
-
-    @Override
-    public void resize(int i, int i1) {
-
-    }
-
-    /*
-     * updates the model without rendering it
-     */
     public void update(){
-        /*-------------------Player Input-------------------*/
-        /*-------------------Player Input-------------------*/
-
         /*------------------- Game Logic -------------------*/
         checkPlayerCollision(player1);
         checkPlayerCollision(player2);
@@ -100,45 +84,27 @@ public class Model implements ApplicationListener {
         cleanExplodeTimeList(bombsToExplode);
         cleanBombList(decayedExplosions);
 
-
-        if(checkIfPlayerExplodes(player1)){
+        if(checkIfPlayerExplodes(player1) && checkIfPlayerExplodes(player2)){
             killPlayer(player1);
-
-            gameState = false;
-        }
-        if(checkIfPlayerExplodes(player2)){
             killPlayer(player2);
+            game.setWinner(1);
 
             gameState = false;
         }
+        else if(checkIfPlayerExplodes(player1)){
+            killPlayer(player1);
+            game.setWinner(3);
 
-        /*------------------- Game Logic -------------------*/
+            gameState = false;
+        }
+        else if(checkIfPlayerExplodes(player2)){
+            killPlayer(player2);
+            game.setWinner(2);
 
-        /*------------------- Update Map -------------------*/
-        /*------------------- Update Map -------------------*/
+            gameState = false;
+        }
     }
-    /*
-     * Renderer updates the model and then renders objects
-     */
-    public void render(){
-        /*------------------- Render Map -------------------*/
-        map.render();
-        /*------------------- Render Map -------------------*/
-
-        map.getMapRenderer().getBatch().begin(); // Begin drawing
-
-        /*------------------- Render Player -------------------*/
-        player1.draw(map.getMapRenderer().getBatch());
-        player2.draw(map.getMapRenderer().getBatch());
-
-        /*------------------- Render Player -------------------*/
-        
-        /*------------------- Render Bomb -------------------*/
-
-        map.getMapRenderer().getBatch().end(); // End drawing
-
-        /*------------------- Render Bomb -------------------*/
-    }
+    /*------------------- Model Functionallity -------------------*/
     public void checkPlayerCollision(Player player) {
         float oldX = player.getX();
         float oldY = player.getY();
@@ -153,26 +119,11 @@ public class Model implements ApplicationListener {
         if (!powerup.equals("none")){
             map.removePowerupFromMap(player.getPosition());
             player.applyPowerup(powerup);
+            long id =powerUpSound.play();
+            powerUpSound.setVolume(id, 0.6f);
+
         }
     }
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void dispose() {
-        player1.getTexture().dispose();
-        player2.getTexture().dispose();
-
-    }
-
-    /*------------------- Model Functionallity -------------------*/
 
     /*
      * Checks if game is over and calls a game over screen
@@ -264,7 +215,14 @@ public class Model implements ApplicationListener {
                 timedBombList.add(newBomb);
             }
             map.addBombToMap(player.getPosition());
+            playBombSound();
         }
+    }
+    void playBombSound(){
+        dropBombsound.play();
+        long id = bombSound.play();
+        bombSound.setVolume(id, 0.6f);
+
     }
 
     /**
@@ -275,15 +233,19 @@ public class Model implements ApplicationListener {
      */
     private void explodeBombs(ArrayList<TimedEntity<Bomb>> bombsToExplode) {
         // The bombs in bombsToExplode should already be removed in the explosionDetection method.
+
         for (TimedEntity<Bomb> timedBomb : bombsToExplode) {
             Bomb bomb = timedBomb.getEntity();
             Explosion explosion = bomb.explodeBomb();
+
             
             explosion = explosionAlgorithm(explosion);
             
             explosionList.add(new TimedEntity<Explosion>(explosion, time + (float)0.5, 1));
             map.addExplosionToMap(explosion);
+
         }
+
     }
     
     
@@ -358,6 +320,7 @@ public class Model implements ApplicationListener {
     }
 
     private void killPlayer(Player player){
+        killSound.play();
         player.killPlayer();
     }
 

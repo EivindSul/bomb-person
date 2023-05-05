@@ -42,11 +42,6 @@ public class Collision {
         return false;
     }
 
-    private boolean checkCollisionOnPowerup(Collidable collidable){
-        checkCollisionOnOnlyLayer(collidable, this.getPowerupLayer());
-        return true;
-    }
-
     public void setPowerupLayer(TiledMapTileLayer layer) {
         this.powerUpLayer = layer;
     }
@@ -66,6 +61,9 @@ public class Collision {
             }
             return "none";
         }
+        catch (RuntimeException e){
+            throw e;
+        }
         catch (Exception e){
             return "none";
         }
@@ -84,13 +82,14 @@ public class Collision {
      */
     private boolean isCellBlocked(float x, float y, TiledMapTileLayer layer){
         try {
-
             TiledMapTileLayer.Cell cell = layer.getCell((int) (x / layer.getTileWidth()), (int) (y / layer.getTileHeight()));
             return cell != null && cell.getTile() != null && cell.getTile().getProperties().containsKey(blockedKey);
         }
+        catch (RuntimeException e){
+            throw e;
+        }
         catch (Exception e){
             return false;
-
         }
 
     }
@@ -103,12 +102,15 @@ public class Collision {
      */
     public boolean collidesRight(Collidable collidable, TiledMapTileLayer layer){
         boolean collides = false;
-        for(float step = 0; step < collidable.getHeight() ; step += layer.getTileHeight()/2){
+        for(float step = 0; step < collidable.getHeight() ; step += layer.getTileHeight()/2.0){
             try {
                 collides = isCellBlocked(collidable.getX() + collidable.getWidth(), collidable.getY() + step, layer);
                 if (collides){
                     break;
                 }
+            }
+            catch (RuntimeException e){
+                throw e;
             }
             catch (Exception e){
                 continue;
@@ -126,13 +128,17 @@ public class Collision {
      */
     public boolean collidesLeft(Collidable collidable , TiledMapTileLayer layer){
         boolean collides = false;
-        for(float step = 0; step < collidable.getHeight() ; step += layer.getTileHeight()/2){
+        for(float step = 0; step < collidable.getHeight() ; step += layer.getTileHeight()/2.0){
             try {
                 collides = isCellBlocked(collidable.getX() , collidable.getY() + step, layer);
                 if (collides){
                     break;
                 }
-            }catch (Exception e){
+            }
+            catch (RuntimeException e){
+                throw e;
+            }
+            catch (Exception e){
                 continue;
             }
         }
@@ -149,12 +155,15 @@ public class Collision {
      */
     public boolean collidesTop(Collidable collidable , TiledMapTileLayer layer){
     boolean collides = false;
-    for(float step = 0; step < collidable.getWidth() ; step += layer.getTileWidth()/2){
+    for(float step = 0; step < collidable.getWidth() ; step += layer.getTileWidth()/2.0){
             try {
                 collides = isCellBlocked(collidable.getX() + step, collidable.getY() + collidable.getHeight(), layer);
                 if (collides){
                     break;
                 }
+            }
+            catch (RuntimeException e){
+                throw e;
             }
             catch (Exception e){
                 continue;
@@ -173,13 +182,17 @@ public class Collision {
     public boolean collidesBottom(Collidable collidable , TiledMapTileLayer layer){
         boolean collides = false;
 
-        for(float step = 0; step < collidable.getWidth(); step += layer.getTileWidth()/2){
+        for(float step = 0; step < collidable.getWidth(); step += layer.getTileWidth()/2.0){
             try {
                 collides = isCellBlocked(collidable.getX() + step, collidable.getY(), layer);
                 if (collides){
                     break;
                 }
-            } catch (Exception e){
+            } 
+            catch (RuntimeException e){
+                throw e;
+            }
+            catch (Exception e){
                 continue;
             }
         }
