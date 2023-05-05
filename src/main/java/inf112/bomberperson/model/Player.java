@@ -1,8 +1,6 @@
 package inf112.bomberperson.model;
-import java.util.LinkedList;
 import com.badlogic.gdx.math.Vector2;
 import inf112.bomberperson.model.collision.Collidable;
-import inf112.bomberperson.model.tiles.Bomb;
 
 public class Player implements Collidable {
     public enum Direction{
@@ -87,8 +85,8 @@ public class Player implements Collidable {
         return velocity;
     }
     public void setVelocity(Vector2 velocity) {
-        float velX = velocity.x; // * speed;
-        float velY = velocity.y; // * speed;
+        float velX = velocity.x; 
+        float velY = velocity.y;
         
         this.velocity = new Vector2(velX, velY);
     }

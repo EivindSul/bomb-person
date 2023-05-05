@@ -6,8 +6,6 @@ import org.junit.jupiter.api.Test;
 
 import inf112.bomberperson.model.tiles.ExplosionTile;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class ExplosionTileTest {
     ExplosionTile explosionTile;
     @BeforeEach

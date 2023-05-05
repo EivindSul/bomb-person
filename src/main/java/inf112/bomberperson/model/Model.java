@@ -1,6 +1,5 @@
 package inf112.bomberperson.model;
 
-import java.nio.channels.NetworkChannel;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
@@ -13,8 +12,6 @@ import inf112.bomberperson.game.BombermanGame;
 import inf112.bomberperson.model.collision.Collision;
 import inf112.bomberperson.model.map.Map;
 import inf112.bomberperson.model.tiles.Bomb;
-import inf112.bomberperson.model.tiles.Explosion;
-import inf112.bomberperson.model.tiles.ExplosionTile;
 import inf112.bomberperson.screens.GameOverScreen;
 
 
@@ -25,7 +22,6 @@ public class Model {
     public Player player2;
     public MyInputProcessor controller;
     private TileFactory tileFactory;
-    // Maybe edit to an enum since we will have more than two screens.
     public Boolean gameState; // GAME OVER == FALSE
     Sound killSound;
     Sound powerUpSound;

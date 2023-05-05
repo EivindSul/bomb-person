@@ -54,13 +54,6 @@ public class TileFactory {
             if (time >= explosionTime){
                 bombsToExplode.add(timedBomb);
                 map.removeBombFromMap(timedBomb.getEntity().getPosition());
-                // TODO: add popbomblist somehow
-                // if (timedBomb.getOwner() == 1) {
-                //     player1.popBombList();
-                // }
-                // else {
-                //     player2.popBombList();
-                // }
             }
         }
         return bombsToExplode;
@@ -109,7 +102,7 @@ public class TileFactory {
         map.addBombToMap(newBomb.getEntity().getPosition());
     }
 
-        /**
+    /**
      * Explodes bombs, and turns them into explosions.
      * Draws the explosions on the map in the explosionLayer.
      * Adds the explosions to explosionList, which is the list of currently active explosions. 
