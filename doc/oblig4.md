@@ -98,14 +98,25 @@
 </ul>
     
 <h2>Hva dere ble enige om å gjøre til neste gang</h2>
-    <p> Skrive mer tester </br>
-        Siste utkast må leveres </br>
+    <p> Skrive flere tester </br>
+        Planlegge siste utkast til innlevering </br>
         Siste møte: Fredag 05.mai klokka: 10:00 - 15:00 </br>
    </p>
 
+<h1>Referat 16 (05.05.2023)</h1>
+
+<h2>Hvem som var tilstede</h2>
+<p> Kjell, Jackie, Brian, Sebastian </p>
+
+<h2>Hva dere diskuterte</h2>
+
+<h2>Hvilke avgjørelser dere tok</h2>
+
+<h2>Hva dere ble enige om å gjøre til neste gang</h2>
+
 
 <h1> Prosjektrapport </h1>
-    <p> Som vi gjorde det i oblig3 hadde vi valgt å ikke ha noen spesielle roller enn kun utvikler og kundekontakt (Sebastian). Vi mener at det var mer effektivt siden vi alle være med å planlegge hvordan vi skal håndtere videre planer. Vi samarbeidet veldig bra som et team. Eivind hadde igjen rollen som skulle legge igjen den siste taggen før endelige innleveringen.  </br>
+    <p> Som vi gjorde det i oblig3 hadde vi valgt å ikke ha noen spesielle roller enn kun utvikler og kundekontakt (Sebastian). Vi føler at det passet for oss siden vi alle kunne være med å planlegge hvordan vi skal håndtere videre planer. Vi samarbeidet veldig bra som et team. Eivind hadde igjen rollen som skulle legge igjen den siste taggen før endelige innleveringen.  </br>
         Gruppedynamikken har vært veldig bra. Vi har blant annet klart å komme til enighet over når møte skal være: Hva vi skal jobbe med videre og fordeling av hvem som skal gjøre hva. </br>
         Kommunikasjonen har vært veldig bra. Diskusjon og kommunikasjonen har vært gjennom vår Discord server, og kommunikasjonen når vi møtes fysisk har vært enda bedre. Lite misforståelser og mye enigheter, spesielt da vi brukte trello som en oversikt over hva vi holder på med. Gjennom hele prosjektet har det vært noen forskjell over hvem som har committet mer enn andre i gruppa. Det skyldes av at flere har jobbet sammen i en maskin, en form for "pair programming". Alle i gruppa har vært med å bidra til prosjektet. Nesten hver møte har nesten alle eller alle i gruppa møtt opp.  </br>
     </p>
@@ -128,6 +139,8 @@
     </p>
     <p> Her kan du finne det siste klassediagrammet av hvordan våre klasser har blitt delt inn i: (Link)
     </p>
-    <p> Spotbugs: Vi har fått testet spotbugs i koden vår. .... 
+    <p> Spotbugs: Vi har fått testet spotbugs i koden vår. Vi brukte spotBugs mot slutten for å gå gjennom koden å se etter ting som vi hadde oversett mens vi lagde spillet. Jeg skal være ærlig og si det var litt av hvert der. Inkludert var: 13 «bugs» relatert til ubrukte metoder og varibler, noen feil i koden slik som å ikke kaste RuntimeExeptions og å dele på integers når man vil ha en float ut. Disse har blitt fjernet/fikset.
+Det var samtidig også noen tilfeller hvor spotBugs foreslo at systemet var mer åpent for å vise frem intern data ved bruken av referanser istedenfor kopier av dataen, et tilfelle av dette kan finnes i Model sin konstruktør ved «this.game = game», men var usikker på om dette var noe som kunne gjøres noe med, så det ble latt være.
+Med tanke på det som ble funnet med hjelp av programmet har det vært veldig nyttig, selv bare for å finne deler av koden som var dårlig/trengte små forandringer.
     </p>
 
