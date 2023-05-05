@@ -15,7 +15,7 @@ public class MyInputProcessor implements InputProcessor{
     }
 
     private Map<Integer, ICallable<Void>> keyPressedHandlers = new HashMap<Integer, ICallable<Void>>();
-    private Map<Integer, ICallable<Void>> keyUpHandlers = new HashMap<Integer, ICallable<Void>>();
+    public Map<Integer, ICallable<Void>> keyUpHandlers = new HashMap<Integer, ICallable<Void>>();
 
     /** 
      * Maps the actions of the different inputs to the correct keys in two hashmaps, one for pressing a key and one for releasing it.
@@ -47,6 +47,10 @@ public class MyInputProcessor implements InputProcessor{
         // Player 1 drops bomb on Spacebar, player 2 drops bomb on Enter
         keyPressedHandlers.put(Input.Keys.SPACE, controller1.playerDrop);
         keyPressedHandlers.put(Input.Keys.ENTER, controller2.playerDrop);
+
+        // Player 1 drops bomb on Spacebar, player 2 drops bomb on Enter
+        keyPressedHandlers.put(Input.Keys.Q, controller1.endGame);
+        keyPressedHandlers.put(Input.Keys.O, controller2.endGame);
         
         // Stop vertical movement of players
         keyUpHandlers.put(Input.Keys.W, controller1.playerStopVert);
@@ -64,9 +68,9 @@ public class MyInputProcessor implements InputProcessor{
     @Override
     public boolean keyDown(int keycode) {
         if (keycode == Input.Keys.Q) {
-            model.gameState = false;
+            keyPressedHandlers.get(Input.Keys.O).call();
         }
-        else if(keyPressedHandlers.containsKey(keycode)){
+        if(keyPressedHandlers.containsKey(keycode)){
             keyPressedHandlers.get(keycode).call();
         }
         return true;

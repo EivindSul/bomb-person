@@ -3,6 +3,7 @@ package inf112.bomberperson.model;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
@@ -74,6 +75,10 @@ public class Model {
         tileFactory.update(time);
 
         if(checkIfPlayerExplodes(player1) && checkIfPlayerExplodes(player2)){
+            // Stops movement sound from playing after death.
+            controller.keyUpHandlers.get(Input.Keys.W).call();
+            controller.keyUpHandlers.get(Input.Keys.UP).call();
+            
             killPlayer(player1);
             killPlayer(player2);
             game.setWinner(1);
@@ -81,12 +86,20 @@ public class Model {
             gameState = false;
         }
         else if(checkIfPlayerExplodes(player1)){
+            // Stops movement sound from playing after death.
+            controller.keyUpHandlers.get(Input.Keys.W).call();
+            controller.keyUpHandlers.get(Input.Keys.UP).call();
+            
             killPlayer(player1);
             game.setWinner(3);
 
             gameState = false;
         }
         else if(checkIfPlayerExplodes(player2)){
+            // Stops movement sound from playing after death.
+            controller.keyUpHandlers.get(Input.Keys.W).call();
+            controller.keyUpHandlers.get(Input.Keys.UP).call();
+            
             killPlayer(player2);
             game.setWinner(2);
 
