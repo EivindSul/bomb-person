@@ -1,7 +1,6 @@
 package inf112.bomberperson.model;
 import java.util.LinkedList;
 import com.badlogic.gdx.math.Vector2;
-import inf112.bomberperson.screens.animations.PlayerAnimations;
 import inf112.bomberperson.model.collision.Collidable;
 import inf112.bomberperson.model.tiles.Bomb;
 
@@ -24,10 +23,6 @@ public class Player implements Collidable {
     private Direction currentDirection;
     private State currentState;
 
-    //animations
-    PlayerAnimations animations;
-    float time;
-
     //the movement velocity
     public Vector2 velocity = new Vector2();
 
@@ -40,10 +35,8 @@ public class Player implements Collidable {
     private int speed = 100;
     
     public Player(){
-        animations = new PlayerAnimations(this);
         this.height = 10;
         this.width = 10;
-        this.time = 0;
         
         //initializing player direction and state
         this.currentDirection = Direction.UP;

@@ -4,9 +4,6 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 
@@ -94,13 +91,13 @@ public class Model {
 
             gameState = false;
         }
-        if(checkIfPlayerExplodes(player1)){
+        else if(checkIfPlayerExplodes(player1)){
             killPlayer(player1);
             game.setWinner(3);
 
             gameState = false;
         }
-        if(checkIfPlayerExplodes(player2)){
+        else if(checkIfPlayerExplodes(player2)){
             killPlayer(player2);
             game.setWinner(2);
 

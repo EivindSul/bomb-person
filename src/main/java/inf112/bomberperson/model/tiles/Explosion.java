@@ -12,7 +12,6 @@ public class Explosion {
     
     private Vector2 center;
     private int range;
-    private int power;
     private ArrayList<ExplosionTile> explosion = new ArrayList<ExplosionTile>();
     private ArrayList<ExplosionTile> explosionBorder = new ArrayList<ExplosionTile>();
 
@@ -22,7 +21,6 @@ public class Explosion {
     public Explosion(Vector2 position, int bombRange, int bombPower){
         this.center = position;
         this.range = bombRange;
-        this.power = bombPower;
         ExplosionTile centerTile = new ExplosionTile(center);
         this.explosion.add(centerTile);
         this.explosionBorder.add(new ExplosionTile(center, 1, bombPower));

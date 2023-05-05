@@ -19,7 +19,7 @@ import inf112.bomberperson.game.BombermanGame;
 public class RulesScreen implements Screen{
     BombermanGame game;
 
-    BitmapFont font;
+    Label.LabelStyle font;
     protected Skin skin;
     protected final Stage stage;
 
@@ -34,7 +34,7 @@ public class RulesScreen implements Screen{
     @Override
     public void show() {
         // Font for the screen
-        Label.LabelStyle font = new Label.LabelStyle(new BitmapFont(), Color.WHITE); 
+        font = new Label.LabelStyle(new BitmapFont(), Color.WHITE); 
 
         // Setting up table to stage
         Table table = new Table();
