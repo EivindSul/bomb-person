@@ -11,7 +11,6 @@ import inf112.bomberperson.controller.MyInputProcessor;
 import inf112.bomberperson.game.BombermanGame;
 import inf112.bomberperson.model.collision.Collision;
 import inf112.bomberperson.model.map.Map;
-import inf112.bomberperson.model.tiles.Bomb;
 import inf112.bomberperson.screens.GameOverScreen;
 
 
@@ -133,11 +132,8 @@ public class Model {
      * @param player The player that drops the bomb
      */
     public void dropBomb(Player player){
-        int playerNumber = player.getNumber();
-        if (tileFactory.legalBombDrop(playerNumber, player.getBombLimit(), player.getPosition())){
-            Bomb bomb = new Bomb(player.getPosition(), player.getBombRange(), player.getBombPower());
-            TimedEntity<Bomb> newBomb = new TimedEntity<Bomb>(bomb, time + 2, player.getNumber());
-            tileFactory.addBomb(newBomb);
+        if (tileFactory.legalBombDrop(player)){
+            tileFactory.addBomb(player, time + 2);
             playBombSound();
         }
     }
