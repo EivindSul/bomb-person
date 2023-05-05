@@ -4,6 +4,7 @@ inf112/bomberperson/screens/MenuScreen$4.class
 inf112/bomberperson/controller/ICallable.class
 inf112/bomberperson/model/TimedEntity.class
 inf112/bomberperson/model/TileFactory.class
+inf112/bomberperson/controller/PlayerController$8.class
 inf112/bomberperson/controller/PlayerController$4.class
 inf112/skeleton/app/Main.class
 inf112/bomberperson/screens/PowerupsScreen$1.class

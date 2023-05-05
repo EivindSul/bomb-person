@@ -16,95 +16,104 @@ public class PlayerController {
     public ICallable&lt;Void&gt; playerDown;
     public ICallable&lt;Void&gt; playerLeft;
     public ICallable&lt;Void&gt; playerDrop;
+    public ICallable&lt;Void&gt; endGame;
 
     public ICallable&lt;Void&gt; playerStopVert;
     public ICallable&lt;Void&gt; playerStopHori;
 
     private Vector2 velocityPlayer;
-<span class="nc" id="L24">    private Sound sound= Gdx.audio.newSound(Gdx.files.internal(&quot;doc/assets/Sounds/zapsplat_foley_footstep_single_on_dirty_stone_step_flip_flop_004_30440.mp3&quot;));</span>
+<span class="nc" id="L25">    private Sound sound= Gdx.audio.newSound(Gdx.files.internal(&quot;doc/assets/Sounds/zapsplat_foley_footstep_single_on_dirty_stone_step_flip_flop_004_30440.mp3&quot;));</span>
 
-<span class="nc" id="L26">    public PlayerController(final Player player, Model model) {</span>
+<span class="nc" id="L27">    public PlayerController(final Player player, Model model) {</span>
 
 
         // Player moves up
-<span class="nc" id="L30">        playerUp = new ICallable&lt;Void&gt;(){</span>
+<span class="nc" id="L31">        playerUp = new ICallable&lt;Void&gt;(){</span>
             public Void call(){
-<span class="nc" id="L32">                playSound();</span>
-<span class="nc" id="L33">                velocityPlayer = player.getVelocity(); // Get current velocity</span>
-<span class="nc" id="L34">                velocityPlayer.y += player.getSpeed(); // Add speed to velocity</span>
-<span class="nc" id="L35">                player.setVelocity(velocityPlayer); // Set new velocity</span>
-<span class="nc" id="L36">                return null;</span>
+<span class="nc" id="L33">                playSound();</span>
+<span class="nc" id="L34">                velocityPlayer = player.getVelocity(); // Get current velocity</span>
+<span class="nc" id="L35">                velocityPlayer.y += player.getSpeed(); // Add speed to velocity</span>
+<span class="nc" id="L36">                player.setVelocity(velocityPlayer); // Set new velocity</span>
+<span class="nc" id="L37">                return null;</span>
             }
         };
 
         // Player moves down
-<span class="nc" id="L41">        playerDown = new ICallable&lt;Void&gt;(){</span>
+<span class="nc" id="L42">        playerDown = new ICallable&lt;Void&gt;(){</span>
             public Void call(){
-<span class="nc" id="L43">                playSound();</span>
-<span class="nc" id="L44">                velocityPlayer = player.getVelocity();</span>
-<span class="nc" id="L45">                velocityPlayer.y -= player.getSpeed();</span>
-<span class="nc" id="L46">                player.setVelocity(velocityPlayer);</span>
-<span class="nc" id="L47">                return null;</span>
+<span class="nc" id="L44">                playSound();</span>
+<span class="nc" id="L45">                velocityPlayer = player.getVelocity();</span>
+<span class="nc" id="L46">                velocityPlayer.y -= player.getSpeed();</span>
+<span class="nc" id="L47">                player.setVelocity(velocityPlayer);</span>
+<span class="nc" id="L48">                return null;</span>
             }
         };
 
         // Player moves right
-<span class="nc" id="L52">        playerRight = new ICallable&lt;Void&gt;(){</span>
+<span class="nc" id="L53">        playerRight = new ICallable&lt;Void&gt;(){</span>
             public Void call(){
-<span class="nc" id="L54">                playSound();</span>
-<span class="nc" id="L55">                velocityPlayer = player.getVelocity();</span>
-<span class="nc" id="L56">                velocityPlayer.x += player.getSpeed();</span>
-<span class="nc" id="L57">                player.setVelocity(velocityPlayer);</span>
-<span class="nc" id="L58">                return null;</span>
+<span class="nc" id="L55">                playSound();</span>
+<span class="nc" id="L56">                velocityPlayer = player.getVelocity();</span>
+<span class="nc" id="L57">                velocityPlayer.x += player.getSpeed();</span>
+<span class="nc" id="L58">                player.setVelocity(velocityPlayer);</span>
+<span class="nc" id="L59">                return null;</span>
             }
         };
 
         // Player moves left
-<span class="nc" id="L63">        playerLeft = new ICallable&lt;Void&gt;(){</span>
+<span class="nc" id="L64">        playerLeft = new ICallable&lt;Void&gt;(){</span>
             public Void call(){
-<span class="nc" id="L65">                playSound();</span>
-<span class="nc" id="L66">                velocityPlayer = player.getVelocity();</span>
-<span class="nc" id="L67">                velocityPlayer.x -= player.getSpeed();</span>
-<span class="nc" id="L68">                player.setVelocity(velocityPlayer);</span>
-<span class="nc" id="L69">                return null;</span>
+<span class="nc" id="L66">                playSound();</span>
+<span class="nc" id="L67">                velocityPlayer = player.getVelocity();</span>
+<span class="nc" id="L68">                velocityPlayer.x -= player.getSpeed();</span>
+<span class="nc" id="L69">                player.setVelocity(velocityPlayer);</span>
+<span class="nc" id="L70">                return null;</span>
             }
         };
 
         // Player drops bomb
-<span class="nc" id="L74">        playerDrop = new ICallable&lt;Void&gt;(){</span>
+<span class="nc" id="L75">        playerDrop = new ICallable&lt;Void&gt;(){</span>
             public Void call(){
-<span class="nc" id="L76">                model.dropBomb(player);</span>
-<span class="nc" id="L77">                return null;</span>
+<span class="nc" id="L77">                model.dropBomb(player);</span>
+<span class="nc" id="L78">                return null;</span>
             }
         };
 
         // Player stops moving vertically
-<span class="nc" id="L82">        playerStopVert = new ICallable&lt;Void&gt;(){</span>
+<span class="nc" id="L83">        playerStopVert = new ICallable&lt;Void&gt;(){</span>
             public Void call(){
-<span class="nc" id="L84">                stopSound();</span>
-<span class="nc" id="L85">                player.setVelocity(new Vector2((player.velocity.x = player.getVelocity().x), player.velocity.y = 0));</span>
-<span class="nc" id="L86">                return null;</span>
+<span class="nc" id="L85">                stopSound();</span>
+<span class="nc" id="L86">                player.setVelocity(new Vector2((player.velocity.x = player.getVelocity().x), player.velocity.y = 0));</span>
+<span class="nc" id="L87">                return null;</span>
             }
         };
         
         // Player stops moving horizontally
-<span class="nc" id="L91">        playerStopHori = new ICallable&lt;Void&gt;(){</span>
+<span class="nc" id="L92">        playerStopHori = new ICallable&lt;Void&gt;(){</span>
             public Void call(){
-<span class="nc" id="L93">                stopSound();</span>
-<span class="nc" id="L94">                player.setVelocity(new Vector2((player.velocity.x = 0), player.velocity.y = player.getVelocity().y));</span>
-<span class="nc" id="L95">                return null;</span>
+<span class="nc" id="L94">                stopSound();</span>
+<span class="nc" id="L95">                player.setVelocity(new Vector2((player.velocity.x = 0), player.velocity.y = player.getVelocity().y));</span>
+<span class="nc" id="L96">                return null;</span>
             }
         };
-<span class="nc" id="L98">    }</span>
+
+<span class="nc" id="L100">        endGame = new ICallable&lt;Void&gt;(){</span>
+            public Void call(){
+<span class="nc" id="L102">                stopSound();</span>
+<span class="nc" id="L103">                model.gameState = false;</span>
+<span class="nc" id="L104">                return null;</span>
+            }
+        };
+<span class="nc" id="L107">    }</span>
 
     void stopSound(){
-<span class="nc" id="L101">        sound.stop();</span>
-<span class="nc" id="L102">    }</span>
+<span class="nc" id="L110">        sound.stop();</span>
+<span class="nc" id="L111">    }</span>
 
     void playSound(){
-<span class="nc" id="L105">        long id = sound.loop();</span>
-<span class="nc" id="L106">        sound.setVolume(id, 0.6f );</span>
-<span class="nc" id="L107">    }</span>
+<span class="nc" id="L114">        long id = sound.loop();</span>
+<span class="nc" id="L115">        sound.setVolume(id, 0.6f );</span>
+<span class="nc" id="L116">    }</span>
 }
 
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
