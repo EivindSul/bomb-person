@@ -103,7 +103,7 @@ public class TileFactory {
      */
     public void addBomb(Player player, float time) {
         Bomb bomb = new Bomb(player.getPosition(), player.getBombRange(), player.getBombPower());
-        TimedEntity<Bomb> newBomb = new TimedEntity<Bomb>(bomb, time + 2, player.getNumber());
+        TimedEntity<Bomb> newBomb = new TimedEntity<Bomb>(bomb, time, player.getNumber());
         timedBombList.add(newBomb);
         map.addBombToMap(newBomb.getEntity().getPosition());
     }
