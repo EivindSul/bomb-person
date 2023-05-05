@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Map.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">bomberman-gdx</a> &gt; <a href="index.source.html" class="el_package">inf112.bomberperson.model.map</a> &gt; <span class="el_source">Map.java</span></div><h1>Map.java</h1><pre class="source lang-java linenums">package inf112.bomberperson.model.map;
+
+import com.badlogic.gdx.maps.tiled.*;
+import com.badlogic.gdx.math.Vector2;
+import inf112.bomberperson.model.tiles.Explosion;
+import inf112.bomberperson.model.tiles.ExplosionTile;
+
+import java.util.concurrent.ThreadLocalRandom;
+
+public class Map {
+    public static final int TILE_SIZE = 16;
+    static final int MAP_WIDTH = 27;
+    static final int MAP_HEIGHT = 27;
+    static final float WALL_DENSITY = 0.2f;
+    static final int POWERUP_SPAWN_CHANCE = 4; // One in 4 walls broken spawns a powerup.
+    private TiledMapTileSet tileset;
+    private TiledMap map;
+
+<span class="nc" id="L19">    public Map(){</span>
+        
+        // Load the map from Tiled
+<span class="nc" id="L22">        map = new TmxMapLoader().load(&quot;doc/assets/tiles2.tmx&quot;);</span>
+<span class="nc" id="L23">        tileset = map.getTileSets().getTileSet(&quot;tiles&quot;);</span>
+
+        // Randomly generate the map
+<span class="nc" id="L26">        generateMap();</span>
+<span class="nc" id="L27">    }</span>
+    public TiledMap getMap() {
+<span class="nc" id="L29">        return map;</span>
+    }
+    public TiledMapTileLayer getGroundLayer() {
+<span class="nc" id="L32">        return getLayerByName(&quot;Ground&quot;);</span>
+    }
+    public TiledMapTileLayer getStaticLayer() {
+<span class="nc" id="L35">        return getLayerByName(&quot;Static&quot;);</span>
+    }
+    public TiledMapTileLayer getDynamicLayer() {
+<span class="nc" id="L38">        return getLayerByName(&quot;Dynamic&quot;);</span>
+    }
+    public TiledMapTileLayer getPowerupLayer() {
+<span class="nc" id="L41">        return getLayerByName(&quot;Powerup&quot;);</span>
+    } 
+    public TiledMapTileLayer getLayerByName(String layer) {
+<span class="nc" id="L44">        return (TiledMapTileLayer)getMap().getLayers().get(layer);</span>
+    }
+    public float getWidth() {
+<span class="nc" id="L47">        return MAP_WIDTH;</span>
+    }
+    public float getHeight() {
+<span class="nc" id="L50">        return MAP_HEIGHT;</span>
+    }
+    public float getTileSize() {
+<span class="nc" id="L53">        return TILE_SIZE;</span>
+    }
+
+    /**
+     * Randomize the brick pattern and clear the corners on the map.
+     */
+    public void generateMap() {
+        
+        // Randomly remove bricks from pre-determined positions
+<span class="nc bnc" id="L62" title="All 2 branches missed.">        for (int x = 0; x &lt; MAP_WIDTH - 2; x++) {</span>
+<span class="nc bnc" id="L63" title="All 2 branches missed.">            for (int y = 0; y &lt; MAP_HEIGHT - 2; y++) {</span>
+<span class="nc bnc" id="L64" title="All 2 branches missed.">                if (containsBrickWall(x, y)) {</span>
+<span class="nc bnc" id="L65" title="All 2 branches missed.">                    if (Math.random() &lt; WALL_DENSITY) {</span>
+<span class="nc" id="L66">                        clearCell(&quot;Dynamic&quot;, x, y);;</span>
+                    }
+                }
+            }
+        }
+
+        // Randomly place bricks on the remaining cells
+<span class="nc bnc" id="L73" title="All 2 branches missed.">        for (int x = 0; x &lt; MAP_WIDTH - 2; x++) {</span>
+<span class="nc bnc" id="L74" title="All 2 branches missed.">            for (int y = 0; y &lt; MAP_HEIGHT - 2; y++) {</span>
+<span class="nc bnc" id="L75" title="All 2 branches missed.">                if (!containsSolidWall(x, y)) {</span>
+<span class="nc bnc" id="L76" title="All 2 branches missed.">                    if (Math.random() &lt; WALL_DENSITY) {</span>
+<span class="nc" id="L77">                        setCell(&quot;Dynamic&quot;, x, y, TextureID.BRICK_WALL.id);;</span>
+                    }
+                }
+            }
+        }
+
+        // Make sure corners are clear, which is where the players spawn.
+<span class="nc" id="L84">        clearCell(&quot;Dynamic&quot;, 1, 1);</span>
+<span class="nc" id="L85">        clearCell(&quot;Dynamic&quot;, 2, 1);</span>
+<span class="nc" id="L86">        clearCell(&quot;Dynamic&quot;, 1, 2);</span>
+        
+<span class="nc" id="L88">        clearCell(&quot;Dynamic&quot;, 24, 1);</span>
+<span class="nc" id="L89">        clearCell(&quot;Dynamic&quot;, 25, 1);</span>
+<span class="nc" id="L90">        clearCell(&quot;Dynamic&quot;, 25, 2);</span>
+        
+<span class="nc" id="L92">        clearCell(&quot;Dynamic&quot;, 24, 25);</span>
+<span class="nc" id="L93">        clearCell(&quot;Dynamic&quot;, 25, 25);</span>
+<span class="nc" id="L94">        clearCell(&quot;Dynamic&quot;, 25, 24);</span>
+        
+<span class="nc" id="L96">        clearCell(&quot;Dynamic&quot;, 2, 25);</span>
+<span class="nc" id="L97">        clearCell(&quot;Dynamic&quot;, 1, 25);</span>
+<span class="nc" id="L98">        clearCell(&quot;Dynamic&quot;, 1, 24);</span>
+<span class="nc" id="L99">    }</span>
+
+
+    public void addBombToMap(Vector2 position){
+<span class="nc" id="L103">        setCell(&quot;Dynamic&quot;, position, TextureID.BOMB.id);</span>
+<span class="nc" id="L104">    }</span>
+
+    public void removeBombFromMap(Vector2 position){
+<span class="nc bnc" id="L107" title="All 2 branches missed.">        if(containsBomb(position)){</span>
+<span class="nc" id="L108">            clearCell(&quot;Dynamic&quot;, position);</span>
+        }
+<span class="nc" id="L110">    }</span>
+
+    public void addExplosionToMap(Explosion explosion){
+<span class="nc bnc" id="L113" title="All 2 branches missed.">        for (ExplosionTile tile : explosion.getExplosion()) {</span>
+<span class="nc" id="L114">            Vector2 position = tile.getPosition();</span>
+<span class="nc" id="L115">            setCell(&quot;Dynamic&quot;, position, TextureID.EXPLOSION.id);</span>
+<span class="nc" id="L116">        }</span>
+<span class="nc" id="L117">    }</span>
+
+
+    public void removeExplosionFromMap(Explosion explosion){
+<span class="nc bnc" id="L121" title="All 2 branches missed.">        for (ExplosionTile tile : explosion.getExplosion()) {</span>
+<span class="nc" id="L122">            Vector2 position = tile.getPosition();</span>
+<span class="nc" id="L123">            clearCell(&quot;Dynamic&quot;, position);</span>
+<span class="nc" id="L124">        }</span>
+<span class="nc" id="L125">    }</span>
+    
+    /**
+     * Removes walls and powerups in this position. 
+     * 1/4 chance of spawning a powerup in its place.
+     * @param position
+     */
+    public void breakWall(Vector2 position){
+        // Kill powerups that are in the cell already.
+<span class="nc" id="L134">        removePowerupFromMap(position);</span>
+
+<span class="nc bnc" id="L136" title="All 2 branches missed.">        if(containsBrickWall(position)){</span>
+<span class="nc" id="L137">            trySpawnPowerup(position);</span>
+<span class="nc" id="L138">            clearCell(&quot;Dynamic&quot;, position);</span>
+        }
+<span class="nc" id="L140">    }</span>
+    
+    /**
+     * Try to spawn a powerup in this location. Chance for powerup is determined by static value POWERUP_SPAWN_CHANCE
+     * @param position
+     */
+    private void trySpawnPowerup(Vector2 position) {
+<span class="nc" id="L147">        int spawn = ThreadLocalRandom.current().nextInt(0, POWERUP_SPAWN_CHANCE);</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">        if (spawn == 0){</span>
+<span class="nc" id="L149">            int powerupID = TextureID.getRandomPowerup();</span>
+<span class="nc" id="L150">            setCell(&quot;Powerup&quot;, position, powerupID);</span>
+        }
+<span class="nc" id="L152">    }</span>
+
+    /**
+     * Remove powerup from this location
+     * @param position
+     */
+    public void removePowerupFromMap(Vector2 position){
+<span class="nc" id="L159">        int col = (Math.round(position.x / TILE_SIZE));</span>
+<span class="nc" id="L160">        int row = (Math.round(position.y / TILE_SIZE));</span>
+<span class="nc" id="L161">        this.removePowerupFromMap(col, row);</span>
+<span class="nc" id="L162">    }</span>
+
+    /**
+     * Remove powerup from this location
+     * @param col
+     * @param row
+     */
+    public void removePowerupFromMap(int col, int row){
+<span class="nc" id="L170">        clearCell(&quot;Powerup&quot;, col, row);;</span>
+<span class="nc" id="L171">    }</span>
+    
+    /**
+     * checks if a vector position overlaps with a solid wall.
+     * @param position
+     * @return if there is solid wall here
+     */
+    public boolean containsSolidWall(Vector2 position){
+<span class="nc" id="L179">        int col = (Math.round(position.x / TILE_SIZE));</span>
+<span class="nc" id="L180">        int row = (Math.round(position.y / TILE_SIZE));</span>
+<span class="nc" id="L181">        return this.containsSolidWall(col, row);</span>
+    }
+
+    /**
+     * checks if a vector position overlaps with a solid wall.
+     * @param position
+     * @return if there is solid wall here
+     */
+    public boolean containsSolidWall(int col, int row){
+
+<span class="nc" id="L191">        TiledMapTileLayer.Cell cell = getCell(&quot;Static&quot;, col, row);</span>
+        
+<span class="nc bnc" id="L193" title="All 2 branches missed.">        if(cell == null){</span>
+<span class="nc" id="L194">            return false;</span>
+        }
+        
+<span class="nc" id="L197">        return true;</span>
+    }
+    
+    /**
+     * checks if a vector position overlaps with a breakable wall.
+     * @param position
+     * @return if there is brick wall here
+     */
+    public boolean containsBrickWall(Vector2 position){
+<span class="nc" id="L206">        int col = (Math.round(position.x / TILE_SIZE));</span>
+<span class="nc" id="L207">        int row = (Math.round(position.y / TILE_SIZE));</span>
+<span class="nc" id="L208">        return this.containsBrickWall(col, row);</span>
+    }
+
+    /**
+     * checks if a vector position overlaps with a breakable wall.
+     * @param col
+     * @param row
+     * @return if there is brick wall here
+     */
+    public boolean containsBrickWall(int col, int row){
+<span class="nc" id="L218">        TiledMapTileLayer.Cell cell = getCell(&quot;Dynamic&quot;, col, row);</span>
+        
+<span class="nc bnc" id="L220" title="All 2 branches missed.">        if(cell == null){</span>
+<span class="nc" id="L221">            return false;</span>
+        }
+<span class="nc bnc" id="L223" title="All 2 branches missed.">        if(cell.getTile() == tileset.getTile(TextureID.BRICK_WALL.id)){</span>
+<span class="nc" id="L224">            return true;</span>
+        }
+        
+<span class="nc" id="L227">        return false;</span>
+    }
+    
+    /**
+     * checks if a vector position overlaps with an explosion.
+     * @param position
+     * @return if there is explosion here
+     */
+    public boolean containsExplosion(Vector2 position){
+<span class="nc" id="L236">        int col = (Math.round(position.x / TILE_SIZE));</span>
+<span class="nc" id="L237">        int row = (Math.round(position.y / TILE_SIZE));</span>
+<span class="nc" id="L238">        return this.containsExplosion(col, row);</span>
+    }
+
+    /**
+     * checks if a vector position overlaps with an explosion.
+     * @param col
+     * @param row
+     * @return if there is explosion here
+     */
+    public boolean containsExplosion(int col, int row){
+<span class="nc" id="L248">        TiledMapTileLayer.Cell cell = getCell(&quot;Dynamic&quot;, col, row);</span>
+        
+<span class="nc bnc" id="L250" title="All 2 branches missed.">        if(cell == null){</span>
+<span class="nc" id="L251">            return false;</span>
+        }
+<span class="nc bnc" id="L253" title="All 2 branches missed.">        if(cell.getTile() == tileset.getTile(TextureID.EXPLOSION.id)){</span>
+<span class="nc" id="L254">            return true;</span>
+        }
+<span class="nc" id="L256">        return false;</span>
+    }
+    
+    /**
+     * checks if a vector position overlaps with a bomb.
+     * @param position
+     * @return if there is bomb here
+     */
+    public boolean containsBomb(Vector2 position){
+<span class="nc" id="L265">        int col = (Math.round(position.x / TILE_SIZE));</span>
+<span class="nc" id="L266">        int row = (Math.round(position.y / TILE_SIZE));</span>
+<span class="nc" id="L267">        return this.containsBomb(col, row);</span>
+    }
+    
+    /**
+     * checks if a vector position overlaps with a bomb.
+     * @param col
+     * @param row
+     * @return if there is bomb here
+     */
+    public boolean containsBomb(int col, int row){
+<span class="nc" id="L277">        TiledMapTileLayer.Cell cell = getCell(&quot;Dynamic&quot;, col, row);</span>
+        
+<span class="nc bnc" id="L279" title="All 2 branches missed.">        if(cell == null){</span>
+<span class="nc" id="L280">            return false;</span>
+        }
+<span class="nc bnc" id="L282" title="All 2 branches missed.">        if(cell.getTile() == tileset.getTile(TextureID.BOMB.id)){</span>
+<span class="nc" id="L283">            return true;</span>
+        }
+<span class="nc" id="L285">        return false;</span>
+    }
+    
+
+    /**
+     * Set this cell to contain an tile.
+     * Layers:
+     * &quot;Dynamic&quot; is for bombs, explosions, brick walls. 
+     * &quot;Powerup&quot; is for powerups
+     * &quot;Static&quot; is for unbreakable walls
+     * &quot;Ground&quot; is for the ground
+     * @param layerName &quot;Dynamic&quot; is for bombs, explosions, brick walls. &quot;Powerup is for powerups&quot;
+     * @param position
+     * @param id texture id, some are specified in TextureID.java
+     */
+    public void setCell(String layerName, Vector2 position, int id){
+<span class="nc" id="L301">        int col = (Math.round(position.x / TILE_SIZE));</span>
+<span class="nc" id="L302">        int row = (Math.round(position.y / TILE_SIZE));</span>
+<span class="nc" id="L303">        this.setCell(layerName, col, row, id);</span>
+<span class="nc" id="L304">    }</span>
+    
+    /**
+     * Set this cell to contain an tile.
+     * Layers:
+     * &quot;Dynamic&quot; is for bombs, explosions, brick walls. 
+     * &quot;Powerup&quot; is for powerups
+     * &quot;Static&quot; is for unbreakable walls
+     * &quot;Ground&quot; is for the ground
+     * @param layerName &quot;Dynamic&quot; is for bombs, explosions, brick walls. &quot;Powerup is for powerups&quot;
+     * @param col
+     * @param row
+     * @param id texture id, some are specified in TextureID.java
+     */
+    public void setCell(String layerName, int col, int row, int id){
+
+<span class="nc" id="L320">        TiledMapTileLayer.Cell cell = new TiledMapTileLayer.Cell();</span>
+<span class="nc" id="L321">        cell.setTile(tileset.getTile(id));</span>
+<span class="nc" id="L322">        TiledMapTileLayer layer = getLayerByName(layerName);</span>
+
+<span class="nc" id="L324">        layer.setCell(col, row, cell);</span>
+<span class="nc" id="L325">    }</span>
+
+    /** Remove tile in this layer on this position
+     * Layers:
+     * &quot;Dynamic&quot; is for bombs, explosions, brick walls. 
+     * &quot;Powerup&quot; is for powerups
+     * &quot;Static&quot; is for unbreakable walls
+     * &quot;Ground&quot; is for the ground
+     * @param layerName
+     * @param position
+     */
+    public void clearCell(String layerName, Vector2 position){
+<span class="nc" id="L337">        int col = (Math.round(position.x / TILE_SIZE));</span>
+<span class="nc" id="L338">        int row = (Math.round(position.y / TILE_SIZE));</span>
+<span class="nc" id="L339">        this.clearCell(layerName, col, row);</span>
+<span class="nc" id="L340">    }</span>
+
+    /** Remove tile in this layer on this position
+     * Layers:
+     * &quot;Dynamic&quot; is for bombs, explosions, brick walls. 
+     * &quot;Powerup&quot; is for powerups
+     * &quot;Static&quot; is for unbreakable walls
+     * &quot;Ground&quot; is for the ground
+     * @param layerName
+     * @param col
+     * @param row
+     */
+    public void clearCell(String layerName, int col, int row){
+
+<span class="nc" id="L354">        TiledMapTileLayer layer = getLayerByName(layerName);</span>
+
+<span class="nc" id="L356">        layer.setCell(col, row, null);</span>
+<span class="nc" id="L357">    }</span>
+    
+    /**Get the cell content in this layer on this position.
+     * Layers:
+     * &quot;Dynamic&quot; is for bombs, explosions, brick walls. 
+     * &quot;Powerup&quot; is for powerups
+     * &quot;Static&quot; is for unbreakable walls
+     * &quot;Ground&quot; is for the ground
+     * @param layerName
+     * @param position
+     * @return Cell in this location
+     */
+    public com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell getCell(String layerName, Vector2 position){
+<span class="nc" id="L370">        int col = (Math.round(position.x / TILE_SIZE));</span>
+<span class="nc" id="L371">        int row = (Math.round(position.y / TILE_SIZE));</span>
+
+<span class="nc" id="L373">        return this.getCell(layerName, col, row);</span>
+    }
+
+    /**Get the cell content in this layer on this position.
+     * Layers:
+     * &quot;Dynamic&quot; is for bombs, explosions, brick walls. 
+     * &quot;Powerup&quot; is for powerups
+     * &quot;Static&quot; is for unbreakable walls
+     * &quot;Ground&quot; is for the ground
+     * @param layerName
+     * @param col
+     * @param row
+     * @return Cell in this location
+     */
+    public com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell getCell(String layerName, int col, int row){
+
+<span class="nc" id="L389">        TiledMapTileLayer layer = getLayerByName(layerName);</span>
+
+<span class="nc" id="L391">        return layer.getCell(col, row);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

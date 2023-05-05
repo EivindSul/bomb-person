@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TileObject.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">bomberman-gdx</a> &gt; <a href="index.source.html" class="el_package">inf112.bomberperson.model.tiles</a> &gt; <span class="el_source">TileObject.java</span></div><h1>TileObject.java</h1><pre class="source lang-java linenums">package inf112.bomberperson.model.tiles;
+
+import com.badlogic.gdx.math.Vector2;
+
+import inf112.bomberperson.model.map.Map;
+
+public abstract class TileObject {
+
+    private Vector2 position;
+    private int textureID;
+
+<span class="fc" id="L12">    public TileObject(Vector2 position){</span>
+<span class="fc" id="L13">        this.position = position;</span>
+<span class="fc" id="L14">        this.textureID = 545;</span>
+
+<span class="fc" id="L16">    }</span>
+
+    public float getX(){
+<span class="nc" id="L19">        return this.position.x;</span>
+    }
+
+    public float getY(){
+<span class="nc" id="L23">        return this.position.y;</span>
+    }
+
+    public void setX(float x){
+<span class="nc" id="L27">        this.position.x = x;</span>
+<span class="nc" id="L28">    }</span>
+
+    public void setY(float y){
+<span class="nc" id="L31">        this.position.y = y;</span>
+<span class="nc" id="L32">    }</span>
+
+    public Vector2 getPosition(){
+<span class="nc" id="L35">        return this.position;</span>
+    }
+
+    public int getCol(){
+<span class="nc" id="L39">        return Math.round(position.x / Map.TILE_SIZE);</span>
+    }
+    public int getRow(){
+<span class="nc" id="L42">        return Math.round(position.y / Map.TILE_SIZE);</span>
+    }
+
+    public int getTexture(){
+<span class="nc" id="L46">        return this.textureID;</span>
+    }
+
+    public void setTexture(int texture){
+<span class="nc" id="L50">        this.textureID = texture;</span>
+<span class="nc" id="L51">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

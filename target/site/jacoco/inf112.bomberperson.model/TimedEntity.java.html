@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TimedEntity.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">bomberman-gdx</a> &gt; <a href="index.source.html" class="el_package">inf112.bomberperson.model</a> &gt; <span class="el_source">TimedEntity.java</span></div><h1>TimedEntity.java</h1><pre class="source lang-java linenums">package inf112.bomberperson.model;
+
+public class TimedEntity&lt;N&gt; {
+    
+    private N entity;
+    private float time;
+    private int owner;
+
+    /**
+     * Any object that could be coupled with a timer and/or owner.
+     * Can be used to check who owns the explosion that kills someone, time at which a bomb should explode, etc. 
+     * @param entity - Entity of choice.
+     * @param time - Time at which something happens.
+     * @param owner - 0 means no owner, 1 means player 1, etc.
+     */
+<span class="nc" id="L16">    public TimedEntity(N entity, float time, int owner){</span>
+<span class="nc" id="L17">        this.entity = entity;</span>
+<span class="nc" id="L18">        this.time = time;</span>
+<span class="nc" id="L19">        this.owner = owner;</span>
+<span class="nc" id="L20">    }</span>
+
+    public N getEntity() {
+<span class="nc" id="L23">        return entity;</span>
+    }
+
+    public float getTime() {
+<span class="nc" id="L27">        return time;</span>
+    }
+
+    public float getOwner() {
+<span class="nc" id="L31">        return owner;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

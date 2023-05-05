@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TileFactory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">bomberman-gdx</a> &gt; <a href="index.source.html" class="el_package">inf112.bomberperson.model</a> &gt; <span class="el_source">TileFactory.java</span></div><h1>TileFactory.java</h1><pre class="source lang-java linenums">
+package inf112.bomberperson.model;
+
+import java.util.ArrayList;
+
+import com.badlogic.gdx.math.Vector2;
+
+import inf112.bomberperson.model.map.Map;
+import inf112.bomberperson.model.tiles.Bomb;
+import inf112.bomberperson.model.tiles.Explosion;
+import inf112.bomberperson.model.tiles.ExplosionTile;
+
+/**
+ * TileFactory
+ */
+public class TileFactory {
+    
+<span class="nc" id="L18">    private ArrayList&lt;TimedEntity&lt;Bomb&gt;&gt; timedBombList = new ArrayList&lt;TimedEntity&lt;Bomb&gt;&gt;();</span>
+<span class="nc" id="L19">    private ArrayList&lt;TimedEntity&lt;Explosion&gt;&gt; explosionList = new ArrayList&lt;TimedEntity&lt;Explosion&gt;&gt;();</span>
+
+<span class="nc" id="L21">    public float time = 0;</span>
+    private Map map;
+
+    
+<span class="nc" id="L25">    public TileFactory(Map map){</span>
+<span class="nc" id="L26">        this.map = map;</span>
+<span class="nc" id="L27">    }</span>
+
+    public void update(float newTime){
+<span class="nc" id="L30">        this.time = newTime;</span>
+
+<span class="nc" id="L32">        ArrayList&lt;TimedEntity&lt;Bomb&gt;&gt; bombsToExplode = explosionDetection(); // checks if bomb should explode now</span>
+
+<span class="nc" id="L34">        explodeBombs(bombsToExplode); // runs an algorithm for exploding bomb. </span>
+
+<span class="nc" id="L36">        ArrayList&lt;TimedEntity&lt;Explosion&gt;&gt; decayedExplosions = explosionDecay();</span>
+        
+<span class="nc" id="L38">        cleanExplodeTimeList(bombsToExplode);</span>
+<span class="nc" id="L39">        cleanBombList(decayedExplosions);</span>
+
+<span class="nc" id="L41">    }</span>
+
+
+    /*
+     * Checks if any bombs explode. if a bomb explodes, it removes this bomb from the respective player's bomb list.
+     * @return bombsToExplode
+    */
+    private ArrayList&lt;TimedEntity&lt;Bomb&gt;&gt; explosionDetection() {
+<span class="nc" id="L49">        ArrayList&lt;TimedEntity&lt;Bomb&gt;&gt; bombsToExplode = new ArrayList&lt;TimedEntity&lt;Bomb&gt;&gt;();</span>
+
+<span class="nc bnc" id="L51" title="All 2 branches missed.">        for (TimedEntity&lt;Bomb&gt; timedBomb : timedBombList) {</span>
+<span class="nc" id="L52">            float explosionTime = timedBomb.getTime();</span>
+
+<span class="nc bnc" id="L54" title="All 2 branches missed.">            if (time &gt;= explosionTime){</span>
+<span class="nc" id="L55">                bombsToExplode.add(timedBomb);</span>
+<span class="nc" id="L56">                map.removeBombFromMap(timedBomb.getEntity().getPosition());</span>
+            }
+<span class="nc" id="L58">        }</span>
+<span class="nc" id="L59">        return bombsToExplode;</span>
+    }
+
+    /**
+     * removes argument list of bombs from timedBombList
+     * @param bombsToRemove - ArrayList of TimedBombs to be cleaned up from list.
+     */
+    private void cleanExplodeTimeList(ArrayList&lt;TimedEntity&lt;Bomb&gt;&gt; bombsToRemove){
+<span class="nc bnc" id="L67" title="All 2 branches missed.">        for (TimedEntity&lt;Bomb&gt; timedBomb : bombsToRemove) {</span>
+<span class="nc" id="L68">            timedBombList.remove(timedBomb);</span>
+<span class="nc" id="L69">        }</span>
+<span class="nc" id="L70">    }</span>
+
+    /**
+     * removes argument list of explosions from explosionList
+     * @param decayedExplosions - ArrayList of TimedExplosions to be cleaned up from list.
+     */
+    private void cleanBombList(ArrayList&lt;TimedEntity&lt;Explosion&gt;&gt; decayedExplosions){
+<span class="nc bnc" id="L77" title="All 2 branches missed.">        for (TimedEntity&lt;Explosion&gt; timedExplosion : decayedExplosions) {</span>
+<span class="nc" id="L78">            explosionList.remove(timedExplosion);</span>
+<span class="nc" id="L79">        }</span>
+<span class="nc" id="L80">    }</span>
+
+
+    /**
+     * Checks if current explosions should be removed from map.
+     */
+    private ArrayList&lt;TimedEntity&lt;Explosion&gt;&gt; explosionDecay(){
+<span class="nc" id="L87">        ArrayList&lt;TimedEntity&lt;Explosion&gt;&gt; decayedExplosions = new ArrayList&lt;TimedEntity&lt;Explosion&gt;&gt;();</span>
+
+<span class="nc bnc" id="L89" title="All 2 branches missed.">        for (TimedEntity&lt;Explosion&gt; timedExplosion : explosionList) {</span>
+<span class="nc" id="L90">            float decayTime = timedExplosion.getTime();</span>
+
+<span class="nc bnc" id="L92" title="All 2 branches missed.">            if (time &gt;= decayTime){</span>
+<span class="nc" id="L93">                decayedExplosions.add(timedExplosion);</span>
+<span class="nc" id="L94">                map.removeExplosionFromMap(timedExplosion.getEntity());;</span>
+            }
+<span class="nc" id="L96">        }</span>
+<span class="nc" id="L97">        return decayedExplosions;</span>
+    }
+
+    /**add a bomb to a players position on the map.
+     * @param player that drops bomb
+     * @param time when bomb should detonate
+     */
+    public void addBomb(Player player, float time) {
+<span class="nc" id="L105">        Bomb bomb = new Bomb(player.getPosition(), player.getBombRange(), player.getBombPower());</span>
+<span class="nc" id="L106">        TimedEntity&lt;Bomb&gt; newBomb = new TimedEntity&lt;Bomb&gt;(bomb, time, player.getNumber());</span>
+<span class="nc" id="L107">        timedBombList.add(newBomb);</span>
+<span class="nc" id="L108">        map.addBombToMap(newBomb.getEntity().getPosition());</span>
+<span class="nc" id="L109">    }</span>
+
+    /**
+     * Explodes bombs, and turns them into explosions.
+     * Draws the explosions on the map in the explosionLayer.
+     * Adds the explosions to explosionList, which is the list of currently active explosions. 
+     * @param bombsToExplode list of bombs to explode in current game loop.
+     */
+    private void explodeBombs(ArrayList&lt;TimedEntity&lt;Bomb&gt;&gt; bombsToExplode) {
+        // The bombs in bombsToExplode should already be removed in the explosionDetection method.
+
+<span class="nc bnc" id="L120" title="All 2 branches missed.">        for (TimedEntity&lt;Bomb&gt; timedBomb : bombsToExplode) {</span>
+<span class="nc" id="L121">            Bomb bomb = timedBomb.getEntity();</span>
+<span class="nc" id="L122">            Explosion explosion = bomb.explodeBomb();</span>
+            
+<span class="nc" id="L124">            explosion = explosionAlgorithm(explosion);</span>
+            
+<span class="nc" id="L126">            explosionList.add(new TimedEntity&lt;Explosion&gt;(explosion, time + (float)0.5, 1));</span>
+<span class="nc" id="L127">            map.addExplosionToMap(explosion);</span>
+
+<span class="nc" id="L129">        }</span>
+<span class="nc" id="L130">    }</span>
+
+
+    /**
+     * Calculates how an explosion is shaped.
+     * Takes a fresh explosion as argument, expands this as far as it should go. Checks if it hits walls, and reacts correspondingly.
+     * @param explosion Newly initialized explosion.
+     * @return Fully expanded explosion. The explosion variable within contains explosiontiles.
+     */
+    private Explosion explosionAlgorithm(Explosion explosion){
+
+<span class="nc" id="L141">        ArrayList&lt;Integer&gt; nodeIndexes = new ArrayList&lt;Integer&gt;();</span>
+<span class="nc" id="L142">        nodeIndexes.add(0);</span>
+<span class="nc" id="L143">        nodeIndexes.add(1);</span>
+<span class="nc" id="L144">        nodeIndexes.add(2);</span>
+<span class="nc" id="L145">        nodeIndexes.add(3);</span>
+        
+        // Expands nodes, one node at a time.
+<span class="nc bnc" id="L148" title="All 2 branches missed.">        for (Integer i : nodeIndexes) {</span>
+<span class="nc" id="L149">            int range = explosion.getRange();</span>
+            
+<span class="nc bnc" id="L151" title="All 2 branches missed.">            while (range &gt; 0){</span>
+<span class="nc" id="L152">                ExplosionTile node = explosion.getBorder().get(i);</span>
+                
+<span class="nc bnc" id="L154" title="All 2 branches missed.">                if (node.getDirection() == 0){ // Direction 0 means node has stopped.</span>
+<span class="nc" id="L155">                    range = 0;</span>
+<span class="nc" id="L156">                    break;</span>
+                }
+
+<span class="nc" id="L159">                ExplosionTile nextNode = explosion.expandNode(node);</span>
+
+                
+<span class="nc" id="L162">                int solid = checkIfSolid(nextNode.getPosition());</span>
+
+<span class="nc bnc" id="L164" title="All 2 branches missed.">                if (solid == 2){</span>
+<span class="nc" id="L165">                    nextNode.hitSolid();</span>
+<span class="nc" id="L166">                    range = 0;</span>
+<span class="nc" id="L167">                    break;</span>
+                }
+                
+<span class="nc bnc" id="L170" title="All 2 branches missed.">                if (solid == 1){</span>
+<span class="nc" id="L171">                    nextNode.hitBreakable();</span>
+                }
+
+<span class="nc" id="L174">                map.breakWall(nextNode.getPosition());</span>
+
+<span class="nc" id="L176">                explosion.addExplosionTile(nextNode);</span>
+<span class="nc" id="L177">                explosion.setBorder(i, nextNode);</span>
+<span class="nc" id="L178">                range -= 1;</span>
+<span class="nc" id="L179">            }</span>
+<span class="nc" id="L180">        }</span>
+<span class="nc" id="L181">        return explosion;</span>
+    }
+
+    /**
+     * check if this tile contains a wall, and if the wall is breakable
+     *
+     * @param position the position that gets checked
+     * @return 0 if clear, 1 if wall breaks, 2 if wall is solid
+     */
+    private int checkIfSolid(Vector2 position) {
+        
+<span class="nc bnc" id="L192" title="All 2 branches missed.">        if(map.containsSolidWall(position)){</span>
+<span class="nc" id="L193">            return 2;</span>
+        }
+<span class="nc bnc" id="L195" title="All 2 branches missed.">        if(map.containsBrickWall(position)){</span>
+<span class="nc" id="L196">            return 1;</span>
+        }
+<span class="nc" id="L198">        return 0;</span>
+    }
+
+    /** Checks that a bomb is legal to drop by a player on their position. 
+     * @param player
+     * @return whether the tile is free and the player does not exceed their maximum amount of dropped bombs
+     */
+    public boolean legalBombDrop(Player player) {
+<span class="nc" id="L206">        int playerNumber = player.getNumber();</span>
+<span class="nc" id="L207">        int bombLimit = player.getBombLimit();</span>
+<span class="nc" id="L208">        Vector2 position = player.getPosition();</span>
+
+<span class="nc bnc" id="L210" title="All 2 branches missed.">        for (TimedEntity&lt;Bomb&gt; timedBomb : timedBombList) {</span>
+<span class="nc bnc" id="L211" title="All 2 branches missed.">            if(timedBomb.getOwner() == playerNumber){</span>
+<span class="nc" id="L212">                bombLimit -= 1;</span>
+            }
+<span class="nc bnc" id="L214" title="All 2 branches missed.">            if (map.containsBomb(position)){</span>
+<span class="nc" id="L215">                return false;</span>
+            }
+<span class="nc bnc" id="L217" title="All 2 branches missed.">            if (bombLimit &lt;= 0) {</span>
+<span class="nc" id="L218">                return false;</span>
+            }
+<span class="nc" id="L220">        }</span>
+<span class="nc" id="L221">        return true;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

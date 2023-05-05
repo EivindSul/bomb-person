@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GameOverScreen.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">bomberman-gdx</a> &gt; <a href="index.source.html" class="el_package">inf112.bomberperson.screens</a> &gt; <span class="el_source">GameOverScreen.java</span></div><h1>GameOverScreen.java</h1><pre class="source lang-java linenums">package inf112.bomberperson.screens;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL30;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+
+import inf112.bomberperson.game.BombermanGame;
+
+public class GameOverScreen implements Screen {
+    BombermanGame game;
+
+    Label.LabelStyle font;
+    protected Skin skin;
+    protected final Stage stage;
+
+
+<span class="nc" id="L27">    public GameOverScreen(BombermanGame game){</span>
+<span class="nc" id="L28">        this.game = game;</span>
+<span class="nc" id="L29">        this.skin = new Skin(Gdx.files.internal(&quot;doc/assets/UI/uiskin.json&quot;));</span>
+<span class="nc" id="L30">        this.stage = new Stage(new ScreenViewport());</span>
+<span class="nc" id="L31">        Gdx.input.setInputProcessor(stage);</span>
+<span class="nc" id="L32">    }</span>
+
+    @Override
+    public void show() {
+        // Screen font
+<span class="nc" id="L37">        font = new Label.LabelStyle(new BitmapFont(), Color.WHITE);</span>
+
+        // Table to draw on, add to the stage
+<span class="nc" id="L40">        Table table = new Table();</span>
+<span class="nc" id="L41">        stage.addActor(table);</span>
+
+        // Game over screen title,
+<span class="nc" id="L44">        table.setFillParent(true);</span>
+<span class="nc" id="L45">        Label title = new Label(&quot;Game Over&quot;, font);</span>
+<span class="nc" id="L46">        title.setFontScale(6f);</span>
+<span class="nc" id="L47">        table.add(title);</span>
+<span class="nc" id="L48">        table.row();</span>
+
+        // Get the winner of the game
+<span class="nc bnc" id="L51" title="All 2 branches missed.">        if (game.getWinner() == 1) {</span>
+<span class="nc" id="L52">            title = new Label(&quot;It's a tie&quot;, font);</span>
+        }
+<span class="nc bnc" id="L54" title="All 2 branches missed.">        else if (game.getWinner() == 2) {</span>
+<span class="nc" id="L55">            title = new Label(&quot;Player 1 wins&quot;, font);</span>
+        }
+<span class="nc bnc" id="L57" title="All 2 branches missed.">        else if (game.getWinner() == 3) {</span>
+<span class="nc" id="L58">            title = new Label(&quot;Player 2 wins&quot;, font);</span>
+        }
+<span class="nc bnc" id="L60" title="All 2 branches missed.">        else if (game.getWinner() == 4) {</span>
+<span class="nc" id="L61">            title = new Label(&quot;You quit the game&quot;, font);</span>
+        }
+
+<span class="nc" id="L64">        title.setFontScale(3f);</span>
+<span class="nc" id="L65">        table.add(title);</span>
+<span class="nc" id="L66">        table.row();</span>
+
+<span class="nc" id="L68">        title = new Label(&quot;Do you want to play again?&quot;, font);</span>
+<span class="nc" id="L69">        title.setFontScale(2f);</span>
+<span class="nc" id="L70">        table.add(title);</span>
+
+        // Buttons for choosing what to do next
+<span class="nc" id="L73">        TextButton newGame = new TextButton(&quot;New game&quot;, skin);      // Start a new game</span>
+<span class="nc" id="L74">        TextButton menu = new TextButton(&quot;Main Menu&quot;, skin);        // Go to main menu</span>
+<span class="nc" id="L75">        TextButton exitGame = new TextButton(&quot;Exit game&quot;, skin);    // Exit game</span>
+
+        // Adding buttons
+<span class="nc" id="L78">        table.row();</span>
+<span class="nc" id="L79">        table.add(newGame).padTop(20).minWidth(250).minHeight(50);</span>
+<span class="nc" id="L80">        table.row();</span>
+<span class="nc" id="L81">        table.add(menu).padTop(20).minWidth(250).minHeight(50);</span>
+<span class="nc" id="L82">        table.row();</span>
+<span class="nc" id="L83">        table.add(exitGame).padTop(20).minWidth(250).minHeight(50);</span>
+
+        // Listeners for buttons
+<span class="nc" id="L86">        newGame.addListener(new InputListener(){</span>
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+<span class="nc" id="L89">                dispose();</span>
+<span class="nc" id="L90">                game.setScreen(new GameScreen(game));</span>
+<span class="nc" id="L91">                return true;</span>
+            }
+        });
+
+<span class="nc" id="L95">        menu.addListener(new InputListener(){</span>
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+<span class="nc" id="L98">                dispose();</span>
+<span class="nc" id="L99">                game.setScreen(new MenuScreen(game));</span>
+<span class="nc" id="L100">                return true;</span>
+            }
+        });
+
+<span class="nc" id="L104">        exitGame.addListener(new InputListener(){</span>
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+<span class="nc" id="L107">                Gdx.app.exit();</span>
+<span class="nc" id="L108">                return true;</span>
+            }
+        });
+<span class="nc" id="L111">    }</span>
+
+    @Override
+    public void render(float v) {
+<span class="nc" id="L115">        Gdx.gl.glClearColor(0.1f, 0.14f, 0.1f, 1);</span>
+<span class="nc" id="L116">        Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);</span>
+<span class="nc" id="L117">        stage.draw();</span>
+<span class="nc" id="L118">    }</span>
+
+    @Override
+    public void resize(int i, int i1) {
+
+<span class="nc" id="L123">    }</span>
+
+    @Override
+    public void pause() {
+
+<span class="nc" id="L128">    }</span>
+
+    @Override
+    public void resume() {
+
+<span class="nc" id="L133">    }</span>
+
+    @Override
+<span class="nc" id="L136">    public void hide() {  }</span>
+
+    @Override
+    public void dispose() {
+<span class="nc" id="L140">        stage.dispose();</span>
+<span class="nc" id="L141">        game.dispose();</span>
+<span class="nc" id="L142">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

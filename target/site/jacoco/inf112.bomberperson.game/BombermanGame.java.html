@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BombermanGame.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">bomberman-gdx</a> &gt; <a href="index.source.html" class="el_package">inf112.bomberperson.game</a> &gt; <span class="el_source">BombermanGame.java</span></div><h1>BombermanGame.java</h1><pre class="source lang-java linenums">package inf112.bomberperson.game;
+
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import inf112.bomberperson.screens.*;
+
+<span class="nc" id="L7">public class BombermanGame extends Game {</span>
+    public static final int WIDTH = 720;
+    public static final int HEIGHT = 720;
+    public SpriteBatch batch;
+    private int winner;
+
+    @Override
+    public void create() {
+<span class="nc" id="L15">        batch = new SpriteBatch();</span>
+<span class="nc" id="L16">        winner = 4; // Default &quot;winner&quot;</span>
+<span class="nc" id="L17">        this.setScreen(new MenuScreen(this));</span>
+<span class="nc" id="L18">    }</span>
+
+    public void setWinner(int winner) {
+<span class="nc" id="L21">        this.winner = winner;</span>
+<span class="nc" id="L22">    }</span>
+
+    public int getWinner() {
+<span class="nc" id="L25">        return winner;</span>
+    }
+
+    @Override
+    public void dispose() {
+<span class="nc" id="L30">        super.dispose();</span>
+<span class="nc" id="L31">    }</span>
+
+    @Override
+    public void render() {
+<span class="nc" id="L35">        super.render();</span>
+<span class="nc" id="L36">    }</span>
+
+    @Override
+<span class="nc" id="L39">    public void resize(int width, int height) {super.resize(width,height);</span>
+
+<span class="nc" id="L41">    }</span>
+
+    @Override
+<span class="nc" id="L44">    public void pause() {super.pause();</span>
+<span class="nc" id="L45">    }</span>
+
+    @Override
+<span class="nc" id="L48">    public void resume() {super.resume();</span>
+<span class="nc" id="L49">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
