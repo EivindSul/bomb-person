@@ -33,11 +33,12 @@ public class Player implements Collidable {
     private int bombPower = 1;
 
     private int speed = 100;
+    private int number;
     
-    public Player(){
+    public Player(int number){
         this.height = 10;
         this.width = 10;
-        
+        this.number = number;
         //initializing player direction and state
         this.currentDirection = Direction.UP;
         this.currentState = State.WALKING;
@@ -127,16 +128,16 @@ public class Player implements Collidable {
     
     /*------------------- DROP BOMBS -------------------*/
     
-    public boolean dropBomb() {
+    // public boolean dropBomb() {
 
-        if (bombList.size() >= getBombLimit()){
-            return false;
-        }
-        Bomb bomb = new Bomb(this.getPosition(), this.getBombRange(), this.getBombPower());
-        bombList.add(bomb);
-        return true;
+    //     if (bombList.size() >= getBombLimit()){
+    //         return false;
+    //     }
+    //     Bomb bomb = new Bomb(this.getPosition(), this.getBombRange(), this.getBombPower());
+    //     bombList.add(bomb);
+    //     return true;
         
-    }
+    // }
     
     public boolean noBombs(){
         return bombList.isEmpty();
@@ -182,7 +183,7 @@ public class Player implements Collidable {
         this.bombPower += 1;
     }
     
-    private int getBombRange() {
+    public int getBombRange() {
         return this.bombRange;
     }
 
@@ -191,7 +192,7 @@ public class Player implements Collidable {
     }
 
     public void increaseSpeed() {
-        this.speed += 20;
+        this.speed += 10;
     }
     
     public void applyPowerup(String powerup){
@@ -207,5 +208,9 @@ public class Player implements Collidable {
         if (powerup.equals("morepower")){
             incrementBombPower();
         }
+    }
+
+    public int getNumber() {
+        return this.number;
     }
 }
