@@ -3,6 +3,7 @@
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
@@ -27,102 +28,114 @@ public class Model {
     Sound dropBombsound;
     Sound bombSound;
 
-<span class="nc" id="L30">    public float time = 0;</span>
+<span class="nc" id="L31">    public float time = 0;</span>
 
     private Collision collision;
 
-<span class="nc" id="L34">    public Model(BombermanGame game){</span>
-<span class="nc" id="L35">        this.game = game;</span>
+<span class="nc" id="L35">    public Model(BombermanGame game){</span>
+<span class="nc" id="L36">        this.game = game;</span>
 
-<span class="nc" id="L37">        this.map = new Map();</span>
+<span class="nc" id="L38">        this.map = new Map();</span>
 
-<span class="nc" id="L39">        killSound = Gdx.audio.newSound(Gdx.files.internal(&quot;doc/assets/Sounds/zapsplat_horror_monster_small_dying_screech_003_72195.mp3&quot;));</span>
-<span class="nc" id="L40">        powerUpSound = Gdx.audio.newSound(Gdx.files.internal(&quot;doc/assets/Sounds/zapsplat_bell_small_hand_short_ring_003_84222.mp3&quot;));</span>
-<span class="nc" id="L41">        this.dropBombsound = Gdx.audio.newSound(Gdx.files.internal(&quot;doc/assets/Sounds/zapsplat_foley_footstep_single_boys_sneaker_on_concrete_002_50912.mp3&quot;));</span>
-<span class="nc" id="L42">        this.bombSound = Gdx.audio.newSound(Gdx.files.internal(&quot;doc/assets/Sounds/zapsplat_explosions_designed_huge_fire_bomb_ball_005_89762.mp3&quot;));</span>
+<span class="nc" id="L40">        killSound = Gdx.audio.newSound(Gdx.files.internal(&quot;doc/assets/Sounds/zapsplat_horror_monster_small_dying_screech_003_72195.mp3&quot;));</span>
+<span class="nc" id="L41">        powerUpSound = Gdx.audio.newSound(Gdx.files.internal(&quot;doc/assets/Sounds/zapsplat_bell_small_hand_short_ring_003_84222.mp3&quot;));</span>
+<span class="nc" id="L42">        this.dropBombsound = Gdx.audio.newSound(Gdx.files.internal(&quot;doc/assets/Sounds/zapsplat_foley_footstep_single_boys_sneaker_on_concrete_002_50912.mp3&quot;));</span>
+<span class="nc" id="L43">        this.bombSound = Gdx.audio.newSound(Gdx.files.internal(&quot;doc/assets/Sounds/zapsplat_explosions_designed_huge_fire_bomb_ball_005_89762.mp3&quot;));</span>
 
-<span class="nc" id="L44">        this.player1 = new Player(1);</span>
-<span class="nc" id="L45">        this.player2 = new Player(2);</span>
+<span class="nc" id="L45">        this.player1 = new Player(1);</span>
+<span class="nc" id="L46">        this.player2 = new Player(2);</span>
 
-<span class="nc" id="L47">        player1.setPosition(1 * 16, (map.getHeight() - 26) *16);</span>
-<span class="nc" id="L48">        player2.setPosition(25 * 16, (map.getHeight() - 2) *16);</span>
+<span class="nc" id="L48">        player1.setPosition(1 * 16, (map.getHeight() - 26) *16);</span>
+<span class="nc" id="L49">        player2.setPosition(25 * 16, (map.getHeight() - 2) *16);</span>
         
-<span class="nc" id="L50">        this.controller = new MyInputProcessor(this);</span>
-<span class="nc" id="L51">        controller.mapInputs();</span>
+<span class="nc" id="L51">        this.controller = new MyInputProcessor(this);</span>
+<span class="nc" id="L52">        controller.mapInputs();</span>
 
-<span class="nc" id="L53">        this.tileFactory = new TileFactory(this.map);</span>
+<span class="nc" id="L54">        this.tileFactory = new TileFactory(this.map);</span>
 
-<span class="nc" id="L55">        ArrayList&lt;TiledMapTileLayer&gt; collisionList = new ArrayList&lt;TiledMapTileLayer&gt;();</span>
-<span class="nc" id="L56">        TiledMapTileLayer powerupLayer = map.getPowerupLayer();</span>
-<span class="nc" id="L57">        collisionList.add(map.getStaticLayer());</span>
-<span class="nc" id="L58">        collisionList.add(map.getDynamicLayer());</span>
-<span class="nc" id="L59">        this.collision = new Collision(collisionList);</span>
-<span class="nc" id="L60">        this.collision.setPowerupLayer(powerupLayer);</span>
+<span class="nc" id="L56">        ArrayList&lt;TiledMapTileLayer&gt; collisionList = new ArrayList&lt;TiledMapTileLayer&gt;();</span>
+<span class="nc" id="L57">        TiledMapTileLayer powerupLayer = map.getPowerupLayer();</span>
+<span class="nc" id="L58">        collisionList.add(map.getStaticLayer());</span>
+<span class="nc" id="L59">        collisionList.add(map.getDynamicLayer());</span>
+<span class="nc" id="L60">        this.collision = new Collision(collisionList);</span>
+<span class="nc" id="L61">        this.collision.setPowerupLayer(powerupLayer);</span>
         
-<span class="nc" id="L62">        this.gameState = true;</span>
-<span class="nc" id="L63">        Gdx.input.setInputProcessor(controller);        </span>
-<span class="nc" id="L64">    }</span>
+<span class="nc" id="L63">        this.gameState = true;</span>
+<span class="nc" id="L64">        Gdx.input.setInputProcessor(controller);        </span>
+<span class="nc" id="L65">    }</span>
     public void update(){
         /*------------------- Game Logic -------------------*/
-<span class="nc" id="L67">        checkPlayerCollision(player1);</span>
-<span class="nc" id="L68">        checkPlayerCollision(player2);</span>
+<span class="nc" id="L68">        checkPlayerCollision(player1);</span>
+<span class="nc" id="L69">        checkPlayerCollision(player2);</span>
 
-<span class="nc" id="L70">        time += Gdx.graphics.getDeltaTime();</span>
-<span class="nc" id="L71">        gameStateDetection(); // checks if game is over</span>
+<span class="nc" id="L71">        time += Gdx.graphics.getDeltaTime();</span>
+<span class="nc" id="L72">        gameStateDetection(); // checks if game is over</span>
 
-<span class="nc" id="L73">        tileFactory.update(time);</span>
+<span class="nc" id="L74">        tileFactory.update(time);</span>
 
-<span class="nc bnc" id="L75" title="All 4 branches missed.">        if(checkIfPlayerExplodes(player1) &amp;&amp; checkIfPlayerExplodes(player2)){</span>
-<span class="nc" id="L76">            killPlayer(player1);</span>
-<span class="nc" id="L77">            killPlayer(player2);</span>
-<span class="nc" id="L78">            game.setWinner(1);</span>
+<span class="nc bnc" id="L76" title="All 4 branches missed.">        if(checkIfPlayerExplodes(player1) &amp;&amp; checkIfPlayerExplodes(player2)){</span>
+            // Stops movement sound from playing after death.
+<span class="nc" id="L78">            controller.keyUpHandlers.get(Input.Keys.W).call();</span>
+<span class="nc" id="L79">            controller.keyUpHandlers.get(Input.Keys.UP).call();</span>
+            
+<span class="nc" id="L81">            killPlayer(player1);</span>
+<span class="nc" id="L82">            killPlayer(player2);</span>
+<span class="nc" id="L83">            game.setWinner(1);</span>
 
-<span class="nc" id="L80">            gameState = false;</span>
+<span class="nc" id="L85">            gameState = false;</span>
         }
-<span class="nc bnc" id="L82" title="All 2 branches missed.">        else if(checkIfPlayerExplodes(player1)){</span>
-<span class="nc" id="L83">            killPlayer(player1);</span>
-<span class="nc" id="L84">            game.setWinner(3);</span>
+<span class="nc bnc" id="L87" title="All 2 branches missed.">        else if(checkIfPlayerExplodes(player1)){</span>
+            // Stops movement sound from playing after death.
+<span class="nc" id="L89">            controller.keyUpHandlers.get(Input.Keys.W).call();</span>
+<span class="nc" id="L90">            controller.keyUpHandlers.get(Input.Keys.UP).call();</span>
+            
+<span class="nc" id="L92">            killPlayer(player1);</span>
+<span class="nc" id="L93">            game.setWinner(3);</span>
 
-<span class="nc" id="L86">            gameState = false;</span>
+<span class="nc" id="L95">            gameState = false;</span>
         }
-<span class="nc bnc" id="L88" title="All 2 branches missed.">        else if(checkIfPlayerExplodes(player2)){</span>
-<span class="nc" id="L89">            killPlayer(player2);</span>
-<span class="nc" id="L90">            game.setWinner(2);</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">        else if(checkIfPlayerExplodes(player2)){</span>
+            // Stops movement sound from playing after death.
+<span class="nc" id="L99">            controller.keyUpHandlers.get(Input.Keys.W).call();</span>
+<span class="nc" id="L100">            controller.keyUpHandlers.get(Input.Keys.UP).call();</span>
+            
+<span class="nc" id="L102">            killPlayer(player2);</span>
+<span class="nc" id="L103">            game.setWinner(2);</span>
 
-<span class="nc" id="L92">            gameState = false;</span>
+<span class="nc" id="L105">            gameState = false;</span>
         }
-<span class="nc" id="L94">    }</span>
+<span class="nc" id="L107">    }</span>
     /*------------------- Model Functionallity -------------------*/
     public void checkPlayerCollision(Player player) {
-<span class="nc" id="L97">        float oldX = player.getX();</span>
-<span class="nc" id="L98">        float oldY = player.getY();</span>
-<span class="nc" id="L99">        player.update(Gdx.graphics.getDeltaTime());</span>
-<span class="nc bnc" id="L100" title="All 2 branches missed.">        if (collision.checkCollisionOfCollidable(player)) {</span>
-<span class="nc" id="L101">            player.setVelocity(new Vector2(0f,0f));</span>
-<span class="nc" id="L102">            player.setX(oldX);</span>
-<span class="nc" id="L103">            player.setY(oldY);</span>
+<span class="nc" id="L110">        float oldX = player.getX();</span>
+<span class="nc" id="L111">        float oldY = player.getY();</span>
+<span class="nc" id="L112">        player.update(Gdx.graphics.getDeltaTime());</span>
+<span class="nc bnc" id="L113" title="All 2 branches missed.">        if (collision.checkCollisionOfCollidable(player)) {</span>
+<span class="nc" id="L114">            player.setVelocity(new Vector2(0f,0f));</span>
+<span class="nc" id="L115">            player.setX(oldX);</span>
+<span class="nc" id="L116">            player.setY(oldY);</span>
         }
 
-<span class="nc" id="L106">        String powerup = collision.containsPowerup(player.getPosition());</span>
+<span class="nc" id="L119">        String powerup = collision.containsPowerup(player.getPosition());</span>
         
-<span class="nc bnc" id="L108" title="All 4 branches missed.">        if (!powerup.equals(&quot;none&quot;) &amp;&amp; player.getPowerupDelay() &lt;= time){</span>
-<span class="nc" id="L109">            player.setPowerupDelay(time + (float)0.2);</span>
-<span class="nc" id="L110">            map.removePowerupFromMap(player.getPosition());</span>
-<span class="nc" id="L111">            player.applyPowerup(powerup);</span>
-<span class="nc" id="L112">            long id =powerUpSound.play();</span>
-<span class="nc" id="L113">            powerUpSound.setVolume(id, 0.6f);</span>
+<span class="nc bnc" id="L121" title="All 4 branches missed.">        if (!powerup.equals(&quot;none&quot;) &amp;&amp; player.getPowerupDelay() &lt;= time){</span>
+<span class="nc" id="L122">            player.setPowerupDelay(time + (float)0.2);</span>
+<span class="nc" id="L123">            map.removePowerupFromMap(player.getPosition());</span>
+<span class="nc" id="L124">            player.applyPowerup(powerup);</span>
+<span class="nc" id="L125">            long id =powerUpSound.play();</span>
+<span class="nc" id="L126">            powerUpSound.setVolume(id, 0.6f);</span>
         }
-<span class="nc" id="L115">    }</span>
+<span class="nc" id="L128">    }</span>
 
     /*
      * Checks if game is over and calls a game over screen
      */
     private void gameStateDetection(){
         // Pause screen?
-<span class="nc bnc" id="L122" title="All 2 branches missed.">        if (!(gameState)) {</span>
-<span class="nc" id="L123">            game.setScreen(new GameOverScreen(game));</span>
+<span class="nc bnc" id="L135" title="All 2 branches missed.">        if (!(gameState)) {</span>
+<span class="nc" id="L136">            game.setScreen(new GameOverScreen(game));</span>
         }
-<span class="nc" id="L125">    }</span>
+<span class="nc" id="L138">    }</span>
 
     /**
      * Player drops a bomb at their current location. 
@@ -132,30 +145,30 @@ public class Model {
      * @param player The player that drops the bomb
      */
     public void dropBomb(Player player){
-<span class="nc bnc" id="L135" title="All 2 branches missed.">        if (tileFactory.legalBombDrop(player)){</span>
-<span class="nc" id="L136">            tileFactory.addBomb(player, time + 2);</span>
-<span class="nc" id="L137">            playBombSound();</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">        if (tileFactory.legalBombDrop(player)){</span>
+<span class="nc" id="L149">            tileFactory.addBomb(player, time + 2);</span>
+<span class="nc" id="L150">            playBombSound();</span>
         }
-<span class="nc" id="L139">    }</span>
+<span class="nc" id="L152">    }</span>
 
 
     void playBombSound(){
-<span class="nc" id="L143">        dropBombsound.play();</span>
-<span class="nc" id="L144">        long id = bombSound.play();</span>
-<span class="nc" id="L145">        bombSound.setVolume(id, 0.6f);</span>
-<span class="nc" id="L146">    }</span>
+<span class="nc" id="L156">        dropBombsound.play();</span>
+<span class="nc" id="L157">        long id = bombSound.play();</span>
+<span class="nc" id="L158">        bombSound.setVolume(id, 0.6f);</span>
+<span class="nc" id="L159">    }</span>
 
 
     private void killPlayer(Player player){
-<span class="nc" id="L150">        killSound.play();</span>
-<span class="nc" id="L151">        player.killPlayer();</span>
-<span class="nc" id="L152">    }</span>
+<span class="nc" id="L163">        killSound.play();</span>
+<span class="nc" id="L164">        player.killPlayer();</span>
+<span class="nc" id="L165">    }</span>
 
     private boolean checkIfPlayerExplodes(Player player){
-<span class="nc bnc" id="L155" title="All 2 branches missed.">        if (map.containsExplosion(player.getPosition())){</span>
-<span class="nc" id="L156">            return true;</span>
+<span class="nc bnc" id="L168" title="All 2 branches missed.">        if (map.containsExplosion(player.getPosition())){</span>
+<span class="nc" id="L169">            return true;</span>
         }
-<span class="nc" id="L158">        return false;</span>
+<span class="nc" id="L171">        return false;</span>
     }
 
     /*------------------- Model Functionallity -------------------*/
