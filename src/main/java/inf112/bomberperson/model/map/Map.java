@@ -15,19 +15,12 @@ public class Map {
     static final int POWERUP_SPAWN_CHANCE = 4; // One in 4 walls broken spawns a powerup.
     private TiledMapTileSet tileset;
     private TiledMap map;
-    TiledMapTile[] wallTiles;
-
-
 
     public Map(){
         
         // Load the map from Tiled
         map = new TmxMapLoader().load("doc/assets/tiles2.tmx");
         tileset = map.getTileSets().getTileSet("tiles");
-        // Get the wall tiles from the tileset
-        TiledMapTileSet tileset = map.getTileSets().getTileSet("tiles");
-        TiledMapTile wallTile1 = tileset.getTile(TextureID.SOLID_WALL.id);
-        wallTiles = new TiledMapTile[]{wallTile1};
 
         // Randomly generate the map
         generateMap();

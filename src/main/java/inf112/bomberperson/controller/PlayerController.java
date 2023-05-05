@@ -73,7 +73,7 @@ public class PlayerController {
         // Player drops bomb
         playerDrop = new ICallable<Void>(){
             public Void call(){
-                model.addBomb(player);
+                model.dropBomb(player);
                 return null;
             }
         };

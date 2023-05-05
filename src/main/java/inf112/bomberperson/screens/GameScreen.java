@@ -98,7 +98,6 @@ public class GameScreen implements Screen {
         batch.dispose();
         model.map.getMap().dispose();
         mapRenderer.dispose();
-        game.dispose();
 
         //clear screen
         ScreenUtils.clear(0,0,0,1);
