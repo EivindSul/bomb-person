@@ -23,6 +23,8 @@ public class Player implements Collidable {
     private Direction currentDirection;
     private State currentState;
 
+
+
     //the movement velocity
     public Vector2 velocity = new Vector2();
 
@@ -37,6 +39,7 @@ public class Player implements Collidable {
     private float powerupDelay = 0;
     
     public Player(int number){
+
         this.height = 10;
         this.width = 10;
         this.number = number;
