@@ -23,20 +23,20 @@
 * Mer info kommer..
 
 ## Graphics
-<a href="https://poloviiinkin.itch.io/textures?download">lenke for tileset uten egne tegninger</a> </br>
-<a href="https://www.spriters-resource.com/fullview/7943/"> Sprite sheet av player. </a> </br>
+<a href="https://poloviiinkin.itch.io/textures?download">lenke for tileset uten egne tegninger</a> <br>
+<a href="https://www.spriters-resource.com/fullview/7943/"> Sprite sheet av player. </a> <br>
 
 Resten av bildene fra spillet er selv laget og er åpent for bruk. 
 
 ## Sound
-Alle lydeffektene i spillet har blitt hentet fra Zapsplat. </br>
+Alle lydeffektene i spillet har blitt hentet fra Zapsplat. <br>
 
-<a href="https://www.zapsplat.com/music/small-dying-monster-screech-in-pain-3/"> Når spilleren dør. </a> </br>
-<a href="https://www.zapsplat.com/music/designed-huge-fireball-bomb-or-explosion-5/"> Når bomben eksploderes. </a> </br>
-<a href="https://www.zapsplat.com/music/barefoot-footsteps-on-small-stones/"> Når spilleren beveger seg. </a> </br>
-<a href="https://www.zapsplat.com/music/2x-rucksacks-drop-2/"> Når en bombe droppes. </a> </br>
-<a href="https://www.zapsplat.com/music/small-hand-bell-short-ring-3/"> Plukker opp powerups. </a> </br>
-<a href="https://www.zapsplat.com/music/clock-watch-or-timer-ticking/"> Tikkelyd fra bomben. </a> </br>
+<a href="https://www.zapsplat.com/music/small-dying-monster-screech-in-pain-3/"> Når spilleren dør. </a> <br>
+<a href="https://www.zapsplat.com/music/designed-huge-fireball-bomb-or-explosion-5/"> Når bomben eksploderes. </a> <br>
+<a href="https://www.zapsplat.com/music/barefoot-footsteps-on-small-stones/"> Når spilleren beveger seg. </a> <br>
+<a href="https://www.zapsplat.com/music/2x-rucksacks-drop-2/"> Når en bombe droppes. </a> <br>
+<a href="https://www.zapsplat.com/music/small-hand-bell-short-ring-3/"> Plukker opp powerups. </a> <br>
+<a href="https://www.zapsplat.com/music/clock-watch-or-timer-ticking/"> Tikkelyd fra bomben. </a> <br>
 
 
 # INF112 libGDX + Maven template 

@@ -9,11 +9,11 @@
 <h2>Hva dere ble enige om å gjøre til neste gang</h2>
     <p>Til neste gang vil vi jobbe med å fullføre det vi mangler av spesefikke krav, det vil helt klart være ting som mangler, spesielt tester og kanskje javadoc. Dette vil da tas på torsdagen</p>
     <ul>
-        <li>interaktiv lyd(dorcas)</li>
-        <li>object frabrikk(eivind)</li>
+        <li>interaktiv lyd(Dorcas)</li>
+        <li>object frabrikk(Eivind)</li>
         <li>Tester med test coverage, Headless applicationtest Sebastian og Kjell prøver.</li>
-        <li>lisens og kildebruk(sebastian,jackie)</li>
-        <li>dokumentasjon i koden i tilleg til innkapsling(Brian og jackie)</li>
+        <li>lisens og kildebruk(Sebastian,Jackie)</li>
+        <li>dokumentasjon i koden i tilleg til innkapsling(Brian og Jackie)</li>
     </ul>
 
 
@@ -31,17 +31,17 @@
 <h2>Hva dere ble enige om å gjøre til neste gang</h2>
     <p>Til neste gang vil vi jobbe med å implimentere det vi mangler av spesifikke krav, samt prøve å fikse noe av tilbakemeldingene vi har fått. I tillegg vil vi prøve å fikse controller bug</p>
     <ul>
-        <li>uml diagram(sebastian)</li>
+        <li>uml diagram(Sebastian)</li>
         <li>se på programvare for å test(spotbugs) visst tid til overs</li>
         <li>problem med menyer på linux</li>
         <li>fikse MVC litt</li>
     </ul>
     <ul>
-        <li>interaktiv lyd(dorcas)</li>
-        <li>TileFactory frabrikk(eivind)</li>
+        <li>interaktiv lyd(Dorcas)</li>
+        <li>TileFactory frabrikk(Eivind)</li>
         <li>Tester med test coverage, Headless applicationtest Sebastian og Kjell prøver.</li>
-        <li>lisens og kildebruk i tillegg til bedre forklaring på hvordan vi starter spillet(sebastian,jackie)</li>
-        <li>dokumentasjon i koden i tilleg til innkapsling(Brian og jackie)</li>
+        <li>lisens og kildebruk i tillegg til bedre forklaring på hvordan vi starter spillet(Sebastian,Jackie)</li>
+        <li>dokumentasjon i koden i tilleg til innkapsling(Brian og Jackie)</li>
     </ul>
     <p>til neste gang vil vi spørre gruppeleder om : mockito , headless application og tester, tilbakemelding om powerups(eivind), spotbugg, linux problemet med spillet(kjell og sebastian), lisens(sebastian og jakcie), spør om MVC struktur</p>
 
@@ -51,27 +51,27 @@
     <p>Alle var tilstede</p>
 <h2>Hva dere diskuterte</h2>
     <p>Fikk hjelp av gruppeleder til å forstå Mockito tester. Fikk tilsendt en tutorial på mockito, her blir oppgaven å "mocke" feltvariabler for å videre teste metoder i klasser</p>
-    <p>Fikk rådgivning på mulig endring i MVC. Akkuratt nå ligger det funksjonalitet for rendring i model. Denne renderingen bør ikke ligge i model men heller i GameScreen. Enkle getters vil kunne fikse dette</p>
+    <p>Fikk rådgivning på mulig endring i MVC. Akkurat nå ligger det funksjonalitet for rendring i model. Denne renderingen bør ikke ligge i model men heller i GameScreen. Enkle getters vil kunne fikse dette</p>
     <p>Fikk beskjed om at forrige tilbakemelding om controller problemer på linux skal bli sett bort ifra</p>
     <p>Vi trenger å ha brukt sportbugs vertfall en gang og ta i bruk tilbakemeldingen fra den.</p>
     <p>Lisens var tydligvis ikke nødvendig, altså det var ikke nødvendig med noen offisiel lisens, det er nok med å referere til grafikk i readme og oppgi hvordan vi ønsker at det skal brukes</p>
     <p>Powerups til eivind, vi har fått tilbakemelding på powerupsene på player ikke er særlig utvidbart. Siden vi ikke har mange powerups akkurat nå, og med henhold til tid, har vi valgt å beholde det slik det er nå, dette er dette et designvalg. Alternativet hadde vert å hatt et interface av powerups og på den måten bare trengt en metode for å applye en powerup på player</p>
 <h2>Hvilke avgjørelser dere tok</h2>
-    <p>Sebastian og kjell, pair programmet MVC refractor, der hvor rendering av map og player blir tatt ut av model og inn i GameScreen, refractor var vanskelig fordi, det var vansklig å få til refractoren</p>
+    <p>Sebastian og Kjell, pair programmet MVC refraktor, der rendering av map og player blir tatt ut av model og inn i GameScreen, refaktoriseringen var vanskelig. </p>
     <p></p>
 <h2>Hva dere ble enige om å gjøre til neste gang</h2>
     <p>Dette er hva vi mangler å gjøre nå :
         <ul><b>Dokumentasjon</b>
-            <li>Spotbugs(brian, jackie)</li>
-            <li>oblig4 (viktig å ta med helgetlige vurderingen av alle forrige obliggene)(brian,jackie,sebatian)</li>
-            <li>UML Diagram(sebastian)</li>
-            <li>Lisenser(jackie)</li>
+            <li>Spotbugs(Brian, Jackie)</li>
+            <li>oblig4 (viktig å ta med helgetlige vurderingen av alle forrige obligene)(Brian,Jackie,Sebatian)</li>
+            <li>UML Diagram(Sebastian)</li>
+            <li>Lisenser(Jackie)</li>
         </ul>
         <ul><b>Funksjonalitet</b>
-            <li>Testing(enten refractore MVC eller bruke Mockito, eller begge :D)(kjell & sebastian)</li>
-            <li>tileFactory(eivind)</li>
-            <li>fikse game over screen til å være mer åpenbart hvem som dør(brain)</li>
-            <li>Collision fix(dorcas)</li>
+            <li>Testing(enten refractore MVC eller bruke Mockito, eller begge :D)(Kjell & Sebastian)</li>
+            <li>tileFactory(Eivind)</li>
+            <li>fikse game over screen til å være mer åpenbart hvem som dør(Brian)</li>
+            <li>Collision fix(Dorcas)</li>
         </ul>
     </p>
     <p>neste uke onsdag 3.mai (12-15) skal vi møtes og bli ferdig med oblig</p>
@@ -106,13 +106,16 @@
 <h1>Referat 16 (05.05.2023)</h1>
 
 <h2>Hvem som var tilstede</h2>
-<p> Kjell, Jackie, Brian, Sebastian </p>
-
+<p> Kjell, Jackie, Brian, Sebastian, Dorcas, Eivind (Alle var tilstede)</p>
+    
 <h2>Hva dere diskuterte</h2>
+    Diskusjon av tester, om vi skal mocke map. Få test coverage til 75%.
+    Fikse forsiden av repository, få en ryddigere READ.ME. 
 
 <h2>Hvilke avgjørelser dere tok</h2>
-
-<h2>Hva dere ble enige om å gjøre til neste gang</h2>
+    Vanlige JUnit tester fungerer ikke for mye av koden. 
+    Dette skyldes av LibGdx og problemene med grafikk. Vi har prøvd med headlessApplication og Mockito uten å lykkes. 
+    La inn lisenser og jar.fil beskrivelse i READ.ME. 
 
 
 <h1> Prosjektrapport </h1>
